@@ -3,10 +3,10 @@ Assemble screenshots of web projects for your portfolio
 
 ## Description
 
-Once a web project is done and handed off, it's time to document the hard work you've done and show them off. _Portfoliofy!_ makes that process easier by doing all the screenshots for you and then assembling them together into portfolio-ready files.
+Once a web project is done and handed off, it's time to document your hard work and show it off. _Portfoliofy!_ makes that process easier by doing all the screenshots for you and then assembling them together into portfolio-ready files.
 
 As of v1.0.0, two files are generated:
-* A full desktop browser screenshot (2048x1152)
+* A desktop browser screenshot (2048x1152)
 * A collage of screenshots for various devices: desktop (1920x1080), laptop (1280x720), tablet (600x800), mobile (230x490).
 
 _Portfoliofy!_ was originally designed and implemented by Gerard Bul-lalayao as the final project for CS50P: Introduction to Programming with Python (HarvardX, 2023).
