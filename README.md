@@ -64,7 +64,7 @@ The output files are stored in a directory inside the `output` directory.
 * [@ggeerraarrdd](https://github.com/ggeerraarrdd/)
 
 ## Version History
-* See [https://github.com/ggeerraarrdd/readme-drafts/releases](https://github.com/ggeerraarrdd/readme-drafts/releases)
+* See [https://github.com/ggeerraarrdd/readme-drafts/releases](https://github.com/ggeerraarrdd/portfoliofy/releases)
 
 ## Future Work
 * Develop a user-friendly web interface
