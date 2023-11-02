@@ -1,3 +1,15 @@
+####################################################
+# My adds
+
+# macOS
+.DS_Store
+
+# Flask
+flask_session/
+/*_session/
+
+####################################################
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
