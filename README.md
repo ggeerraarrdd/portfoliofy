@@ -57,7 +57,7 @@ The output files are stored in a directory inside the `output` directory.
 
 ### Initial Release
 
-The [initial realease](https://github.com/ggeerraarrdd/portfoliofy/releases/tag/v1.0.0) of _Portfoliofy!_ was submitted as the final project for CS50P: Introduction to Programming with Python (HarvardX, 2023).
+The [initial realease](https://github.com/ggeerraarrdd/portfoliofy/releases/tag/v1.0.0) of _Portfoliofy!_ was submitted as the final project for [CS50P: Introduction to Programming with Python](https://cs50.harvard.edu/python/2022/) (HarvardX, 2023).
 
 [Project brief](https://cs50.harvard.edu/python/2022/project/) as of November 2023:
 
