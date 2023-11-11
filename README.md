@@ -1,27 +1,65 @@
-# Portfoliofy!
+# Portfoliofy
+
 Assemble screenshots of web projects for your portfolio
 
 ## Description
 
-Once a web project is done and handed off, it's time to document your hard work and show it off. _Portfoliofy!_ makes that process easier by doing all the screenshots for you and then assembling them together into portfolio-ready files.
+Once a web project is done, it's time to document your hard work and show it off. _Portfoliofy!_ makes that process easier by doing all the screenshots for you and assembling them together into portfolio-ready files.
 
 As of v1.0.0, two files are generated:
+
 * A desktop browser screenshot (2048x1152)
 * A collage of screenshots for various devices: desktop (1920x1080), laptop (1280x720), tablet (600x800), mobile (230x490).
 
-_Portfoliofy!_ was originally designed and implemented by Gerard Bul-lalayao as the final project for CS50P: Introduction to Programming with Python (HarvardX, 2023).
-
-<picture><img alt="Shelfie screenshot 1" src="/images/portfoliofy1.png"></picture>
+![Portfoliofy](/images/portfoliofy1.png)
 
 More screenshots below.
 
 ## Disclaimer
+
 ALL CONTENTS IN THIS REPO ARE FOR EDUCATIONAL PURPOSES ONLY.
 
-## Learning Objectives
+## Getting Started
 
-### Requirements
-_[Assignment brief](https://cs50.harvard.edu/python/2022/project/) for CS50P's Final Project (as of November 2023)_
+### Dependencies
+
+* Pillow==10.1.0
+* Requests==2.31.0
+* selenium==4.15.0
+
+### Usage
+
+Clone it!
+
+```bash
+git clone https://github.com/ggeerraarrdd/portfoliofy.git
+```
+
+Go into the project directory and run the command:
+
+```bash
+python portfoliofy.py
+```
+
+Enter a valid and accessible URL as requested.
+
+The output files are stored in a directory inside the `output` directory.
+
+## Author(s)
+
+* [@ggeerraarrdd](https://github.com/ggeerraarrdd/)
+
+## Version History
+
+### Release Notes
+
+* See [https://github.com/ggeerraarrdd/portfoliofy/releases](https://github.com/ggeerraarrdd/portfoliofy/releases)
+
+### Initial Release
+
+The [initial realease](https://github.com/ggeerraarrdd/portfoliofy/releases/tag/v1.0.0) of _Portfoliofy!_ was submitted as the final project for CS50P: Introduction to Programming with Python (HarvardX, 2023).
+
+[Project brief](https://cs50.harvard.edu/python/2022/project/) as of November 2023:
 
 _The design and implementation of your project is entirely up to you, albeit subject to these requirements:_
 
@@ -34,47 +72,21 @@ _The design and implementation of your project is entirely up to you, albeit sub
 * _Implementing your project should entail more time and effort than is required by each of the course’s problem sets._
 * _Any pip-installable libraries that your project requires must be listed, one per line, in a file called requirements.txt in the root of your project._
 
-### Personal Goals
-Apart from what was to be gained from implementing the requirements, this project was used as a vehicle to further learn and/or practice the following:
+### Future Work
 
-* Image manipulations
+New features development is ongoing.
 
-## Getting Started
-
-### Dependencies
-* Pillow==10.1.0
-* Requests==2.31.0
-* selenium==4.15.0
-
-### Usage
-Clone it!
-```
-$ git clone https://github.com/ggeerraarrdd/portfoliofy.git
-```
-
-Go into the project directory and run the command:
-```
-$ python portfoliofy.py
-```
-Enter a valid and accessible URL as requested.
-
-The output files are stored in a directory inside the `output` directory.
-
-## Author(s)
-* [@ggeerraarrdd](https://github.com/ggeerraarrdd/)
-
-## Version History
-* See [https://github.com/ggeerraarrdd/portfoliofy/releases](https://github.com/ggeerraarrdd/portfoliofy/releases)
-
-## Future Work
 * Develop a user-friendly web interface
 * More options
 
 ## License
+
 * [MIT License](https://github.com/ggeerraarrdd/large-parks/blob/main/LICENSE)
 
 ## Acknowledgments
+
 * The [tutorial](https://pillow.readthedocs.io/en/stable/handbook/tutorial.html) at Pillow's website.
 
 ## Screenshots
-<picture><img alt="Shelfie screenshot 1" src="/images/portfoliofy2.png"></picture>
+
+![Portfoliofy](/images/portfoliofy2.png)
