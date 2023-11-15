@@ -1,6 +1,7 @@
 user_input = {
     "url": "https://www.nps.gov/",
     "wait": 2,
+    "screenshots": True,
     "output_main": {
         "request": True,
         "format": "png",
@@ -9,7 +10,6 @@ user_input = {
         "doc_fill_color": "#FFFFFF",
         "base_stroke_color": "#23445D",
         "base_fill_color": "#BAC8D3",
-        "screenshots": True,
     },
     "output_browser": {
         "request": True,
@@ -19,7 +19,6 @@ user_input = {
         "doc_fill_color": "#FFFFFF",
         "base_stroke_color": "#23445D",
         "base_fill_color": "#BAC8D3",
-        "screenshots": True,
     },
 }
 

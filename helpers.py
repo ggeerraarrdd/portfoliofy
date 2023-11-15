@@ -25,7 +25,7 @@ def get_screenshot(remote_url, wait, directory_path, input):
     # Take screenshot
     driver.close()
 
-    return f"{input['filename_large']} screenshot saved"
+    return f"{input['filename_large']} screenshot generated."
 
 
 def get_screenshot_resized(directory_main, directory_screenshots, filename_input, filename_output, new_width, height_crop):
@@ -50,7 +50,7 @@ def get_screenshot_resized(directory_main, directory_screenshots, filename_input
     # Save the cropped image
     cropped_image.save(f"{directory_main}/{filename_output}")
 
-    return f"{filename_output} screenshots saved"
+    return f"{filename_output} screenshot generated."
 
 
 def get_screenshot_resized_overlaid(base, overlay, lat, lng, directory_path, new_file_name):
