@@ -13,6 +13,7 @@ def get_screenshot(remote_url, wait, directory_path, input):
     options.add_argument(f"--window-size={input['width_large']},{input['height_large']}")
     options.add_argument(f"--no-sandbox")
     options.add_argument(f"--headless")
+    options.add_argument(f"--hide-scrollbars")
 
     # Open Chrome webdriver
     driver = webdriver.Chrome(options=options)
