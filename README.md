@@ -78,7 +78,7 @@ This is a list of parameters you can change in `local_settings.py`.
 
 ### Example
 
-This code will portfoliofy a webpage served on a web server running on a local computer. It only requests `OUTPUT_BROWSER` in the default PNG format. `OUTPUT_MAIN` will not be processed. But all `OUTPUT_SCREENSHOTS` will be saved. All other parameters remain set to their default values.
+This code will portfoliofy a webpage served on a web server running on a local computer. It only requests `OUTPUT_BROWSER` in the default PNG format. `OUTPUT_MAIN` and `OUTPUT_MOBILES` will not be processed. But all `OUTPUT_SCREENSHOTS` will be saved. All other parameters remain set to their default values.
 
 ```python
 user_input = {
@@ -96,6 +96,15 @@ user_input = {
     },
     "output_browser": {
         "request": True,
+        "format": "png",
+        "doc_pad_h": 300,
+        "doc_pad_v": 200,
+        "doc_fill_color": "#FFFFFF",
+        "base_stroke_color": "#23445D",
+        "base_fill_color": "#BAC8D3",
+    },
+    "output_mobiles": {
+        "request": False,
         "format": "png",
         "doc_pad_h": 300,
         "doc_pad_v": 200,
