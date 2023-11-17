@@ -139,3 +139,5 @@ New features development is ongoing.
 ## Screenshots
 
 ![Portfoliofy](/images/portfoliofy2.png)
+
+![Portfoliofy](/images/portfoliofy3.png)
