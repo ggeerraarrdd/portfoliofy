@@ -6,12 +6,12 @@ Assemble screenshots of web projects for your portfolio
 
 Once a web project is done, it's time to document your hard work and show it off. _Portfoliofy_ makes that process easier by doing all the screenshots for you and assembling them together into portfolio-ready files.
 
-As of v2.2.0, the following `OUTPUT_` types can be generated:
+As of v2.3.0, the following `OUTPUT_` types can be generated:
 
 * `OUTPUT_SCREENSHOTS`
   * Four image files of screenshots taken in different window sizes mimicking the viewport of a desktop (2160x1360), a laptop (1440x900), a tablet (768x1024) and a smartphone (230x490). And one image file of a full-page screenshot.
 * `OUTPUT_MAIN`
-  * An image file of those screenshots overlaid on top schematic diagrams and then collaged together. (See below for an example ouput.)
+  * An image file of those screenshots, except the full-page one, overlaid on top schematic diagrams and then collaged together. (See below for an example ouput.)
 * `OUTPUT_BROWSER`
   * An image file of the desktop screenshot overlaid on top of a schematic diagram. (Scroll to the bottom for an example ouput.)
 * `OUTPUT_MOBILES`
