@@ -1,4 +1,6 @@
 import os
+import json
+import base64
 from selenium import webdriver
 from PIL import Image
 from time import sleep
@@ -26,7 +28,70 @@ def get_screenshot(remote_url, wait, directory_path, input):
     # Take screenshot
     driver.close()
 
-    return f"{input['filename_large']} screenshot generated."
+    return 1
+
+
+def get_screenshot_full(remote_url, wait, directory_path, input):
+
+    options = Options()
+    options.add_argument(f"--no-sandbox")
+    options.add_argument(f"--headless=new")
+    options.add_argument(f"--hide-scrollbars")
+
+    driver = webdriver.Chrome(options=options)
+
+    driver.get(remote_url)
+
+    sleep(wait)
+
+    filename_output_full_screenshot_png = input["filename_large"]
+    
+    png = get_screenshot_full_chrome(driver)
+    with open(f"{directory_path}/{filename_output_full_screenshot_png}", 'wb') as f:
+        f.write(png)
+
+    driver.close()
+
+    return 1
+
+
+def get_screenshot_full_chrome(driver) :
+
+    # Function adapted from StackOverflow answer 
+    # https://stackoverflow.com/questions/45199076/take-full-page-screenshot-in-chrome-with-selenium/45201692#45201692
+
+    def send(cmd, params):
+        resource = "/session/%s/chromium/send_command_and_get_result" % \
+            driver.session_id
+        url = driver.command_executor._url + resource
+        body = json.dumps({'cmd':cmd, 'params': params})
+        response = driver.command_executor._request('POST', url, body)
+        return response.get('value')
+
+    def evaluate(script):
+        response = send('Runtime.evaluate', {
+            'returnByValue': True,
+            'expression': script
+        })
+        return response['result']['value']
+
+    metrics = evaluate( \
+        "({" + \
+            "width: Math.max(window.innerWidth, document.body.scrollWidth, " + \
+                "document.documentElement.scrollWidth)|0," + \
+            "height: Math.max(innerHeight, document.body.scrollHeight, " + \
+                "document.documentElement.scrollHeight)|0," + \
+            "deviceScaleFactor: window.devicePixelRatio || 1," + \
+            "mobile: typeof window.orientation !== 'undefined'" + \
+        "})")
+    send('Emulation.setDeviceMetricsOverride', metrics)
+    screenshot = send('Page.captureScreenshot', {
+        'format': 'png',
+        'fromSurface': True
+    })
+    send('Emulation.clearDeviceMetricsOverride', {})
+
+    return base64.b64decode(screenshot['data'])
 
 
 def get_screenshot_resized(directory_main, directory_screenshots, filename_input, filename_output, new_width, height_crop):
@@ -51,7 +116,7 @@ def get_screenshot_resized(directory_main, directory_screenshots, filename_input
     # Save the cropped image
     cropped_image.save(f"{directory_main}/{filename_output}")
 
-    return f"{filename_output} screenshot generated."
+    return 1
 
 
 def get_screenshot_resized_overlaid(base, overlay, lat, lng, directory_path, new_file_name):

@@ -169,5 +169,5 @@ cython_debug/
 flask_session/
 /*_session/
 
-output_full.py
+sketch*.py
 ####################################################

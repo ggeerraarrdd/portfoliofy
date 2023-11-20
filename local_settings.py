@@ -29,6 +29,15 @@ user_input = {
         "base_stroke_color": "#23445D",
         "base_fill_color": "#BAC8D3",
     },
+        "output_full": {
+        "request": True,
+        "format": "png",
+        "doc_pad_h": 300,
+        "doc_pad_v": 200,
+        "doc_fill_color": "#FFFFFF",
+        "base_stroke_color": "#23445D",
+        "base_fill_color": "#BAC8D3",
+    },
 }
 
 
@@ -89,5 +98,18 @@ system_input = {
         "width_small": 230,
         "height_small": None,
         "small_height_crop": 490,
+    },
+    "full": {
+        "filename_large": "screenshot_full_large.png",
+        "width_large": 2160,
+        "height_large": 1360,
+        "filename_medium": "screenshot_full_medium.png",
+        "width_medium": 2048,
+        "height_medium": None,
+        "medium_height_crop": 1152,
+        "filename_small": "screenshot_full_small.png",
+        "width_small": 768,
+        "height_small": None,
+        "small_height_crop": 1024,
     },
 }

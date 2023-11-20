@@ -9,13 +9,15 @@ Once a web project is done, it's time to document your hard work and show it off
 As of v2.2.0, the following `OUTPUT_` types can be generated:
 
 * `OUTPUT_SCREENSHOTS`
-  * Four image files of screenshots taken in different window sizes mimicking the viewport of a desktop (2160x1360), a laptop (1440x900), a tablet (768x1024) and a smartphone (230x490).
+  * Four image files of screenshots taken in different window sizes mimicking the viewport of a desktop (2160x1360), a laptop (1440x900), a tablet (768x1024) and a smartphone (230x490). And one image file of a full-page screenshot.
 * `OUTPUT_MAIN`
   * An image file of those screenshots overlaid on top schematic diagrams and then collaged together. (See below for an example ouput.)
 * `OUTPUT_BROWSER`
   * An image file of the desktop screenshot overlaid on top of a schematic diagram. (Scroll to the bottom for an example ouput.)
 * `OUTPUT_MOBILES`
   * An image file of the tablet and smartphone screenshots overlaid on top of a schematic diagram and paired together. (Scroll to the bottom for an example ouput.)
+* `OUTPUT_FULL`
+  * An image file of the full-pge screenshots overlaid on top of a schematic diagram. (Scroll to the bottom for an example ouput.)
 
 More coming soon!
 
@@ -78,7 +80,7 @@ This is a list of parameters you can change in `local_settings.py`.
 
 ### Example
 
-This code will portfoliofy a webpage served on a web server running on a local computer. It only requests `OUTPUT_BROWSER` in the default PNG format. `OUTPUT_MAIN` and `OUTPUT_MOBILES` will not be processed. But all `OUTPUT_SCREENSHOTS` will be saved. All other parameters remain set to their default values.
+This code will portfoliofy a webpage served on a web server running on a local computer. It only requests `OUTPUT_BROWSER` in the default PNG format. `OUTPUT_MAIN`, `OUTPUT_MOBILES` and `OUTPUT_FULL` will not be processed. But all `OUTPUT_SCREENSHOTS` will be saved. All other parameters remain set to their default values.
 
 ```python
 user_input = {
@@ -104,6 +106,15 @@ user_input = {
         "base_fill_color": "#BAC8D3",
     },
     "output_mobiles": {
+        "request": False,
+        "format": "png",
+        "doc_pad_h": 300,
+        "doc_pad_v": 200,
+        "doc_fill_color": "#FFFFFF",
+        "base_stroke_color": "#23445D",
+        "base_fill_color": "#BAC8D3",
+    },
+      "output_full": {
         "request": False,
         "format": "png",
         "doc_pad_h": 300,
@@ -150,3 +161,5 @@ New features development is ongoing.
 ![Portfoliofy](/images/portfoliofy2.png)
 
 ![Portfoliofy](/images/portfoliofy3.png)
+
+![Portfoliofy](/images/portfoliofy4.png)
