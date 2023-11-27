@@ -90,7 +90,7 @@ This is a list of parameters you can change in `local_settings.py`.
 
 ### Notes
 
-* `OUTPUT_MOVIE` currently will not be processed if the height of the full-page screenshot is >= 10,000px after it has been resized to a width of 1280px.
+* `OUTPUT_MOVIE` currently will not be processed if the height of the full-page screenshot is >= 10,000px after it is resized to a width of 1280px.
 * `OUTPUT_MOVIE` only accepts mp4 format.
 
 ### Example
