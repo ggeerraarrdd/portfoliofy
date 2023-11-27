@@ -33,7 +33,7 @@ def process_request_mobiles(blueprint_user, blueprint_system, directory_main, di
     filename_output_mobiles_tablet_base_svg = "output_mobiles_tablet_base.svg"
     filename_output_mobiles_tablet_base_png = "output_mobiles_tablet_base.png"
     get_output_mobiles_base(blueprint_user, directory_main, svg_tablet, filename_output_mobiles_tablet_base_svg, filename_output_mobiles_tablet_base_png)
-    print("OUTPUT_MOBILES - tablet - base - generated.")
+    # print("OUTPUT_MOBILES - tablet - base - generated.")
 
     # Create overlay - tablet - temp
     filename_input = tablet["filename_large"]
@@ -41,7 +41,7 @@ def process_request_mobiles(blueprint_user, blueprint_system, directory_main, di
     new_width = tablet["width_medium"]
     height_crop = tablet["medium_height_crop"]
     get_screenshot_resized(directory_main, directory_screenshots, filename_input, filename_output_temp, new_width, height_crop)
-    print("OUTPUT_MOBILES - tablet - overlay - generated.")
+    # print("OUTPUT_MOBILES - tablet - overlay - generated.")
 
     # Create overlay - tablet - final
     filename_output_final = filename_output_mobiles_tablet_overlay_final_png = "output_mobiles_tablet_overlay_final.png"
@@ -54,7 +54,7 @@ def process_request_mobiles(blueprint_user, blueprint_system, directory_main, di
     lng = 36
     filename_output_mobiles_tablet_final = "output_mobiles_tablet_final.png"
     get_output_mobiles_overlay_final(base, overlay, lat, lng, directory_main, filename_output_mobiles_tablet_final)
-    print("OUTPUT_BROWSER - tablet - temp - generated.")
+    # print("OUTPUT_BROWSER - tablet - temp - generated.")
 
 
     # ################################################## #
@@ -81,7 +81,7 @@ def process_request_mobiles(blueprint_user, blueprint_system, directory_main, di
     filename_output_mobiles_smartphone_base_svg = "output_mobiles_smartphone_base.svg"
     filename_output_mobiles_smartphone_base_png = "output_mobiles_smartphone_base.png"
     get_output_mobiles_base(blueprint_user, directory_main, svg_smartphone, filename_output_mobiles_smartphone_base_svg, filename_output_mobiles_smartphone_base_png)
-    print("OUTPUT_MOBILES - smartphone - base - generated.")
+    # print("OUTPUT_MOBILES - smartphone - base - generated.")
 
     # Create overlay - smartphone - temp
     filename_input = smartphone["filename_large"]
@@ -89,7 +89,7 @@ def process_request_mobiles(blueprint_user, blueprint_system, directory_main, di
     new_width = smartphone["width_medium"]
     height_crop = smartphone["medium_height_crop"]
     get_screenshot_resized(directory_main, directory_screenshots, filename_input, filename_output_temp, new_width, height_crop)
-    print("OUTPUT_MOBILES - smartphone - overlay - generated.")
+    # print("OUTPUT_MOBILES - smartphone - overlay - generated.")
 
     # Create overlay - smartphone - final
     filename_output_final = filename_output_mobiles_smartphone_overlay_final_png = "output_mobiles_smartphone_overlay_final.png"
@@ -102,7 +102,7 @@ def process_request_mobiles(blueprint_user, blueprint_system, directory_main, di
     lng = 23
     filename_output_mobiles_smartphone_final = "output_mobiles_smartphone_final.png"
     get_output_mobiles_overlay_final(base, overlay, lat, lng, directory_main, filename_output_mobiles_smartphone_final)
-    print("OUTPUT_BROWSER - smartphone - temp - generated.")
+    # print("OUTPUT_BROWSER - smartphone - temp - generated.")
 
 
     # ################################################## #
@@ -126,7 +126,7 @@ def process_request_mobiles(blueprint_user, blueprint_system, directory_main, di
     filename_output_mobiles_all_temp = "output_mobiles_all_temp.png"
     output_mobiles_all_base.save(f"{directory_main}/{filename_output_mobiles_all_temp}")
 
-    print("OUTPUT_MOBILES- all - temp - generated.")
+    # print("OUTPUT_MOBILES - all - temp - generated.")
 
 
     # ################################################## #
@@ -141,7 +141,7 @@ def process_request_mobiles(blueprint_user, blueprint_system, directory_main, di
     color = blueprint_user["doc_fill_color"]
     filename_output_mobiles_final = "output_mobiles.png"
     get_output_padded(directory_main, filename_output_mobiles_all_temp, filename_output_mobiles_final, right, left, top, bottom, color)
-    print("OUTPUT_MOBILES - final - generated.")
+    # print("OUTPUT_MOBILES - final - generated.")
 
 
     # ################################################## #

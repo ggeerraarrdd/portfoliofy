@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import base64
 from selenium import webdriver
@@ -7,6 +8,77 @@ from time import sleep
 import requests
 from selenium.webdriver.chrome.options import Options
 
+
+def get_validation(user_input):
+    
+    message = ""
+
+    # Validate url
+    try:
+        response = requests.head(user_input["url"])
+        if response.status_code not in (200, 302):
+            message += f"¦— url - not valid or not accessible\n"
+    except:
+        message += f"¦— url - not valid or not accessible\n"
+
+    # Validate wait
+    if user_input["wait"] > 60:
+        message += f"¦— wait time not valid\n"
+    
+    # Validate output dict
+    for index, key in enumerate(list(user_input.keys())[3:], start=4):
+        dictionary = user_input[key]
+        # print(f"{index} — {key}: {dictionary}")
+        for indx, ky in dictionary.items():
+            dict = dictionary[indx]
+            # print(f"{indx}: {dict}")
+            # Request
+            if indx == "request":
+                if dict not in (True, False):
+                    message += f"¦— {key} - request not valid\n"
+            # Format
+            elif indx == "format":
+                if dict not in ("png"):
+                    message += f"¦— {key} - format not valid\n"
+            # doc_pad_h
+            elif indx == "doc_pad_h":
+                if isinstance(dict, int) and (0 < dict < 1000):
+                    pass
+                else:
+                    message += f"¦— {key} - doc_pad_h not valid\n"
+            # doc_pad_v
+            elif indx == "doc_pad_v":
+                if isinstance(dict, int) and (0 < dict < 1000):
+                    pass
+                else:
+                    message += f"¦— {key} - doc_pad_v not valid\n"
+            # doc_fill_color
+            elif indx == "doc_fill_color":
+                result = validate_hex_color(dict)
+                if result == 0:
+                    message += f"¦— {key} - doc_fill_color not valid\n"
+            # base_stroke_color
+            elif indx == "base_stroke_color":
+                result = validate_hex_color(dict)
+                if result == 0:
+                    message += f"¦— {key} - base_stroke_color not valid\n"         
+            # base_fill_color
+            elif indx == "base_fill_color":
+                result = validate_hex_color(dict)
+                if result == 0:
+                    message += f"¦— {key} - base_fill_color not valid\n"        
+
+    return message
+
+
+def validate_hex_color(color):
+    pattern = r'^#([A-Fa-f0-9]{6})$'
+    match = re.match(pattern, color)
+    if match:
+        return 1
+    else:
+        return 0
+    
 
 def get_screenshot(remote_url, wait, directory_path, input):
 

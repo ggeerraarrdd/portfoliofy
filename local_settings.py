@@ -32,7 +32,7 @@ user_input = {
         "output_full": {
         "request": True,
         "format": "png",
-        "doc_pad_h": 300,
+        "doc_pad_h": 30,
         "doc_pad_v": 20,
         "doc_fill_color": "#FFFFFF",
         "base_stroke_color": "#23445D",

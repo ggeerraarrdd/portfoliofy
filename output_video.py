@@ -15,7 +15,7 @@ def process_request_video(blueprint_user, blueprint_system, directory_main, dire
     new_height = int(blueprint_system["width_large"] * aspect_ratio)
 
     # Set max height limit to 10,000 [TBD]
-    if new_height >= 10000:
+    if new_height >= 20000:
         return 0
     
     else:
@@ -55,7 +55,7 @@ def process_request_video(blueprint_user, blueprint_system, directory_main, dire
         video.duration = total_duration
         if not filename_output_video.endswith('.mp4'):
             output += '.mp4'
-        video.write_videofile(f"{directory_main}/{filename_output_video}", fps=26)
+        video.write_videofile(f"{directory_main}/{filename_output_video}", fps=26, logger=None)
 
         cleanup(directory_main, filename_output_video_clip)
         cleanup(directory_main, png_filename)

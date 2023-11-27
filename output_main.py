@@ -20,7 +20,7 @@ def process_request_main(blueprint_user, blueprint_system, directory_main, direc
     filename_output_main_desktop_base_svg = "output_main_desktop_base.svg"
     filename_output_main_desktop_base_png = "output_main_desktop_base.png"
     get_main_desktop_final(blueprint_user, directory_main, filename_output_main_desktop_base_svg, filename_output_main_desktop_base_png)
-    print("OUTPUT_MAIN - desktop - base - generated.")
+    # print("OUTPUT_MAIN - desktop - base - generated.")
 
     # Create overlay - desktop
     filename_input = desktop["filename_large"]
@@ -28,7 +28,7 @@ def process_request_main(blueprint_user, blueprint_system, directory_main, direc
     new_width = desktop["width_small"]
     height_crop = desktop["small_height_crop"]
     get_screenshot_resized(directory_main, directory_screenshots, filename_input, filename_output, new_width, height_crop)
-    print("OUTPUT_MAIN - desktop - overlay - generated.")
+    # print("OUTPUT_MAIN - desktop - overlay - generated.")
 
     # Combine base and overlay - desktop
     base = f"{directory_main}/{filename_output_main_desktop_base_png}"
@@ -37,7 +37,7 @@ def process_request_main(blueprint_user, blueprint_system, directory_main, direc
     lng = 74
     filename_output_main_desktop_final = "output_main_desktop_final.png"
     get_screenshot_resized_overlaid(base, overlay, lat, lng, directory_main, filename_output_main_desktop_final)
-    print("OUTPUT_MAIN - desktop - final - generated.")
+    # print("OUTPUT_MAIN - desktop - final - generated.")
 
     # Delete temp files - desktop
     cleanup(directory_main, filename_output_main_desktop_base_png)
@@ -52,7 +52,7 @@ def process_request_main(blueprint_user, blueprint_system, directory_main, direc
     filename_output_main_laptop_base_svg = "output_main_laptop_base.svg"
     filename_output_main_laptop_base_png = "output_main_laptop_base.png"
     get_main_laptop_final(blueprint_user, directory_main, filename_output_main_laptop_base_svg, filename_output_main_laptop_base_png)
-    print("OUTPUT_MAIN - laptop - base - generated.")
+    # print("OUTPUT_MAIN - laptop - base - generated.")
 
     # Create overlay - laptop
     filename_input = laptop["filename_large"]
@@ -60,7 +60,7 @@ def process_request_main(blueprint_user, blueprint_system, directory_main, direc
     new_width = laptop["width_small"]
     height_crop = laptop["small_height_crop"]
     get_screenshot_resized(directory_main, directory_screenshots, filename_input, filename_output, new_width, height_crop)
-    print("OUTPUT_MAIN - laptop - overlay - generated.")
+    # print("OUTPUT_MAIN - laptop - overlay - generated.")
 
     # Combine base and overlay - laptop
     base = f"{directory_main}/{filename_output_main_laptop_base_png}"
@@ -69,7 +69,7 @@ def process_request_main(blueprint_user, blueprint_system, directory_main, direc
     lng = 34
     filename_output_main_laptop_final = "output_main_laptop_final.png"
     get_screenshot_resized_overlaid(base, overlay, lat, lng, directory_main, filename_output_main_laptop_final)
-    print("OUTPUT_MAIN - laptop - final - generated.")
+    # print("OUTPUT_MAIN - laptop - final - generated.")
 
     # Delete temp files - laptop
     cleanup(directory_main, filename_output_main_laptop_base_png)
@@ -84,7 +84,7 @@ def process_request_main(blueprint_user, blueprint_system, directory_main, direc
     filename_output_main_tablet_base_svg = "output_main_tablet_base.svg"
     filename_output_main_tablet_base_png = "output_main_tablet_base.png"
     get_main_tablet_final(blueprint_user, directory_main, filename_output_main_tablet_base_svg, filename_output_main_tablet_base_png)
-    print("OUTPUT_MAIN - tablet - base - generated.")
+    # print("OUTPUT_MAIN - tablet - base - generated.")
 
     # Create overlay - tablet
     filename_input = tablet["filename_large"]
@@ -92,7 +92,7 @@ def process_request_main(blueprint_user, blueprint_system, directory_main, direc
     new_width = tablet["width_small"]
     height_crop = tablet["small_height_crop"]
     get_screenshot_resized(directory_main, directory_screenshots, filename_input, filename_output, new_width, height_crop)
-    print("OUTPUT_MAIN - tablet - overlay - generated.")
+    # print("OUTPUT_MAIN - tablet - overlay - generated.")
 
     # Combine base and overlay - tablet
     base = f"{directory_main}/{filename_output_main_tablet_base_png}"
@@ -101,7 +101,7 @@ def process_request_main(blueprint_user, blueprint_system, directory_main, direc
     lng = 34
     filename_output_main_tablet_final = "output_main_tablet_final.png"
     get_screenshot_resized_overlaid(base, overlay, lat, lng, directory_main, filename_output_main_tablet_final)
-    print("OUTPUT_MAIN - tablet - final - generated.")
+    # print("OUTPUT_MAIN - tablet - final - generated.")
 
     # Delete temp files - tablet
     cleanup(directory_main, filename_output_main_tablet_base_png)
@@ -116,7 +116,7 @@ def process_request_main(blueprint_user, blueprint_system, directory_main, direc
     filename_output_main_smartphone_base_svg = "output_main_smartphone_base.svg"
     filename_output_main_smartphone_base_png = "output_main_smartphone_base.png"
     get_main_smartphone_final(blueprint_user, directory_main, filename_output_main_smartphone_base_svg, filename_output_main_smartphone_base_png)
-    print("OUTPUT_MAIN - smartphone - base - generated.")
+    # print("OUTPUT_MAIN - smartphone - base - generated.")
 
     # Create overlay - smartphone
     filename_input = smartphone["filename_large"]
@@ -124,7 +124,7 @@ def process_request_main(blueprint_user, blueprint_system, directory_main, direc
     new_width = smartphone["width_small"]
     height_crop = smartphone["small_height_crop"]
     get_screenshot_resized(directory_main, directory_screenshots, filename_input, filename_output, new_width, height_crop)
-    print("OUTPUT_MAIN - smartphone - overlay - generated.")
+    # print("OUTPUT_MAIN - smartphone - overlay - generated.")
 
     # Combine base and overlay - smartphone
     base = f"{directory_main}/{filename_output_main_smartphone_base_png}"
@@ -133,7 +133,7 @@ def process_request_main(blueprint_user, blueprint_system, directory_main, direc
     lng = 24
     filename_output_main_smartphone_final = "output_main_smartphone_final.png"
     get_screenshot_resized_overlaid(base, overlay, lat, lng, directory_main, filename_output_main_smartphone_final)
-    print("OUTPUT_MAIN - smartphone - final - generated.")
+    # print("OUTPUT_MAIN - smartphone - final - generated.")
 
     # Delete temp files - smartphone
     cleanup(directory_main, filename_output_main_smartphone_base_png)
@@ -169,7 +169,7 @@ def process_request_main(blueprint_user, blueprint_system, directory_main, direc
     filename_output_main_all_temp = "output_main_all_temp.png"
     output_main_all_base.save(f"{directory_main}/{filename_output_main_all_temp}")
 
-    print("OUTPUT_MAIN - all - temp - generated.")
+    # print("OUTPUT_MAIN - all - temp - generated.")
 
 
     # ################################################## #
@@ -185,7 +185,7 @@ def process_request_main(blueprint_user, blueprint_system, directory_main, direc
     filename_output_main_all_final = "output_main_final.png"
     get_output_padded(directory_main, filename_output_main_all_temp, filename_output_main_all_final, right, left, top, bottom, color)
 
-    print("OUTPUT_MAIN - all - final - generated.")
+    # print("OUTPUT_MAIN - all - final - generated.")
 
 
     # ################################################## #

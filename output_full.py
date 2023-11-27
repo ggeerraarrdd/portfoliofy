@@ -33,7 +33,7 @@ def process_request_full(blueprint_user, blueprint_system, directory_main, direc
     filename_output = filename_output_full_overlay_png = "output_full_overlay.png"
     get_output_full_overlay_resized(blueprint_system, directory_main, directory_screenshots, filename_input, filename_output)
     get_output_full_overlay_bordered(blueprint_user, directory_main, filename_output) 
-    print("OUTPUT_FULL - overlay - generated.")
+    # print("OUTPUT_FULL - overlay - generated.")
 
     output_full_base = Image.open(f"{directory_main}/{filename_output_full_base_png}")
     output_full_overlay = Image.open(f"{directory_main}/{filename_output_full_overlay_png}")
@@ -57,7 +57,7 @@ def process_request_full(blueprint_user, blueprint_system, directory_main, direc
     color = blueprint_user["doc_fill_color"]
     filename_output_browser_final = "output_full_final.png"
     get_output_padded(directory_main, filename_output_full_temp, filename_output_browser_final, right, left, top, bottom, color)
-    print("OUTPUT_FULL - final - generated.")
+    # print("OUTPUT_FULL - final - generated.")
 
     # Delete temp files
     cleanup(directory_main, filename_output_full_base_svg)

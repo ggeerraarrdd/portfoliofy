@@ -9,7 +9,7 @@ def process_request_browser(blueprint_user, blueprint_system, directory_main, di
     filename_output_browser_base_svg = "output_browser_base.svg"
     filename_output_browser_base_png = "output_browser_base.png"
     get_browser_base(blueprint_user, directory_main, filename_output_browser_base_svg, filename_output_browser_base_png)
-    print("OUTPUT_BROWSER - base - generated.")
+    # print("OUTPUT_BROWSER - base - generated.")
 
     # Create PNG overlay
     filename_input = blueprint_system["filename_large"]
@@ -17,7 +17,7 @@ def process_request_browser(blueprint_user, blueprint_system, directory_main, di
     new_width = blueprint_system["width_medium"]
     height_crop = blueprint_system["medium_height_crop"]
     get_screenshot_resized(directory_main, directory_screenshots, filename_input, filename_output, new_width, height_crop)
-    print("OUTPUT_BROWSER - overlay - generated.")
+    # print("OUTPUT_BROWSER - overlay - generated.")
 
     # Combine base layer and overlay
     base = f"{directory_main}/{filename_output_browser_base_png}"
@@ -26,7 +26,7 @@ def process_request_browser(blueprint_user, blueprint_system, directory_main, di
     lng = 64
     filename_output_browser_final_temp = "output_browser_temp.png"
     get_screenshot_resized_overlaid(base, overlay, lat, lng, directory_main, filename_output_browser_final_temp)
-    print("OUTPUT_BROWSER - temp - generated.")
+    # print("OUTPUT_BROWSER - temp - generated.")
 
     # Add padding
     right = blueprint_user["doc_pad_h"]
@@ -36,7 +36,7 @@ def process_request_browser(blueprint_user, blueprint_system, directory_main, di
     color = blueprint_user["doc_fill_color"]
     filename_output_browser_final = "output_browser_final.png"
     get_output_padded(directory_main, filename_output_browser_final_temp, filename_output_browser_final, right, left, top, bottom, color)
-    print("OUTPUT_BROWSER - final - generated.")
+    # print("OUTPUT_BROWSER - final - generated.")
 
     # Delete temp files
     cleanup(directory_main, filename_output_browser_base_png)
