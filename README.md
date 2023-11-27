@@ -81,12 +81,17 @@ This is a list of parameters you can change in `local_settings.py`.
 | Parameter         | Type   | Default value | Value range  | Description |
 | ----------------- | ------ | ------------- | ------------ | ----------- |
 | request           | bool   | True          | True, False  | If TRUE, requested output is processed. |
-| format            | string | png           | png          | Format of the final output.  Note: `OUTPUT_MOVIE` only accepts mp4. |
+| format            | string | png           | png          | Format of the final output. |
 | doc_pad_h         | int    | 300           | 0 - 1000     | Left and right padding in pixels of final output. |
 | doc_pad_v         | int    | 200           | 0 - 1000     | Top and bottom padding in pixels of final output. |
 | doc_fill_color    | string | #FFFFFF       | ''           | Background color of final output in 6-digit hex. |
 | base_stroke_color | string | #23445D       | ''           | Stroke color of diagram in 6-digit hex. |
 | base_fill_color   | string | #BAC8D3       | ''           | Fill color of diagram in 6-digit hex. |
+
+### Notes
+
+* `OUTPUT_MOVIE` currently will not be processed if the height of the full-page screenshot is >= 10,000px after it has been resized to a width of 1280px.
+* `OUTPUT_MOVIE` only accepts mp4 format.
 
 ### Example
 
