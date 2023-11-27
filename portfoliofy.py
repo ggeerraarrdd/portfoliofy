@@ -8,6 +8,7 @@ from output_browser import process_request_browser
 from output_main import process_request_main
 from output_mobiles import process_request_mobiles
 from output_full import process_request_full
+from output_video import process_request_video
 
 
 def main():
@@ -22,6 +23,7 @@ def main():
     output_browser = user_input.get("output_browser")
     output_mobiles = user_input.get("output_mobiles")
     output_full = user_input.get("output_full")
+    output_video = user_input.get("output_video")
 
     status_code = get_url(remote_url)
 
@@ -53,6 +55,8 @@ def main():
         smartphone = system_input.get("smartphone")
         full = system_input.get("full")
 
+        print("Taking screenshots.")
+        
         get_screenshot(remote_url, wait, directory_screenshots, desktop)
         get_screenshot(remote_url, wait, directory_screenshots, laptop)
         get_screenshot(remote_url, wait, directory_screenshots, tablet)
@@ -100,6 +104,20 @@ def main():
         # ################################################## #
         if output_full["request"] == True:
             result = process_request_full(output_full, full, directory_main, directory_screenshots)
+
+            if result == 1:
+                print("OUTPUT_FULL request processed.")
+
+        else:
+            print("OUTPUT_FULL not requested.")
+
+        # ################################################## #
+        # Process Request - OUPUT_VIDEO
+        # ################################################## #
+        video = system_input.get("video")
+            
+        if output_video["request"] == True:
+            result = process_request_video(output_video, video, directory_main, directory_screenshots)
 
             if result == 1:
                 print("OUTPUT_FULL request processed.")

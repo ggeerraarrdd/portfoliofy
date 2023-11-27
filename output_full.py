@@ -26,7 +26,7 @@ def process_request_full(blueprint_user, blueprint_system, directory_main, direc
     # Create base - full
     filename_output_full_base_svg = "output_full_base.svg"
     filename_output_full_base_png = "output_full_base.png"
-    get_output_mobiles_base(blueprint_user, directory_main, svg_full, filename_output_full_base_svg, filename_output_full_base_png)
+    get_output_full_base(blueprint_user, directory_main, svg_full, filename_output_full_base_svg, filename_output_full_base_png)
 
     # Create overlay - full - temp
     filename_input = blueprint_system["filename_large"]
@@ -68,7 +68,7 @@ def process_request_full(blueprint_user, blueprint_system, directory_main, direc
     return 1
 
 
-def get_output_mobiles_base(blueprint, directory_main, svg, svg_filename, png_filename):
+def get_output_full_base(blueprint, directory_main, svg, svg_filename, png_filename):
 
     # Create SVG file
     with open(f"{directory_main}/{svg_filename}", "w") as file:
