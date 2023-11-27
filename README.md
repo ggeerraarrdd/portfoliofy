@@ -36,12 +36,12 @@ ALL CONTENTS IN THIS REPO ARE FOR EDUCATIONAL PURPOSES ONLY.
 
 ### Dependencies
 
-CairoSVG==2.7.1
-click==8.1.3
-moviepy==1.0.3
-Pillow==10.1.0
-Requests==2.31.0
-selenium==4.15.2
+* CairoSVG==2.7.1
+* click==8.1.3
+* moviepy==1.0.3
+* Pillow==10.1.0
+* Requests==2.31.0
+* selenium==4.15.2
 
 ### Usage
 
@@ -183,4 +183,4 @@ New features development is ongoing.
 
 ![Portfoliofy](/images/portfoliofy4.png)
 
-![Portfoliofy](/images/portfoliofy5.mp4)
+<https://github.com/ggeerraarrdd/portfoliofy/assets/50889794/c93ae299-1e76-42c1-b297-713a923eab79>
