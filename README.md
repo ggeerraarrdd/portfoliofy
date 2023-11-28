@@ -1,12 +1,12 @@
 # Portfoliofy
 
-Assemble screenshots of web projects for your portfolio
+A portfolio maker for your awesome web projects
 
 ## Description
 
 Once a web project is done, it's time to document your hard work and show it off. _Portfoliofy_ makes that process easier by doing all the screenshots for you and assembling them together into portfolio-ready files.
 
-As of v2.4.0, the following `OUTPUT` types can be generated:
+As of v2.4.1, the following `OUTPUT` types can be generated:
 
 * `OUTPUT_SCREENSHOTS`
   * Four image files of screenshots taken in different window sizes mimicking the viewport of a desktop (2160x1360), a laptop (1440x900), a tablet (768x1024) and a smartphone (230x490).
