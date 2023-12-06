@@ -6,7 +6,7 @@ A portfolio maker for your awesome web projects
 
 Once a web project is done, it's time to document your hard work and show it off. _Portfoliofy_ makes that process easier by doing all the screenshots for you and assembling them together into portfolio-ready files.
 
-As of v2.4.1, the following `OUTPUT` types can be generated:
+As of v2.4.2, the following `OUTPUT` types can be generated:
 
 * `OUTPUT_SCREENSHOTS`
   * Four image files of screenshots taken in different window sizes mimicking the viewport of a desktop (2160x1360), a laptop (1440x900), a tablet (768x1024) and a smartphone (230x490).
@@ -82,8 +82,8 @@ This is a list of parameters you can change in `local_settings.py`.
 | ----------------- | ------ | ------------- | ------------ | ----------- |
 | request           | bool   | True          | True, False  | If TRUE, requested output is processed. |
 | format            | string | png           | png          | Format of the final output. |
-| doc_pad_h         | int    | 300           | 0 - 1000     | Left and right padding in pixels of final output. |
-| doc_pad_v         | int    | 200           | 0 - 1000     | Top and bottom padding in pixels of final output. |
+| doc_pad_h         | int    | 300           | 1 - 1000     | Left and right padding in pixels of final output. |
+| doc_pad_v         | int    | 200           | 1 - 1000     | Top and bottom padding in pixels of final output. |
 | doc_fill_color    | string | #FFFFFF       | ''           | Background color of final output in 6-digit hex. |
 | base_stroke_color | string | #23445D       | ''           | Stroke color of diagram in 6-digit hex. |
 | base_fill_color   | string | #BAC8D3       | ''           | Fill color of diagram in 6-digit hex. |
