@@ -147,7 +147,7 @@ def process_request_main(blueprint_user, blueprint_system, directory_main, direc
     width = 3176
     height = 1515
 
-    output_main_all_base = Image.new("RGB", (width, height), (255, 255, 255))
+    output_main_all_base = Image.new(mode="RGB", size=(width, height), color=f"{blueprint_user['doc_fill_color']}")
 
     output_main_desktop = Image.open(f"{directory_main}/{filename_output_main_desktop_final}")
     output_main_laptop = Image.open(f"{directory_main}/{filename_output_main_laptop_final}")

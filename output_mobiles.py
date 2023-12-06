@@ -112,7 +112,7 @@ def process_request_mobiles(blueprint_user, blueprint_system, directory_main, di
     width = 1605
     height = 1406
 
-    output_mobiles_all_base = Image.new("RGB", (width, height), (255, 255, 255))
+    output_mobiles_all_base = Image.new(mode="RGB", size=(width, height), color=f"{blueprint_user['doc_fill_color']}")
 
     output_mobiles_tablet = Image.open(f"{directory_main}/{filename_output_mobiles_tablet_final}")
     output_mobiles_smartphone = Image.open(f"{directory_main}/{filename_output_mobiles_smartphone_final}")

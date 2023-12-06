@@ -70,7 +70,7 @@ def get_movie_base(blueprint, directory_main, svg_filename, png_filename):
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1288px"
-            height="808px" viewBox="-0.5 -0.5 1288 808" style="background-color: rgb(255, 255, 255);">
+            height="808px" viewBox="-0.5 -0.5 1288 808" style="background-color: {blueprint["doc_fill_color"]};">
             <defs />
             <g>
                 <rect x="2" y="2" width="1284" height="50" rx="7.5" ry="7.5" fill="{blueprint["base_fill_color"]}" stroke="{blueprint["base_stroke_color"]}"
