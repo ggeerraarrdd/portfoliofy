@@ -1,90 +1,18 @@
 import os
-import re
 import json
 import base64
-from selenium import webdriver
-from PIL import Image
 from time import sleep
-import requests
+from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from PIL import Image
+from cairosvg import svg2png
 
 
-def get_validation(user_input):
-    
-    message = ""
-
-    # Validate url
-    try:
-        response = requests.head(user_input["url"])
-        if response.status_code not in (200, 302):
-            message += f"¦— url - not valid or not accessible\n"
-    except:
-        message += f"¦— url - not valid or not accessible\n"
-
-    # Validate wait
-    if user_input["wait"] > 60:
-        message += f"¦— wait time not valid\n"
-    
-    # Validate output dict
-    for index, key in enumerate(list(user_input.keys())[3:], start=4):
-        dictionary = user_input[key]
-        # print(f"{index} — {key}: {dictionary}")
-        for indx, ky in dictionary.items():
-            dict = dictionary[indx]
-            # print(f"{indx}: {dict}")
-            # Request
-            if indx == "request":
-                if dict not in (True, False):
-                    message += f"¦— {key} - request not valid\n"
-            # Format
-            elif indx == "format":
-                if dict not in ("png"):
-                    message += f"¦— {key} - format not valid\n"
-            # doc_pad_h
-            elif indx == "doc_pad_h":
-                if isinstance(dict, int) and (0 < dict < 1000):
-                    pass
-                else:
-                    message += f"¦— {key} - doc_pad_h not valid\n"
-            # doc_pad_v
-            elif indx == "doc_pad_v":
-                if isinstance(dict, int) and (0 < dict < 1000):
-                    pass
-                else:
-                    message += f"¦— {key} - doc_pad_v not valid\n"
-            # doc_fill_color
-            elif indx == "doc_fill_color":
-                result = validate_hex_color(dict)
-                if result == 0:
-                    message += f"¦— {key} - doc_fill_color not valid\n"
-            # base_stroke_color
-            elif indx == "base_stroke_color":
-                result = validate_hex_color(dict)
-                if result == 0:
-                    message += f"¦— {key} - base_stroke_color not valid\n"         
-            # base_fill_color
-            elif indx == "base_fill_color":
-                result = validate_hex_color(dict)
-                if result == 0:
-                    message += f"¦— {key} - base_fill_color not valid\n"        
-
-    return message
-
-
-def validate_hex_color(color):
-    pattern = r'^#([A-Fa-f0-9]{6})$'
-    match = re.match(pattern, color)
-    if match:
-        return 1
-    else:
-        return 0
-    
-
-def get_screenshot(remote_url, wait, directory_path, input):
+def get_screenshot(url, wait, directory, settings_devices):
 
     # Set options
     options = Options()
-    options.add_argument(f"--window-size={input['width_large']},{input['height_large']}")
+    options.add_argument(f"--window-size={settings_devices['width_large']},{settings_devices['height_large']}")
     options.add_argument(f"--no-sandbox")
     options.add_argument(f"--headless")
     options.add_argument(f"--hide-scrollbars")
@@ -93,9 +21,9 @@ def get_screenshot(remote_url, wait, directory_path, input):
     driver = webdriver.Chrome(options=options)
     
     # Take screenshot
-    driver.get(remote_url)
+    driver.get(url)
     sleep(wait)
-    driver.save_screenshot(f"{directory_path}/{input['filename_large']}")
+    driver.save_screenshot(f"{directory}/{settings_devices['filename_large']}")
 
     # Take screenshot
     driver.close()
@@ -103,7 +31,7 @@ def get_screenshot(remote_url, wait, directory_path, input):
     return 1
 
 
-def get_screenshot_full(remote_url, wait, directory_path, input):
+def get_screenshot_full(url, wait, directory, settings_devices):
 
     options = Options()
     options.add_argument(f"--no-sandbox")
@@ -112,14 +40,14 @@ def get_screenshot_full(remote_url, wait, directory_path, input):
 
     driver = webdriver.Chrome(options=options)
 
-    driver.get(remote_url)
+    driver.get(url)
 
     sleep(wait)
 
-    filename_output_full_screenshot_png = input["filename_large"]
+    fname_out_full_screenshot_png = settings_devices["filename_large"]
     
     png = get_screenshot_full_chrome(driver)
-    with open(f"{directory_path}/{filename_output_full_screenshot_png}", 'wb') as f:
+    with open(f"{directory}/{fname_out_full_screenshot_png}", 'wb') as f:
         f.write(png)
 
     driver.close()
@@ -166,13 +94,29 @@ def get_screenshot_full_chrome(driver) :
     return base64.b64decode(screenshot['data'])
 
 
-def get_screenshot_resized(directory_main, directory_screenshots, filename_input, filename_output, new_width, height_crop):
+def get_base(post, directory, svg, svg_fname, png_fname):
+
+    # Create SVG file
+    with open(f"{directory}/{svg_fname}", "w") as file:
+        file.write(svg)
+    
+    # Convert to SVG to PNG
+    svg2png(url=f"{directory}/{svg_fname}", 
+            write_to=f"{directory}/{png_fname}", 
+            background_color=post["doc_fill_color"])
+
+    # Delete SVG file
+    cleanup(directory, svg_fname)
+
+    return 1
+
+
+def get_overlay(directory, fname_input, fname_output, new_width, height_crop):
 
     # Open the PNG image
-    image = Image.open(f"{directory_screenshots}/{filename_input}")
+    image = Image.open(f"{directory}/{fname_input}")
 
     # Determine aspect ratio
-    # TODO Make this as an argument
     aspect_ratio = image.height / image.width 
 
     # Set new height
@@ -186,12 +130,12 @@ def get_screenshot_resized(directory_main, directory_screenshots, filename_input
     cropped_image = resized_image.crop((0, 0, width, abs(height - (height - height_crop))))
 
     # Save the cropped image
-    cropped_image.save(f"{directory_main}/{filename_output}")
+    cropped_image.save(f"{directory}/{fname_output}")
 
     return 1
 
 
-def get_screenshot_resized_overlaid(base, overlay, lat, lng, directory_path, new_file_name):
+def get_final_temp(base, overlay, lat, lng, directory_path, new_file_name):
 
     # Open the base image
     base_image = Image.open(base)
@@ -211,7 +155,13 @@ def get_screenshot_resized_overlaid(base, overlay, lat, lng, directory_path, new
     return f"{directory_path}/{new_file_name}"
 
 
-def get_output_padded(directory, filename_input, filename_output, right, left, top, bottom, color):
+def get_final(directory, filename_input, filename_output, post):
+
+    right = post["doc_pad_h"]
+    left = post["doc_pad_h"]
+    top = post["doc_pad_v"]
+    bottom = post["doc_pad_v"]
+    color = post["doc_fill_color"]
 
     image = Image.open(f"{directory}/{filename_input}") 
     
@@ -235,4 +185,5 @@ def cleanup(directory_path, file):
         return f"{file} has been deleted"
     except FileNotFoundError:
         return f"{file} not in directory"
+    
     

@@ -1,61 +1,9 @@
-user_input = {
-    "url": "https://art.gsa.gov/",
-    "wait": 2,
-    "screenshots": True,
-    "output_main": {
-        "request": True,
-        "format": "png",
-        "doc_pad_h": 300,
-        "doc_pad_v": 200,
-        "doc_fill_color": "#FFFFFF",
-        "base_stroke_color": "#23445D",
-        "base_fill_color": "#BAC8D3",
-    },
-    "output_browser": {
-        "request": True,
-        "format": "png",
-        "doc_pad_h": 300,
-        "doc_pad_v": 200,
-        "doc_fill_color": "#FFFFFF",
-        "base_stroke_color": "#23445D",
-        "base_fill_color": "#BAC8D3",
-    },
-    "output_mobiles": {
-        "request": True,
-        "format": "png",
-        "doc_pad_h": 300,
-        "doc_pad_v": 200,
-        "doc_fill_color": "#FFFFFF",
-        "base_stroke_color": "#23445D",
-        "base_fill_color": "#BAC8D3",
-    },
-        "output_full": {
-        "request": True,
-        "format": "png",
-        "doc_pad_h": 300,
-        "doc_pad_v": 200,
-        "doc_fill_color": "#FFFFFF",
-        "base_stroke_color": "#23445D",
-        "base_fill_color": "#BAC8D3",
-    },
-        "output_video": {
-        "request": True,
-        "format": "png",
-        "doc_pad_h": 300,
-        "doc_pad_v": 200,
-        "doc_fill_color": "#FFFFFF",
-        "base_stroke_color": "#23445D",
-        "base_fill_color": "#BAC8D3",
-    },
-}
-
-
 # ################################################## #
 #
-# DO NOT EDIT below this comment.
+# DO NOT EDIT
 #
 # ################################################## #
-system_input = {
+settings_devices = {
     "desktop": {
         "filename_large": "screenshot_desktop_large.png",
         "width_large": 2160,
@@ -121,7 +69,7 @@ system_input = {
         "height_small": None,
         "small_height_crop": 1024,
     },
-    "video": {
+    "movie": {
         "filename_large": "movie_large.mp4",
         "width_large": 1280,
         "height_large": 720,
