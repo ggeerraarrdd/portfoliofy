@@ -97,7 +97,7 @@ This is the request body schema for all endpoints.
 | Parameter         | Type   | Default value                        | Value range  | Description |
 | ----------------- | ------ | ------------------------------------ | ------------ | ----------- |
 | request           | bool   | False                                | True, False  | If TRUE, requested output is processed. |
-| remote_url        | bool   | "<https://ggeerraarrdd.github.io/>"  | ...          | URL to portfoliofy. |
+| remote_url        | string | "<https://ggeerraarrdd.github.io/>"  | ...          | URL to portfoliofy. |
 | wait              | int    | 2                                    | 1 - 100      | Time in seconds to allow URL to load before taking screenshot. |
 | format            | string | "png"                                | "png"        | File format of the final output. |
 | doc_pad_h         | int    | 300                                  | 1 - 1000     | Left and right padding in pixels of final output. |
