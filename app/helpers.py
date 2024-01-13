@@ -3,6 +3,7 @@ import json
 import base64
 from time import sleep
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from PIL import Image
 from cairosvg import svg2png
@@ -17,6 +18,16 @@ def get_screenshot(url, wait, directory, settings_devices):
     options.add_argument(f"--headless")
     options.add_argument(f"--hide-scrollbars")
 
+    try:
+        # Set Chromedriver path
+        service = Service(executable_path="/usr/bin/chromedriver")
+
+        # Open Chrome webdriver
+        driver = webdriver.Chrome(service=service, options=options)
+    except:
+        # Open Chrome webdriver
+        driver = webdriver.Chrome(options=options)
+
     # Open Chrome webdriver
     driver = webdriver.Chrome(options=options)
     
@@ -25,10 +36,13 @@ def get_screenshot(url, wait, directory, settings_devices):
     sleep(wait)
     driver.save_screenshot(f"{directory}/{settings_devices['filename_large']}")
 
+    # Retrieve screenshot
+    screenshot = driver.get_screenshot_as_png()
+
     # Take screenshot
     driver.close()
 
-    return 1
+    return screenshot
 
 
 def get_screenshot_full(url, wait, directory, settings_devices):
@@ -38,6 +52,17 @@ def get_screenshot_full(url, wait, directory, settings_devices):
     options.add_argument(f"--headless=new")
     options.add_argument(f"--hide-scrollbars")
 
+    try:
+        # Set Chromedriver path
+        service = Service(executable_path="/usr/bin/chromedriver")
+
+        # Open Chrome webdriver
+        driver = webdriver.Chrome(service=service, options=options)
+    except:
+        # Open Chrome webdriver
+        driver = webdriver.Chrome(options=options)
+
+    # Open Chrome webdriver
     driver = webdriver.Chrome(options=options)
 
     driver.get(url)
