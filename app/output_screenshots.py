@@ -23,7 +23,7 @@ def process_request_screenshots(post, type):
                             directory, 
                             device)
         
-        return f"{directory}/{device["filename_large"]}"
+        return f"{directory}/{device['filename_large']}"
     
     else:
 
@@ -33,5 +33,5 @@ def process_request_screenshots(post, type):
                     directory, 
                     device)
         
-        return f"{directory}/{device["filename_large"]}"
+        return f"{directory}/{device['filename_large']}"
 
