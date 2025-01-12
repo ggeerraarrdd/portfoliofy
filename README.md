@@ -36,13 +36,7 @@ ALL CONTENTS IN THIS REPO ARE FOR EDUCATIONAL PURPOSES ONLY.
 
 ### Dependencies
 
-* CairoSVG==2.7.1
-* fastapi==0.105.0
-* moviepy==1.0.3
-* Pillow==10.1.0
-* pydantic==2.5.2
-* Requests==2.31.0
-* selenium==4.16.0
+* See `requirements.txt`
 
 ### Usage
 
