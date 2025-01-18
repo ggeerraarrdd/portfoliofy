@@ -40,6 +40,7 @@ More screenshots below.
 * [Getting Started](#getting-started)
   * [Dependencies](#dependencies)
   * [Installation](#installation)
+  * [Configuration](#configuration)
   * [Usage](#usage)
 * [Author(s)](#authors)
 * [Version History](#version-history)
@@ -47,6 +48,7 @@ More screenshots below.
   * [Initial Release](#initial-release)
 * [Future Work](#future-work)
 * [License](#license)
+* [Contributing](#contributing)
 * [Acknowledgments](#acknowledgments)
 * [Screenshots](#screenshots)
 
