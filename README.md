@@ -9,24 +9,6 @@ A REST API to generate portfolio-ready screenshots of your awesome web projects
 
 Once a web project is done, it's time to document your hard work and show it off. _Portfoliofy_ makes that process easier by doing all the screenshots for you and assembling them together into portfolio-ready files.
 
-As of v3.0.0-beta.1, the following `OUTPUT` types can be requested from exposed endpoints (see below):
-
-* `OUTPUT_MAIN`
-  * An image file of screenshots taken from a "desktop", a "laptop", a "tablet" and a "smartphone", overlaid on top of a schematic diagram and collaged together. (See below for an example ouput.)
-* `OUTPUT_BROWSER`
-  * An image file of a screenshot taken from a "desktop", overlaid on top of a schematic diagram. (Scroll to the bottom for an example ouput.)
-* `OUTPUT_MOBILES`
-  * An image file of screenshots from a "desktop" and a "laptop" overlaid on top of a schematic diagram and paired together. (Scroll to the bottom for an example ouput.)
-* `OUTPUT_FULL`
-  * An image file of a full-page screenshot overlaid on top of a schematic diagram. (Scroll to the bottom for an example ouput.)
-* `OUTPUT_MOVIE`
-  * A scroll animation video of a full-page screenshot. (Scroll to the bottom for an example ouput.)
-* `OUTPUT_SCREENSHOTS`
-  * Plain screenshots taken from window sizes mimicking the viewport of a desktop (2160x1360), a laptop (1440x900), a tablet (768x1024) and a smartphone (230x490), requested separately.
-  * Plain full-page screenshot.
-
-More coming soon!
-
 ![Portfoliofy](/docs/portfoliofy1.png)
 
 More screenshots below.
@@ -54,11 +36,77 @@ More screenshots below.
 
 ## Features
 
-* TBD
+PORTFOLIOFY v3.0.0-beta.2 offers the following `OUTPUT` types requested from exposed endpoints (see [Usage](#usage)):
+
+### `OUTPUT_MAIN`
+
+* Creates a collage of screenshots from desktop, laptop, tablet, and smartphone views
+* Overlays them on a schematic diagram for professional presentation
+
+### `OUTPUT_BROWSER`
+
+* Generates a desktop screenshot overlaid on a schematic diagram
+* Perfect for showcasing desktop-focused web applications
+
+### `OUTPUT_MOBILES`
+
+* Produces a paired view of desktop and laptop screenshots
+* Includes schematic diagram overlay for enhanced presentation
+
+### `OUTPUT_FULL`
+
+* Captures a full-page screenshot with schematic diagram overlay
+* Ideal for showcasing long-form content or full website layouts
+
+### `OUTPUT_MOVIE`
+
+* Creates a scroll animation video of your full webpage
+* Great for demonstrating interactive or lengthy content
+
+### `OUTPUT_SCREENSHOTS`
+
+* Provides plain screenshots at various viewport sizes:
+  * Desktop (2160x1360)
+  * Laptop (1440x900)
+  * Tablet (768x1024)
+  * Smartphone (230x490)
+* Includes separate full-page screenshot option
+
+_More features coming soon!_
 
 ## Project Structure
 
-* TBD
+```text
+portfoliofy/
+│
+├── api/
+│   │
+│   ├── routers/
+│   │   ├── __init__.py
+│   │   └── endpoints/
+│   │       └── __init__.py
+│   │ 
+│   ├── core/
+│   │   ├── config/
+│   │   │   └── __init__.py
+│   │   └── utils/
+│   │       └── __init__.py
+│   │ 
+│   ├── domain/
+│   │   ├── services/
+│   │   │   └── __init__.py
+│   │   └── schemas/
+│   │ 
+│   ├── output/
+│   │
+│   └── portfoliofy.py
+│  
+├── docs/
+├── requirements.txt
+├── .gitignore
+├── .pylintrc
+└── README.md
+```
 
 ## Prerequisites
 
