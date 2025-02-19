@@ -1,22 +1,39 @@
-import os
-import json
+"""
+TD
+"""
+
+# Python Standard Libraries
 import base64
+import json
+import os
 from time import sleep
+
+# Third-Party Libraries
+from cairosvg import svg2png
+from PIL import Image
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from PIL import Image
-from cairosvg import svg2png
+
+
+
+
+
+
+
+
 
 
 def get_screenshot(url, wait, directory, settings_devices):
-
+    """
+    TD
+    """
     # Set options
     options = Options()
     options.add_argument(f"--window-size={settings_devices['width_large']},{settings_devices['height_large']}")
-    options.add_argument(f"--no-sandbox")
-    options.add_argument(f"--headless")
-    options.add_argument(f"--hide-scrollbars")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--headless")
+    options.add_argument("--hide-scrollbars")
 
     try:
         # Set Chromedriver path
@@ -30,7 +47,7 @@ def get_screenshot(url, wait, directory, settings_devices):
 
     # Open Chrome webdriver
     driver = webdriver.Chrome(options=options)
-    
+
     # Take screenshot
     driver.get(url)
     sleep(wait)
@@ -46,11 +63,13 @@ def get_screenshot(url, wait, directory, settings_devices):
 
 
 def get_screenshot_full(url, wait, directory, settings_devices):
-
+    """
+    TD
+    """
     options = Options()
-    options.add_argument(f"--no-sandbox")
-    options.add_argument(f"--headless=new")
-    options.add_argument(f"--hide-scrollbars")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--headless=new")
+    options.add_argument("--hide-scrollbars")
 
     try:
         # Set Chromedriver path
@@ -60,7 +79,7 @@ def get_screenshot_full(url, wait, directory, settings_devices):
         driver = webdriver.Chrome(service=service, options=options)
     except:
         # Open Chrome webdriver
-        driver = webdriver.Chrome(options=options)
+        driver = webdriver.Chrome(options=options) 
 
     # Open Chrome webdriver
     driver = webdriver.Chrome(options=options)
@@ -70,7 +89,7 @@ def get_screenshot_full(url, wait, directory, settings_devices):
     sleep(wait)
 
     fname_out_full_screenshot_png = settings_devices["filename_large"]
-    
+
     png = get_screenshot_full_chrome(driver)
     with open(f"{directory}/{fname_out_full_screenshot_png}", 'wb') as f:
         f.write(png)
@@ -81,8 +100,10 @@ def get_screenshot_full(url, wait, directory, settings_devices):
 
 
 def get_screenshot_full_chrome(driver) :
-
-    # Function adapted from StackOverflow answer 
+    """
+    TD
+    """
+    # Function adapted from StackOverflow answer
     # https://stackoverflow.com/questions/45199076/take-full-page-screenshot-in-chrome-with-selenium/45201692#45201692
 
     def send(cmd, params):
@@ -120,14 +141,16 @@ def get_screenshot_full_chrome(driver) :
 
 
 def get_base(post, directory, svg, svg_fname, png_fname):
-
+    """
+    TD
+    """
     # Create SVG file
-    with open(f"{directory}/{svg_fname}", "w") as file:
+    with open(f"{directory}/{svg_fname}", "w", encoding="utf-8") as file:
         file.write(svg)
-    
+
     # Convert to SVG to PNG
-    svg2png(url=f"{directory}/{svg_fname}", 
-            write_to=f"{directory}/{png_fname}", 
+    svg2png(url=f"{directory}/{svg_fname}",
+            write_to=f"{directory}/{png_fname}",
             background_color=post["doc_fill_color"])
 
     # Delete SVG file
@@ -137,12 +160,14 @@ def get_base(post, directory, svg, svg_fname, png_fname):
 
 
 def get_overlay(directory, fname_input, fname_output, new_width, height_crop):
-
+    """
+    TD
+    """
     # Open the PNG image
     image = Image.open(f"{directory}/{fname_input}")
 
     # Determine aspect ratio
-    aspect_ratio = image.height / image.width 
+    aspect_ratio = image.height / image.width
 
     # Set new height
     new_height = int(new_width * aspect_ratio)
@@ -161,7 +186,9 @@ def get_overlay(directory, fname_input, fname_output, new_width, height_crop):
 
 
 def get_final_temp(base, overlay, lat, lng, directory_path, new_file_name):
-
+    """
+    TD
+    """
     # Open the base image
     base_image = Image.open(base)
 
@@ -181,34 +208,37 @@ def get_final_temp(base, overlay, lat, lng, directory_path, new_file_name):
 
 
 def get_final(directory, filename_input, filename_output, post):
-
+    """
+    TD
+    """
     right = post["doc_pad_h"]
     left = post["doc_pad_h"]
     top = post["doc_pad_v"]
     bottom = post["doc_pad_v"]
     color = post["doc_fill_color"]
 
-    image = Image.open(f"{directory}/{filename_input}") 
-    
-    width, height = image.size 
-    
-    new_width = width + right + left 
-    new_height = height + top + bottom 
-    
-    result = Image.new(image.mode, (new_width, new_height), color) 
-    
-    result.paste(image, (left, top)) 
-    
-    result.save(f"{directory}/{filename_output}") 
+    image = Image.open(f"{directory}/{filename_input}")
+
+    width, height = image.size
+
+    new_width = width + right + left
+    new_height = height + top + bottom
+
+    result = Image.new(image.mode, (new_width, new_height), color)
+
+    result.paste(image, (left, top))
+
+    result.save(f"{directory}/{filename_output}")
 
     return 1
 
 
 def cleanup(directory_path, file):
+    """
+    TD
+    """
     try:
         os.remove(f"{directory_path}/{file}")
         return f"{file} has been deleted"
     except FileNotFoundError:
         return f"{file} not in directory"
-    
-    

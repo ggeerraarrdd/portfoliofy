@@ -1,13 +1,34 @@
+"""
+TD
+"""
+
+# Python Standard Library
 import os
 from datetime import datetime
 from textwrap import dedent
+
+# Third-Party Libraries
 from PIL import Image, ImageDraw, ImageOps
-from app.settings import settings_devices
-from app.helpers import get_screenshot, get_base, get_overlay, get_final_temp, get_final, cleanup
+
+# Local
+from api.core.config import settings_devices
+from api.core.utils import get_screenshot
+from api.core.utils import get_base
+from api.core.utils import get_overlay
+from api.core.utils import get_final
+from api.core.utils import cleanup
+
+
+
+
+
+
 
 
 def process_request_mobiles(post):
-
+    """
+    TD
+    """
     # ################################################## #
     # Get system settings for desktop
     # ################################################## #
@@ -19,20 +40,20 @@ def process_request_mobiles(post):
     # ################################################## #
     now = datetime.now()
     directory = now.strftime('%y%m%d_%H%M%S_%f')[:-3]
-    directory = f"app/output/{directory}_mobiles"
+    directory = f"api/output/{directory}_mobiles"
     os.makedirs(directory)
 
     # ################################################## #
     # Get screenshot
     # ################################################## #
-    get_screenshot(str(post["remote_url"]), 
+    get_screenshot(str(post["remote_url"]),
                    post["wait"],
-                   directory, 
+                   directory,
                    tablet)
-    
-    get_screenshot(str(post["remote_url"]), 
-                   post["wait"], 
-                   directory, 
+
+    get_screenshot(str(post["remote_url"]),
+                   post["wait"],
+                   directory,
                    smartphone)
 
     # ################################################## #
@@ -57,18 +78,18 @@ def process_request_mobiles(post):
 
     fname_base_tablet_svg = "out_mobiles_base_tablet.svg"
     fname_base_tablet_png = "out_mobiles_base_tablet.png"
-    get_base(post, 
-             directory, 
+    get_base(post,
+             directory,
              svg,
-             fname_base_tablet_svg, 
+             fname_base_tablet_svg,
              fname_base_tablet_png)
 
     # Create overlay - tablet
     fname_input = tablet["filename_large"]
     fname_output = fname_overlay_temp_tablet = "out_mobiles_overlay_temp_tablet.png"
     get_overlay(directory,
-                fname_input, 
-                fname_output, 
+                fname_input,
+                fname_output,
                 tablet["width_medium"],
                 tablet["medium_height_crop"])
 
@@ -76,7 +97,7 @@ def process_request_mobiles(post):
     fname_input = fname_overlay_temp_tablet
     fname_output = fname_overlay_final_tablet = "out_mobiles_overlay_final_tablet.png"
     get_overlay_final(directory,
-                      fname_input, 
+                      fname_input,
                       fname_output)
 
     # Combine base layer and overlay
@@ -85,11 +106,11 @@ def process_request_mobiles(post):
     lat = 34
     lng = 36
     fname_subfinal_tablet = "out_mobiles_subfinal_tablet.png"
-    get_subfinal_mobiles(base, 
-                         overlay, 
-                         lat, 
-                         lng, 
-                         directory, 
+    get_subfinal_mobiles(base,
+                         overlay,
+                         lat,
+                         lng,
+                         directory,
                          fname_subfinal_tablet)
 
     # Delete temp files - tablet
@@ -120,26 +141,26 @@ def process_request_mobiles(post):
 
     fname_base_smartphone_svg = "out_mobiles_base_smartphone.svg"
     fname_base_smartphone_png = "out_mobiles_base_smartphone.png"
-    get_base(post, 
-             directory, 
+    get_base(post,
+             directory,
              svg,
-             fname_base_smartphone_svg, 
+             fname_base_smartphone_svg,
              fname_base_smartphone_png)
 
     # Create overlay - smartphone
     fname_input = smartphone["filename_large"]
     fname_output = fname_overlay_temp_smartphone = "out_mobiles_overlay_temp_smartphone.png"
     get_overlay(directory,
-                fname_input, 
-                fname_output, 
+                fname_input,
+                fname_output,
                 smartphone["width_medium"],
                 smartphone["medium_height_crop"])
 
     # Combine base and overlay - smartphone
     fname_input = fname_overlay_temp_smartphone
     fname_output = fname_overlay_final_smartphone = "out_mobiles_overlay_final_smartphone.png"
-    get_overlay_final(directory, 
-                      fname_input, 
+    get_overlay_final(directory,
+                      fname_input,
                       fname_output)
 
     # Combine base layer and overlay
@@ -148,11 +169,11 @@ def process_request_mobiles(post):
     lat = 22
     lng = 23
     fname_subfinal_smartphone = "out_mobiles_subfinal_smartphone.png"
-    get_subfinal_mobiles(base, 
-                         overlay, 
-                         lat, 
-                         lng, 
-                         directory, 
+    get_subfinal_mobiles(base,
+                         overlay,
+                         lat,
+                         lng,
+                         directory,
                          fname_subfinal_smartphone)
 
     # Delete temp files - tablet
@@ -190,11 +211,11 @@ def process_request_mobiles(post):
     # Handle OUTPUT_MOBILES - final
     # ################################################## #
     fname_out_mobiles_final = "out_mobiles_final.png"
-    get_final(directory, 
-              fname_out_mobiles_final_temp, 
-              fname_out_mobiles_final, 
+    get_final(directory,
+              fname_out_mobiles_final_temp,
+              fname_out_mobiles_final,
               post)
-    
+
     # Delete temp files - final
     cleanup(directory, fname_out_mobiles_final_temp)
 
@@ -202,7 +223,9 @@ def process_request_mobiles(post):
 
 
 def get_overlay_final(directory, fname_input, fname_output):
-
+    """
+    TD
+    """
     # Open the image
     image = Image.open(f"{directory}/{fname_input}")
 
@@ -230,7 +253,9 @@ def get_overlay_final(directory, fname_input, fname_output):
 
 
 def get_subfinal_mobiles(base, overlay, lat, lng, directory_main, filename_output):
-
+    """
+    TD
+    """
     # Open the base image
     base_image = Image.open(base)
 
@@ -247,4 +272,3 @@ def get_subfinal_mobiles(base, overlay, lat, lng, directory_main, filename_outpu
     base_image.save(f"{directory_main}/{filename_output}")
 
     return 1
-

@@ -27,7 +27,7 @@ As of v3.0.0-beta.1, the following `OUTPUT` types can be requested from exposed 
 
 More coming soon!
 
-![Portfoliofy](/images/portfoliofy1.png)
+![Portfoliofy](/docs/portfoliofy1.png)
 
 More screenshots below.
 
@@ -106,7 +106,7 @@ More screenshots below.
 1. **Start the live server**
 
     ```bash
-    uvicorn app.main:app --reload
+    uvicorn api.portfoliofy:app --reload
     ```
 
 2. **Access the documentation user interfaces**
@@ -215,11 +215,11 @@ Improvements and new features development are ongoing.
 
 ## Screenshots
 
-![Portfoliofy](/images/portfoliofy2.png)
+![Portfoliofy](/docs/portfoliofy2.png)
 
-![Portfoliofy](/images/portfoliofy3.png)
+![Portfoliofy](/docs/portfoliofy3.png)
 
-![Portfoliofy](/images/portfoliofy4.png)
+![Portfoliofy](/docs/portfoliofy4.png)
 
 <https://github.com/ggeerraarrdd/portfoliofy/assets/50889794/c93ae299-1e76-42c1-b297-713a923eab79>
 

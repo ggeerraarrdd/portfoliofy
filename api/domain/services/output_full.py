@@ -1,15 +1,35 @@
+"""
+TD
+"""
+
+# Python Standard Libraries
 import os
 from datetime import datetime
 from textwrap import dedent
+
+# Third Party Libraries
 from PIL import Image, ImageOps
-from cairosvg import svg2png
-from textwrap import dedent
-from app.settings import settings_devices
-from app.helpers import get_screenshot_full, get_base, get_overlay, get_final, cleanup
+
+# Local
+from api.core.config import settings_devices
+from api.core.utils import get_screenshot_full
+from api.core.utils import get_base
+from api.core.utils import get_final
+from api.core.utils import cleanup
+
+
+
+
+
+
+
+
 
 
 def process_request_full(post):
-
+    """
+    TD
+    """
     # ################################################## #
     # Get system settings for full
     # ################################################## #
@@ -20,21 +40,21 @@ def process_request_full(post):
     # ################################################## #
     now = datetime.now()
     directory = now.strftime('%y%m%d_%H%M%S_%f')[:-3]
-    directory = f"app/output/{directory}_full"
+    directory = f"api/output/{directory}_full"
     os.makedirs(directory)
 
     # ################################################## #
     # Get screenshot
     # ################################################## #
-    get_screenshot_full(str(post["remote_url"]), 
-                   post["wait"], 
-                   directory, 
+    get_screenshot_full(str(post["remote_url"]),
+                   post["wait"],
+                   directory,
                    full)
-    
+
     # ################################################## #
     # Create base layer
     # ################################################## #
-    svg = dedent(dedent(dedent(f'''\
+    svg = dedent(dedent(dedent('''\
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="776px"
             height="121px" viewBox="-0.5 -0.5 776 121" style="background-color: rgb(255, 255, 255);">
             <defs />
@@ -50,10 +70,10 @@ def process_request_full(post):
 
     fname_out_full_base_svg = "out_full_base.svg"
     fname_out_full_base_png = "out_full_base.png"
-    get_base(post, 
-             directory, 
-             svg, 
-             fname_out_full_base_svg, 
+    get_base(post,
+             directory,
+             svg,
+             fname_out_full_base_svg,
              fname_out_full_base_png)
 
     # ################################################## #
@@ -62,13 +82,13 @@ def process_request_full(post):
     fname_input = full["filename_large"]
     fname_output = fname_out_full_overlay_png = "output_full_overlay.png"
     get_overlay_full(full,
-                     directory, 
-                     fname_input, 
+                     directory,
+                     fname_input,
                      fname_output)
-    
-    get_overlay_full_bordered(post, 
-                              directory, 
-                              fname_output) 
+
+    get_overlay_full_bordered(post,
+                              directory,
+                              fname_output)
 
     # ################################################## #
     # Create final temp
@@ -91,9 +111,9 @@ def process_request_full(post):
     # Create final
     # ################################################## #
     fname_out_full_final = "output_full_final.png"
-    get_final(directory, 
+    get_final(directory,
               fname_out_full_final_temp,
-              fname_out_full_final, 
+              fname_out_full_final,
               post)
 
     # # Delete temp files
@@ -106,12 +126,14 @@ def process_request_full(post):
 
 
 def get_overlay_full(full, directory, fname_input, fname_output):
-
+    """
+    TD
+    """
     # Open the PNG image
     image = Image.open(f"{directory}/{fname_input}")
 
     # Determine aspect ratio
-    aspect_ratio = image.height / image.width 
+    aspect_ratio = image.height / image.width
 
     # Set new height
     new_height = int(full["width_small"] * aspect_ratio)
@@ -125,7 +147,9 @@ def get_overlay_full(full, directory, fname_input, fname_output):
 
 
 def get_overlay_full_bordered(full, directory_main, filename_input):
-
+    """
+    TD
+    """
     # Open the PNG image
     image = Image.open(f"{directory_main}/{filename_input}")
 
@@ -140,5 +164,3 @@ def get_overlay_full_bordered(full, directory_main, filename_input):
     image_with_border.save(f"{directory_main}/{filename_input}")
 
     return 1
-
-

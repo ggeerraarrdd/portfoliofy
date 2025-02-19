@@ -1,15 +1,37 @@
+"""
+TD
+"""
+
+# Python Standard Libraries
 import os
 from datetime import datetime
+from textwrap import dedent
+
+# Third-Party Libraries
 from moviepy.editor import ImageClip, CompositeVideoClip
 from PIL import Image
 from cairosvg import svg2png
-from textwrap import dedent
-from app.settings import settings_devices
-from app.helpers import get_screenshot_full, get_base, get_overlay, get_final_temp, get_final, cleanup
+
+# Local
+from api.core.config import settings_devices
+from api.core.utils import get_screenshot_full
+from api.core.utils import get_base
+from api.core.utils import get_final
+from api.core.utils import cleanup
+
+
+
+
+
+
+
+
 
 
 def process_request_movie(post):
-
+    """
+    TD
+    """
     # ################################################## #
     # Get system settings for full
     # ################################################## #
@@ -21,32 +43,32 @@ def process_request_movie(post):
     # ################################################## #
     now = datetime.now()
     directory = now.strftime('%y%m%d_%H%M%S_%f')[:-3]
-    directory = f"app/output/{directory}_movie"
+    directory = f"api/output/{directory}_movie"
     os.makedirs(directory)
 
     # ################################################## #
     # Get screenshot
     # ################################################## #
-    get_screenshot_full(str(post["remote_url"]), 
-                   post["wait"], 
-                   directory, 
+    get_screenshot_full(str(post["remote_url"]),
+                   post["wait"],
+                   directory,
                    full)
-    
+
     # ################################################## #
     # Create movie - start validation
     # ################################################## #
 
-    # Open image    
+    # Open image
     image = Image.open(f"{directory}/screenshot_full_large.png")
 
     # Calculate dimensions
-    aspect_ratio = image.height / image.width 
+    aspect_ratio = image.height / image.width
     new_height = int(movie["width_large"] * aspect_ratio)
 
     # Set max height limit to 10,000 [TBD]
     if new_height >= 20000:
         return 0
-    
+
     else:
         # ################################################## #
         # Create movie - base
@@ -74,16 +96,16 @@ def process_request_movie(post):
 
         fname_out_movie_base_svg = "out_movie_base.svg"
         fname_out_movie_base_png = "out_movie_base.png"
-        get_base(post, 
-                 directory, 
+        get_base(post,
+                 directory,
                  svg,
-                 fname_out_movie_base_svg, 
+                 fname_out_movie_base_svg,
                  fname_out_movie_base_png)
 
         fname_out_movie_base_final = "out_movie_base_final.png"
-        get_final(directory, 
-                  fname_out_movie_base_png, 
-                  fname_out_movie_base_final, 
+        get_final(directory,
+                  fname_out_movie_base_png,
+                  fname_out_movie_base_final,
                   post)
 
         # ################################################## #
@@ -110,8 +132,12 @@ def process_request_movie(post):
 
         video = CompositeVideoClip([bg_clip, clip.set_pos("center")])
         video.duration = total_duration
-        if not filename_output_video.endswith('.mp4'):
-            output += '.mp4'
+
+        # TD
+        # Ensure accepted file extension
+        # if not filename_output_video.endswith('.mp4'):
+        #     output += '.mp4'
+
         video.write_videofile(f"{directory}/{filename_output_video}", fps=26)
 
         # ################################################## #
@@ -121,12 +147,14 @@ def process_request_movie(post):
         cleanup(directory, fname_out_movie_base_png)
         cleanup(directory, fname_out_movie_base_final)
         cleanup(directory, fname_out_movie_clip_final)
-        
+
         return f"{directory}/{filename_output_video}"
 
 
 def get_movie_base(blueprint, directory_main, svg_filename, png_filename):
-
+    """
+    TD
+    """
     svg = dedent(dedent(dedent(f'''\
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -149,9 +177,9 @@ def get_movie_base(blueprint, directory_main, svg_filename, png_filename):
     )))
 
     # Create SVG file
-    with open(f"{directory_main}/{svg_filename}", "w") as file:
+    with open(f"{directory_main}/{svg_filename}", "w", encoding="utf-8") as file:
         file.write(svg)
-    
+
     # Convert to SVG to PNG
     svg2png(url=f"{directory_main}/{svg_filename}", write_to=f"{directory_main}/{png_filename}", background_color=blueprint["doc_fill_color"])
 

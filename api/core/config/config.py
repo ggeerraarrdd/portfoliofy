@@ -1,8 +1,20 @@
-# ################################################## #
+# #########################################################################
 #
-# DO NOT EDIT
+# WARNING: DO NOT MODIFY THIS CONFIG FILE.
 #
-# ################################################## #
+# Manual modifications can cause unintended behavior.
+#
+# #########################################################################
+
+
+
+
+
+
+
+
+
+
 settings_devices = {
     "desktop": {
         "filename_large": "screenshot_desktop_large.png",

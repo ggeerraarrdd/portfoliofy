@@ -1,12 +1,34 @@
-import os
+"""
+TD
+"""
+
+# Python Standard Libraries
 from datetime import datetime
+import os
 from textwrap import dedent
-from app.settings import settings_devices
-from app.helpers import get_screenshot, get_base, get_overlay, get_final_temp, get_final, cleanup
+
+# Local
+from api.core.config import settings_devices
+from api.core.utils import get_screenshot
+from api.core.utils import get_base
+from api.core.utils import get_overlay
+from api.core.utils import get_final_temp
+from api.core.utils import get_final
+from api.core.utils import cleanup
+
+
+
+
+
+
+
+
 
 
 def process_request_browser(post):
-
+    """
+    TD
+    """
     # ################################################## #
     # Get system settings for desktop
     # ################################################## #
@@ -17,15 +39,15 @@ def process_request_browser(post):
     # ################################################## #
     now = datetime.now()
     directory = now.strftime('%y%m%d_%H%M%S_%f')[:-3]
-    directory = f"app/output/{directory}_browser"
+    directory = f"api/output/{directory}_browser"
     os.makedirs(directory)
 
     # ################################################## #
     # Get screenshot
     # ################################################## #
-    get_screenshot(str(post["remote_url"]), 
-                   post["wait"], 
-                   directory, 
+    get_screenshot(str(post["remote_url"]),
+                   post["wait"],
+                   directory,
                    desktop)
 
     # ################################################## #
@@ -55,10 +77,10 @@ def process_request_browser(post):
 
     fname_out_browser_base_svg = "out_browser_base.svg"
     fname_out_browser_base_png = "out_browser_base.png"
-    get_base(post, 
-             directory, 
+    get_base(post,
+             directory,
              svg,
-             fname_out_browser_base_svg, 
+             fname_out_browser_base_svg,
              fname_out_browser_base_png)
 
     # ################################################## #
@@ -68,10 +90,10 @@ def process_request_browser(post):
     fname_output = fname_out_browser_overlay_png = "out_browser_overlay.png"
     new_width = desktop["width_medium"]
     height_crop = desktop["medium_height_crop"]
-    get_overlay(directory, 
-                fname_input, 
-                fname_output, 
-                new_width, 
+    get_overlay(directory,
+                fname_input,
+                fname_output,
+                new_width,
                 height_crop)
 
     # ################################################## #
@@ -82,20 +104,20 @@ def process_request_browser(post):
     lat = 4
     lng = 64
     fname_out_browser_final_temp = "out_browser_final_temp.png"
-    get_final_temp(base, 
-                   overlay, 
-                   lat, 
-                   lng, 
-                   directory, 
+    get_final_temp(base,
+                   overlay,
+                   lat,
+                   lng,
+                   directory,
                    fname_out_browser_final_temp)
 
     # ################################################## #
     # Create final
     # ################################################## #
     fname_out_browser_final = "out_browser_final.png"
-    get_final(directory, 
-              fname_out_browser_final_temp, 
-              fname_out_browser_final, 
+    get_final(directory,
+              fname_out_browser_final_temp,
+              fname_out_browser_final,
               post)
 
     # ################################################## #
@@ -105,6 +127,5 @@ def process_request_browser(post):
     cleanup(directory, fname_out_browser_base_png)
     cleanup(directory, fname_out_browser_overlay_png)
     cleanup(directory, fname_out_browser_final_temp)
-    
-    return f"{directory}/{fname_out_browser_final}"
 
+    return f"{directory}/{fname_out_browser_final}"
