@@ -36,7 +36,7 @@ More screenshots below.
 
 ## Features
 
-PORTFOLIOFY v3.0.0-beta.2 offers the following `OUTPUT` types requested from exposed endpoints (see [Usage](#usage)):
+_Portfoliofy_ v3.0.0-beta.2 offers the following `OUTPUT` types requested from exposed endpoints (see [Usage](#usage)):
 
 ### `OUTPUT_MAIN`
 
@@ -80,11 +80,6 @@ _More features coming soon!_
 portfoliofy/
 │
 ├── api/
-│   │
-│   ├── routers/
-│   │   ├── __init__.py
-│   │   └── endpoints/
-│   │       └── __init__.py
 │   │ 
 │   ├── core/
 │   │   ├── config/
@@ -98,6 +93,11 @@ portfoliofy/
 │   │   └── schemas/
 │   │ 
 │   ├── output/
+│   │
+│   ├── routers/
+│   │   ├── __init__.py
+│   │   └── endpoints/
+│   │       └── __init__.py
 │   │
 │   └── portfoliofy.py
 │  
@@ -164,7 +164,7 @@ portfoliofy/
     * [Swagger UI](https://swagger.io/tools/swagger-ui/): served at `/docs`.
     * [ReDoc](https://redocly.github.io/redoc/): served at `/redoc`.
 
-    ![Portfoliofy](/images/portfoliofy6.png)
+    ![Portfoliofy](/docs/portfoliofy6.png)
     _The Swagger UI for Portfoliofy served at `/docs`_
 
 3. **Choose an endpoint for your needs**
