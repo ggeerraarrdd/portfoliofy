@@ -88,11 +88,10 @@ portfoliofy/
 │   │       └── __init__.py
 │   │ 
 │   ├── domain/
-│   │   ├── services/
-│   │   │   └── __init__.py
 │   │   └── schemas/
-│   │ 
-│   ├── output/
+│   │   │   └── __init__.py
+│   │   └── services/
+│   │       └── __init__.py
 │   │
 │   ├── routers/
 │   │   ├── __init__.py

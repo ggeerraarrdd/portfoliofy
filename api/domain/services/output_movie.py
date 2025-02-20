@@ -3,14 +3,16 @@ TD
 """
 
 # Python Standard Libraries
-import os
 from datetime import datetime
+from io import BytesIO
+import os
 from textwrap import dedent
 
 # Third-Party Libraries
 from moviepy.editor import ImageClip, CompositeVideoClip
 from PIL import Image
 from cairosvg import svg2png
+import numpy as np
 
 # Local
 from api.core.config import settings_devices
@@ -35,94 +37,83 @@ def process_request_movie(post):
     # ################################################## #
     # Get system settings for full
     # ################################################## #
-    full = settings_devices.get("full")
     movie = settings_devices.get("movie")
-
-    # ################################################## #
-    # Create directory
-    # ################################################## #
-    now = datetime.now()
-    directory = now.strftime('%y%m%d_%H%M%S_%f')[:-3]
-    directory = f"api/output/{directory}_movie"
-    os.makedirs(directory)
 
     # ################################################## #
     # Get screenshot
     # ################################################## #
-    get_screenshot_full(str(post["remote_url"]),
-                   post["wait"],
-                   directory,
-                   full)
+    screenshot_movie = get_screenshot_full(str(post["remote_url"]),
+                                           post["wait"])
 
     # ################################################## #
-    # Create movie - start validation
+    # Create movie - base
+    # ################################################## #
+    svg = dedent(dedent(dedent(f'''\
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1288px"
+            height="808px" viewBox="-0.5 -0.5 1288 808" style="background-color: {post["doc_fill_color"]};">
+            <defs />
+            <g>
+                <rect x="2" y="2" width="1284" height="50" rx="7.5" ry="7.5" fill="{post["base_fill_color"]}" stroke="{post["base_stroke_color"]}"
+                    stroke-width="4" pointer-events="all" />
+                <rect x="0" y="40" width="1288" height="728" fill="{post["base_stroke_color"]}" stroke="none" pointer-events="all" />
+                <ellipse cx="65" cy="22" rx="6" ry="6" fill="{post["doc_fill_color"]}" stroke="{post["base_stroke_color"]}" stroke-width="2"
+                    pointer-events="all" />
+                <ellipse cx="45" cy="22" rx="6" ry="6" fill="{post["doc_fill_color"]}" stroke="{post["base_stroke_color"]}" stroke-width="2"
+                    pointer-events="all" />
+                <ellipse cx="25" cy="22" rx="6" ry="6" fill="{post["doc_fill_color"]}" stroke="{post["base_stroke_color"]}" stroke-width="2"
+                    pointer-events="all" />
+                <rect x="0" y="768" width="1288" height="40" fill="{post["doc_fill_color"]}" stroke="none" pointer-events="all" />
+            </g>
+        </svg>'''
+    )))
+    base_movie = get_base(post, svg)
+
+    # ################################################## #
+    # Create movie - overlay
+    # Create movie - final (temp)
+    # ################################################## #
+    # None
+
+
+    # ################################################## #
+    # Create movie - final
+    # ################################################## #
+    final_movie = get_final(base_movie, post)
+
+
+    # ################################################## #
+    # Create movie - clip
     # ################################################## #
 
-    # Open image
-    image = Image.open(f"{directory}/screenshot_full_large.png")
+    # Load and process both images in sequence using same BytesIO object
+    with BytesIO() as bio:
+        # Process movie clip from screenshot
+        Image.open(BytesIO(screenshot_movie)).save(bio, format='PNG')
+        image_for_movie_clip = Image.open(BytesIO(bio.getvalue()))
+        aspect_ratio = image_for_movie_clip.height / image_for_movie_clip.width
+        new_height = int(movie["width_large"] * aspect_ratio)
+        image_for_movie_clip = image_for_movie_clip.resize((movie["width_large"], new_height))
+        image_for_movie_clip = np.array(image_for_movie_clip)
 
-    # Calculate dimensions
-    aspect_ratio = image.height / image.width
-    new_height = int(movie["width_large"] * aspect_ratio)
+        # Clear buffer
+        bio.seek(0)
+        bio.truncate()
+
+        # Process movie bg_clip from base_movie (frame/window)
+        Image.open(BytesIO(final_movie)).save(bio, format='PNG')
+        image_for_movie_bg_clip = Image.open(BytesIO(bio.getvalue()))
+        image_for_movie_bg_clip = np.array(image_for_movie_bg_clip)
+
 
     # Set max height limit to 10,000 [TBD]
     if new_height >= 20000:
         return 0
 
     else:
-        # ################################################## #
-        # Create movie - base
-        # ################################################## #
-        svg = dedent(dedent(dedent(f'''\
-            <?xml version="1.0" encoding="UTF-8"?>
-            <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1288px"
-                height="808px" viewBox="-0.5 -0.5 1288 808" style="background-color: {post["doc_fill_color"]};">
-                <defs />
-                <g>
-                    <rect x="2" y="2" width="1284" height="50" rx="7.5" ry="7.5" fill="{post["base_fill_color"]}" stroke="{post["base_stroke_color"]}"
-                        stroke-width="4" pointer-events="all" />
-                    <rect x="0" y="40" width="1288" height="728" fill="{post["base_stroke_color"]}" stroke="none" pointer-events="all" />
-                    <ellipse cx="65" cy="22" rx="6" ry="6" fill="{post["doc_fill_color"]}" stroke="{post["base_stroke_color"]}" stroke-width="2"
-                        pointer-events="all" />
-                    <ellipse cx="45" cy="22" rx="6" ry="6" fill="{post["doc_fill_color"]}" stroke="{post["base_stroke_color"]}" stroke-width="2"
-                        pointer-events="all" />
-                    <ellipse cx="25" cy="22" rx="6" ry="6" fill="{post["doc_fill_color"]}" stroke="{post["base_stroke_color"]}" stroke-width="2"
-                        pointer-events="all" />
-                    <rect x="0" y="768" width="1288" height="40" fill="{post["doc_fill_color"]}" stroke="none" pointer-events="all" />
-                </g>
-            </svg>'''
-        )))
-
-        fname_out_movie_base_svg = "out_movie_base.svg"
-        fname_out_movie_base_png = "out_movie_base.png"
-        get_base(post,
-                 directory,
-                 svg,
-                 fname_out_movie_base_svg,
-                 fname_out_movie_base_png)
-
-        fname_out_movie_base_final = "out_movie_base_final.png"
-        get_final(directory,
-                  fname_out_movie_base_png,
-                  fname_out_movie_base_final,
-                  post)
-
-        # ################################################## #
-        # Create movie - clip
-        # ################################################## #
-        fname_out_movie_clip_final = "out_movie_clip_final.png"
-        resized_image = image.resize((movie["width_large"], new_height))
-        resized_image.save(f"{directory}/{fname_out_movie_clip_final}")
-
-        # ################################################## #
-        # Create movie - clip
-        # ################################################## #
-        filename_output_video = "output_video.mp4"
-
-        clip = ImageClip(f"{directory}/{fname_out_movie_clip_final}")
-
-        bg_clip = ImageClip(f"{directory}/{fname_out_movie_base_final}")
+        clip = ImageClip(image_for_movie_clip)
+        bg_clip = ImageClip(image_for_movie_bg_clip)
 
         scroll_speed = 180
         total_duration = (clip.h - 720)/scroll_speed
@@ -131,22 +122,26 @@ def process_request_movie(post):
         clip = clip.fl(fl, apply_to=['mask'])
 
         video = CompositeVideoClip([bg_clip, clip.set_pos("center")])
+
         video.duration = total_duration
+
+        # ################################################## #
+        # Create directory
+        # ################################################## #
+        now = datetime.now()
+        directory = now.strftime('%y%m%d_%H%M%S_%f')[:-3]
+        directory = f"api/output/{directory}_movie"
+        os.makedirs(directory)
+
+        filename_output_video = "output_video.mp4"
+
+        video.write_videofile(f"{directory}/{filename_output_video}", fps=26)
 
         # TD
         # Ensure accepted file extension
         # if not filename_output_video.endswith('.mp4'):
         #     output += '.mp4'
 
-        video.write_videofile(f"{directory}/{filename_output_video}", fps=26)
-
-        # ################################################## #
-        # Clean up
-        # ################################################## #
-        cleanup(directory, full["filename_large"])
-        cleanup(directory, fname_out_movie_base_png)
-        cleanup(directory, fname_out_movie_base_final)
-        cleanup(directory, fname_out_movie_clip_final)
 
         return f"{directory}/{filename_output_video}"
 

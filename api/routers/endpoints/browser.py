@@ -4,7 +4,6 @@ TD
 
 # Third-Party Libraries
 from fastapi import APIRouter, Response, status
-from fastapi.responses import FileResponse
 
 # Local
 from api.domain.schemas import PortfoliofyRequest
@@ -33,6 +32,6 @@ def create_output_browser(post: PortfoliofyRequest):
 
         result = process_request_browser(request_output_browser)
 
-        return FileResponse(f"{result}")
+        return Response(content=result, media_type="image/png")
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)

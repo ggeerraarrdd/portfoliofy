@@ -4,6 +4,7 @@ TD
 
 # Python Standard Libraries
 import base64
+from io import BytesIO
 import json
 import os
 from time import sleep
@@ -16,6 +17,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 
 
+CHROME_PATH = os.environ.get('CHROME_INSTALL_DIR')
 
 
 
@@ -24,7 +26,9 @@ from selenium.webdriver.chrome.options import Options
 
 
 
-def get_screenshot(url, wait, directory, settings_devices):
+
+
+def get_screenshot(url, wait, settings_devices):
     """
     TD
     """
@@ -37,10 +41,11 @@ def get_screenshot(url, wait, directory, settings_devices):
 
     try:
         # Set Chromedriver path
-        service = Service(executable_path="/usr/bin/chromedriver")
+        service = Service(executable_path=CHROME_PATH)
 
         # Open Chrome webdriver
         driver = webdriver.Chrome(service=service, options=options)
+
     except:
         # Open Chrome webdriver
         driver = webdriver.Chrome(options=options)
@@ -48,21 +53,20 @@ def get_screenshot(url, wait, directory, settings_devices):
     # Open Chrome webdriver
     driver = webdriver.Chrome(options=options)
 
-    # Take screenshot
-    driver.get(url)
-    sleep(wait)
-    driver.save_screenshot(f"{directory}/{settings_devices['filename_large']}")
+    try:
+        driver.get(url)
+        sleep(wait)
 
-    # Retrieve screenshot
-    screenshot = driver.get_screenshot_as_png()
+        # Take screenshot
+        screenshot = driver.get_screenshot_as_png()
 
-    # Take screenshot
-    driver.close()
+        return screenshot
 
-    return screenshot
+    finally:
+        driver.quit()
 
 
-def get_screenshot_full(url, wait, directory, settings_devices):
+def get_screenshot_full(url, wait):
     """
     TD
     """
@@ -73,30 +77,29 @@ def get_screenshot_full(url, wait, directory, settings_devices):
 
     try:
         # Set Chromedriver path
-        service = Service(executable_path="/usr/bin/chromedriver")
+        service = Service(executable_path=CHROME_PATH)
 
         # Open Chrome webdriver
         driver = webdriver.Chrome(service=service, options=options)
     except:
         # Open Chrome webdriver
-        driver = webdriver.Chrome(options=options) 
+        driver = webdriver.Chrome(options=options)
 
     # Open Chrome webdriver
     driver = webdriver.Chrome(options=options)
 
-    driver.get(url)
+    try:
+        driver.get(url)
+        sleep(wait)
 
-    sleep(wait)
+        # Take screenshot
+        screenshot = get_screenshot_full_chrome(driver)
 
-    fname_out_full_screenshot_png = settings_devices["filename_large"]
+        return screenshot
 
-    png = get_screenshot_full_chrome(driver)
-    with open(f"{directory}/{fname_out_full_screenshot_png}", 'wb') as f:
-        f.write(png)
+    finally:
 
-    driver.close()
-
-    return 1
+        driver.quit()
 
 
 def get_screenshot_full_chrome(driver) :
@@ -140,97 +143,86 @@ def get_screenshot_full_chrome(driver) :
     return base64.b64decode(screenshot['data'])
 
 
-def get_base(post, directory, svg, svg_fname, png_fname):
+def get_base(post, svg):
     """
-    TD
+    Creates base image from SVG and returns PNG bytes
     """
-    # Create SVG file
-    with open(f"{directory}/{svg_fname}", "w", encoding="utf-8") as file:
-        file.write(svg)
+    with BytesIO() as svg_io, BytesIO() as png_io:
 
-    # Convert to SVG to PNG
-    svg2png(url=f"{directory}/{svg_fname}",
-            write_to=f"{directory}/{png_fname}",
-            background_color=post["doc_fill_color"])
+        svg_io.write(svg.encode())
+        svg_io.seek(0)
 
-    # Delete SVG file
-    cleanup(directory, svg_fname)
+        svg2png(file_obj=svg_io,
+                write_to=png_io,
+                background_color=post["doc_fill_color"])
 
-    return 1
+        return png_io.getvalue()
 
 
-def get_overlay(directory, fname_input, fname_output, new_width, height_crop):
+def get_overlay(screenshot_bytes, new_width, height_crop):
     """
-    TD
+    Creates overlay image from screenshot and returns PNG bytes
     """
-    # Open the PNG image
-    image = Image.open(f"{directory}/{fname_input}")
+    with BytesIO(screenshot_bytes) as img_io, BytesIO() as output:
+        image = Image.open(img_io)
 
-    # Determine aspect ratio
-    aspect_ratio = image.height / image.width
+        # Resize
+        aspect_ratio = image.height / image.width
+        new_height = int(new_width * aspect_ratio)
+        resized = image.resize((new_width, new_height))
 
-    # Set new height
-    new_height = int(new_width * aspect_ratio)
+        # Crop
+        width, height = resized.size
+        cropped = resized.crop((0, 0, width, abs(height - (height - height_crop))))
 
-    # Resize the image
-    resized_image = image.resize((new_width, new_height))
+        # Save to bytes
+        cropped.save(output, format='PNG')
 
-    # Crop image
-    width, height = resized_image.size
-    cropped_image = resized_image.crop((0, 0, width, abs(height - (height - height_crop))))
+        overlay = output.getvalue()
 
-    # Save the cropped image
-    cropped_image.save(f"{directory}/{fname_output}")
-
-    return 1
+        return overlay
 
 
-def get_final_temp(base, overlay, lat, lng, directory_path, new_file_name):
+def get_final_temp(base_bytes, overlay_bytes, lat, lng):
     """
-    TD
+    Combines base and overlay images and returns PNG bytes
     """
-    # Open the base image
-    base_image = Image.open(base)
+    with BytesIO(base_bytes) as base_io, \
+         BytesIO(overlay_bytes) as overlay_io, \
+         BytesIO() as output:
 
-    # Open the overlay image
-    overlay_image = Image.open(overlay)
+        base_img = Image.open(base_io)
+        overlay_img = Image.open(overlay_io)
 
-    # Set coordinates of top-left corner
-    box = (lat, lng)
+        base_img.paste(overlay_img, (lat, lng))
+        base_img.save(output, format='PNG')
 
-    # Paste overlay image on top of base image
-    base_image.paste(overlay_image, box)
+        final_temp = output.getvalue()
 
-    # Save image
-    base_image.save(f"{directory_path}/{new_file_name}")
-
-    return f"{directory_path}/{new_file_name}"
+        return final_temp
 
 
-def get_final(directory, filename_input, filename_output, post):
+def get_final(image_bytes, post):
     """
-    TD
+    Adds padding to image and returns final PNG bytes
     """
-    right = post["doc_pad_h"]
-    left = post["doc_pad_h"]
-    top = post["doc_pad_v"]
-    bottom = post["doc_pad_v"]
-    color = post["doc_fill_color"]
+    with BytesIO(image_bytes) as img_io, BytesIO() as output:
 
-    image = Image.open(f"{directory}/{filename_input}")
+        image = Image.open(img_io)
 
-    width, height = image.size
+        width, height = image.size
+        right = left = post["doc_pad_h"]
+        top = bottom = post["doc_pad_v"]
 
-    new_width = width + right + left
-    new_height = height + top + bottom
+        new_width = width + right + left
+        new_height = height + top + bottom
 
-    result = Image.new(image.mode, (new_width, new_height), color)
+        result = Image.new(image.mode, (new_width, new_height), post["doc_fill_color"])
+        result.paste(image, (left, top))
 
-    result.paste(image, (left, top))
+        result.save(output, format='PNG')
 
-    result.save(f"{directory}/{filename_output}")
-
-    return 1
+        return output.getvalue()
 
 
 def cleanup(directory_path, file):

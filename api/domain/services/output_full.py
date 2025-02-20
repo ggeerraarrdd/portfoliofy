@@ -3,8 +3,7 @@ TD
 """
 
 # Python Standard Libraries
-import os
-from datetime import datetime
+from io import BytesIO
 from textwrap import dedent
 
 # Third Party Libraries
@@ -15,7 +14,7 @@ from api.core.config import settings_devices
 from api.core.utils import get_screenshot_full
 from api.core.utils import get_base
 from api.core.utils import get_final
-from api.core.utils import cleanup
+
 
 
 
@@ -35,21 +34,13 @@ def process_request_full(post):
     # ################################################## #
     full = settings_devices.get("full")
 
-    # ################################################## #
-    # Create directory
-    # ################################################## #
-    now = datetime.now()
-    directory = now.strftime('%y%m%d_%H%M%S_%f')[:-3]
-    directory = f"api/output/{directory}_full"
-    os.makedirs(directory)
 
     # ################################################## #
     # Get screenshot
     # ################################################## #
-    get_screenshot_full(str(post["remote_url"]),
-                   post["wait"],
-                   directory,
-                   full)
+    screenshot_full = get_screenshot_full(str(post["remote_url"]),
+                                          post["wait"])
+
 
     # ################################################## #
     # Create base layer
@@ -67,100 +58,87 @@ def process_request_full(post):
             </g>
         </svg>'''
     )))
+    base_full = get_base(post, svg)
 
-    fname_out_full_base_svg = "out_full_base.svg"
-    fname_out_full_base_png = "out_full_base.png"
-    get_base(post,
-             directory,
-             svg,
-             fname_out_full_base_svg,
-             fname_out_full_base_png)
 
     # ################################################## #
     # Create overlay
     # ################################################## #
-    fname_input = full["filename_large"]
-    fname_output = fname_out_full_overlay_png = "output_full_overlay.png"
-    get_overlay_full(full,
-                     directory,
-                     fname_input,
-                     fname_output)
+    overlay_full = get_overlay_full(screenshot_full,
+                                    full)
 
-    get_overlay_full_bordered(post,
-                              directory,
-                              fname_output)
+    overlay_full = get_overlay_full_bordered(overlay_full,
+                                             post)
+
 
     # ################################################## #
     # Create final temp
     # ################################################## #
-    out_full_base = Image.open(f"{directory}/{fname_out_full_base_png}")
-    out_full_overlay = Image.open(f"{directory}/{fname_out_full_overlay_png}")
+    output_full_base_img = Image.open(BytesIO(base_full))
+    output_full_overlay_img = Image.open(BytesIO(overlay_full))
 
     width = 776
-    height = out_full_overlay.height + 60
+    height = output_full_overlay_img.height + 60
 
-    out_full_final = Image.new("RGB", (width, height), (255, 255, 255))
+    output_full_img = Image.new("RGB", (width, height), (255, 255, 255))
 
-    out_full_final.paste(out_full_base, (0,0))
-    out_full_final.paste(out_full_overlay, (0,60))
+    output_full_img.paste(output_full_base_img, (0,0))
+    output_full_img.paste(output_full_overlay_img, (0,60))
 
-    fname_out_full_final_temp = "output_full_final_temp.png"
-    out_full_final.save(f"{directory}/{fname_out_full_final_temp}")
+    with BytesIO() as output:
+        output_full_img.save(output, format='PNG')
+        output_full_temp = output.getvalue()
+
 
     # ################################################## #
     # Create final
     # ################################################## #
-    fname_out_full_final = "output_full_final.png"
-    get_final(directory,
-              fname_out_full_final_temp,
-              fname_out_full_final,
-              post)
-
-    # # Delete temp files
-    cleanup(directory, full["filename_large"])
-    cleanup(directory, fname_out_full_base_png)
-    cleanup(directory, fname_out_full_overlay_png)
-    cleanup(directory, fname_out_full_final_temp)
-
-    return f"{directory}/{fname_out_full_final}"
+    output_full_final = get_final(output_full_temp,
+                                 post)
 
 
-def get_overlay_full(full, directory, fname_input, fname_output):
+    return output_full_final
+
+
+def get_overlay_full(screenshot_bytes, full):
     """
     TD
     """
-    # Open the PNG image
-    image = Image.open(f"{directory}/{fname_input}")
+    with BytesIO(screenshot_bytes) as img_io, BytesIO() as output:
+        image = Image.open(img_io)
 
-    # Determine aspect ratio
-    aspect_ratio = image.height / image.width
+        # Determine dimensions
+        aspect_ratio = image.height / image.width
+        new_height = int(full["width_small"] * aspect_ratio)
 
-    # Set new height
-    new_height = int(full["width_small"] * aspect_ratio)
+        # Resize
+        resized = image.resize((full["width_small"], new_height))
 
-    # Resize the image
-    resized_image = image.resize((full["width_small"], new_height))
+        # Save to bytes
+        resized.save(output, format='PNG')
 
-    resized_image.save(f"{directory}/{fname_output}")
+        overlay_full = output.getvalue()
 
-    return 1
+        return overlay_full
 
 
-def get_overlay_full_bordered(full, directory_main, filename_input):
+def get_overlay_full_bordered(screenshot_bytes, full):
     """
     TD
     """
-    # Open the PNG image
-    image = Image.open(f"{directory_main}/{filename_input}")
+    with BytesIO(screenshot_bytes) as img_io, BytesIO() as output:
+        image = Image.open(img_io)
 
-    # Set the border width and color
-    border_width = 4
-    border_color = full["base_stroke_color"]
+        # Set the border width and color
+        border_width = 4
+        border_color = full["base_stroke_color"]
 
-    # Add the border to the image
-    image_with_border = ImageOps.expand(image, border=border_width, fill=border_color)
+        # Add the border to the image
+        image_with_border = ImageOps.expand(image, border=border_width, fill=border_color)
 
-    # Save the image with the border
-    image_with_border.save(f"{directory_main}/{filename_input}")
+        # Save to bytes
+        image_with_border.save(output, format='PNG')
 
-    return 1
+        overlay_full_bordered = output.getvalue()
+
+        return overlay_full_bordered

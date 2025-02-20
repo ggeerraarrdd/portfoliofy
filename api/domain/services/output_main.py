@@ -3,8 +3,7 @@ TD
 """
 
 # Standard Python Libraries
-import os
-from datetime import datetime
+from io import BytesIO
 from textwrap import dedent
 
 # Third-Party Libraries
@@ -17,7 +16,8 @@ from api.core.utils import get_base
 from api.core.utils import get_overlay
 from api.core.utils import get_final_temp
 from api.core.utils import get_final
-from api.core.utils import cleanup
+
+
 
 
 
@@ -39,41 +39,29 @@ def process_request_main(post):
     smartphone = settings_devices.get("smartphone")
 
     # ################################################## #
-    # Create directory
-    # ################################################## #
-    now = datetime.now()
-    directory = now.strftime('%y%m%d_%H%M%S_%f')[:-3]
-    directory = f"api/output/{directory}_main"
-    os.makedirs(directory)
-
-    # ################################################## #
     # Get screenshot
     # ################################################## #
-    get_screenshot(str(post["remote_url"]),
-                   post["wait"],
-                   directory,
-                   desktop)
+    screenshot_desktop = get_screenshot(str(post["remote_url"]),
+                                        post["wait"],
+                                        desktop)
 
-    get_screenshot(str(post["remote_url"]),
-                   post["wait"],
-                   directory,
-                   laptop)
+    screenshot_laptop = get_screenshot(str(post["remote_url"]),
+                                       post["wait"],
+                                       laptop)
 
-    get_screenshot(str(post["remote_url"]),
-                   post["wait"],
-                   directory,
-                   tablet)
+    screenshot_tablet = get_screenshot(str(post["remote_url"]),
+                                       post["wait"],
+                                       tablet)
 
-    get_screenshot(str(post["remote_url"]),
-                   post["wait"],
-                   directory,
-                   smartphone)
+    screenshot_smartphone = get_screenshot(str(post["remote_url"]),
+                                           post["wait"],
+                                           smartphone)
 
     # ################################################## #
     # Handle OUTPUT_MAIN - desktop
     # ################################################## #
 
-    # Create base - desktop
+    # Create base layer - desktop
     svg = dedent(dedent(f'''\
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -93,43 +81,23 @@ def process_request_main(post):
             </g>
         </svg>'''
     ))
-
-    fname_out_main_desktop_base_svg = "out_main_desktop_base.svg"
-    fname_out_main_desktop_base_png = "out_main_desktop_base.png"
-    get_base(post,
-             directory,
-             svg,
-             fname_out_main_desktop_base_svg,
-             fname_out_main_desktop_base_png)
+    base_desktop = get_base(post, svg)
 
     # Create overlay - desktop
-    fname_input = desktop["filename_large"]
-    fname_output = fname_out_main_desktop_overlay_png = "output_main_desktop_overlay.png"
     new_width = desktop["width_small"]
     height_crop = desktop["small_height_crop"]
-    get_overlay(directory,
-                fname_input,
-                fname_output,
-                new_width,
-                height_crop)
+    overlay_desktop = get_overlay(screenshot_desktop,
+                                  new_width,
+                                  height_crop)
 
     # Combine base and overlay - desktop
-    base = f"{directory}/{fname_out_main_desktop_base_png}"
-    overlay = f"{directory}/{fname_out_main_desktop_overlay_png}"
     lat = 74
     lng = 74
-    fname_out_main_desktop_final = "output_main_desktop_final.png"
-    get_final_temp(base,
-                   overlay,
-                   lat,
-                   lng,
-                   directory,
-                   fname_out_main_desktop_final)
+    output_main_desktop = get_final_temp(base_desktop,
+                                         overlay_desktop,
+                                         lat,
+                                         lng)
 
-    # Delete temp files - desktop
-    cleanup(directory, desktop["filename_large"])
-    cleanup(directory, fname_out_main_desktop_base_png)
-    cleanup(directory, fname_out_main_desktop_overlay_png)
 
     # ################################################## #
     # Handle OUTPUT_MAIN - laptop
@@ -153,43 +121,22 @@ def process_request_main(post):
             </g>
         </svg>'''
     ))
-
-    fname_out_main_laptop_base_svg = "out_main_laptop_base.svg"
-    fname_out_main_laptop_base_png = "out_main_laptop_base.png"
-    get_base(post,
-             directory,
-             svg,
-             fname_out_main_laptop_base_svg,
-             fname_out_main_laptop_base_png)
+    base_laptop = get_base(post, svg)
 
     # Create overlay - laptop
-    fname_input = laptop["filename_large"]
-    fname_output = fname_out_main_laptop_overlay_png = "output_main_laptop_overlay.png"
     new_width = laptop["width_small"]
     height_crop = laptop["small_height_crop"]
-    get_overlay(directory,
-                fname_input,
-                fname_output,
-                new_width,
-                height_crop)
+    overlay_laptop = get_overlay(screenshot_laptop,
+                                 new_width,
+                                 height_crop)
 
     # Combine base and overlay - laptop
-    base = f"{directory}/{fname_out_main_laptop_base_png}"
-    overlay = f"{directory}/{fname_out_main_laptop_overlay_png}"
     lat = 34
     lng = 34
-    fname_out_main_laptop_final = "output_main_laptop_final.png"
-    get_final_temp(base,
-                   overlay,
-                   lat,
-                   lng,
-                   directory,
-                   fname_out_main_laptop_final)
-
-    # Delete temp files - laptop
-    cleanup(directory, laptop["filename_large"])
-    cleanup(directory, fname_out_main_laptop_base_png)
-    cleanup(directory, fname_out_main_laptop_overlay_png)
+    output_main_laptop = get_final_temp(base_laptop,
+                                        overlay_laptop,
+                                        lat,
+                                        lng,)
 
     # ################################################## #
     # Handle OUTPUT_MAIN - tablet
@@ -210,43 +157,22 @@ def process_request_main(post):
             </g>
         </svg>'''
     ))
-
-    fname_out_main_tablet_base_svg = "out_main_tablet_base.svg"
-    fname_out_main_tablet_base_png = "out_main_tablet_base.png"
-    get_base(post,
-             directory,
-             svg,
-             fname_out_main_tablet_base_svg,
-             fname_out_main_tablet_base_png)
+    base_tablet = get_base(post, svg)
 
     # Create overlay - tablet
-    fname_input = tablet["filename_large"]
-    fname_output = fname_out_main_tablet_overlay_png = "output_main_tablet_overlay.png"
     new_width = tablet["width_small"]
     height_crop = tablet["small_height_crop"]
-    get_overlay(directory,
-                fname_input,
-                fname_output,
-                new_width,
-                height_crop)
+    overlay_tablet = get_overlay(screenshot_tablet,
+                                 new_width,
+                                 height_crop)
 
     # Combine base and overlay - tablet
-    base = f"{directory}/{fname_out_main_tablet_base_png}"
-    overlay = f"{directory}/{fname_out_main_tablet_overlay_png}"
     lat = 34
     lng = 34
-    fname_out_main_tablet_final = "output_main_tablet_final.png"
-    get_final_temp(base,
-                   overlay,
-                   lat,
-                   lng,
-                   directory,
-                   fname_out_main_tablet_final)
-
-    # Delete temp files - tablet
-    cleanup(directory, tablet["filename_large"])
-    cleanup(directory, fname_out_main_tablet_base_png)
-    cleanup(directory, fname_out_main_tablet_overlay_png)
+    output_main_tablet = get_final_temp(base_tablet,
+                                        overlay_tablet,
+                                        lat,
+                                        lng)
 
     # ################################################## #
     # Handle OUTPUT_MAIN - smartphone
@@ -267,88 +193,60 @@ def process_request_main(post):
             </g>
         </svg>'''
     ))
-
-    fname_out_main_smartphone_base_svg = "out_main_smartphone_base.svg"
-    fname_out_main_smartphone_base_png = "out_main_smartphone_base.png"
-    get_base(post,
-             directory,
-             svg,
-             fname_out_main_smartphone_base_svg,
-             fname_out_main_smartphone_base_png)
+    base_smartphone = get_base(post, svg)
 
     # Create overlay - smartphone
-    fname_input = smartphone["filename_large"]
-    fname_output = fname_out_main_smartphone_overlay_png = "output_main_smartphone_overlay.png"
     new_width = smartphone["width_small"]
     height_crop = smartphone["small_height_crop"]
-    get_overlay(directory,
-                fname_input,
-                fname_output,
-                new_width,
-                height_crop)
+    overlay_smartphone = get_overlay(screenshot_smartphone,
+                                     new_width,
+                                     height_crop)
 
     # Combine base and overlay - smartphone
-    base = f"{directory}/{fname_out_main_smartphone_base_png}"
-    overlay = f"{directory}/{fname_out_main_smartphone_overlay_png}"
     lat = 24
     lng = 24
-    fname_out_main_smartphone_final = "output_main_smartphone_final.png"
-    get_final_temp(base,
-                   overlay,
-                   lat,
-                   lng,
-                   directory,
-                   fname_out_main_smartphone_final)
-
-    # Delete temp files - laptop
-    cleanup(directory, smartphone["filename_large"])
-    cleanup(directory, fname_out_main_smartphone_base_png)
-    cleanup(directory, fname_out_main_smartphone_overlay_png)
+    output_main_smartphone = get_final_temp(base_smartphone,
+                                            overlay_smartphone,
+                                            lat,
+                                            lng)
 
     # ################################################## #
     # Handle OUTPUT_MAIN - final temp
     # ################################################## #
-
     width = 3176
     height = 1515
 
-    output_main_all_base = Image.new(mode="RGB", size=(width, height), color=f"{post['doc_fill_color']}")
+    # Convert bytes to PIL Image objects
+    output_main_desktop_img = Image.open(BytesIO(output_main_desktop))
+    output_main_laptop_img = Image.open(BytesIO(output_main_laptop))
+    output_main_tablet_img = Image.open(BytesIO(output_main_tablet))
+    output_main_smartphone_img = Image.open(BytesIO(output_main_smartphone))
 
-    output_main_desktop = Image.open(f"{directory}/{fname_out_main_desktop_final}")
-    output_main_laptop = Image.open(f"{directory}/{fname_out_main_laptop_final}")
-    output_main_tablet = Image.open(f"{directory}/{fname_out_main_tablet_final}")
-    output_main_smartphone = Image.open(f"{directory}/{fname_out_main_smartphone_final}")
+    output_main_img = Image.new(mode="RGB", size=(width, height), color=f"{post['doc_fill_color']}")
 
-    output_main_desktop_box = (750, 0)
-    output_main_all_base.paste(output_main_desktop, output_main_desktop_box)
+    # Now use the PIL Image objects for dimensions
+    output_main_desktop_box = (750, 0, 750 + output_main_desktop_img.width, output_main_desktop_img.height)
+    output_main_img.paste(output_main_desktop_img, output_main_desktop_box)
 
-    output_main_laptop_box = (0, 700)
-    output_main_all_base.paste(output_main_laptop, output_main_laptop_box)
+    output_main_laptop_box = (0, 700, output_main_laptop_img.width, 700 + output_main_laptop_img.height)
+    output_main_img.paste(output_main_laptop_img, output_main_laptop_box)
 
-    output_main_tablet_box = (2410, 650)
-    output_main_all_base.paste(output_main_tablet, output_main_tablet_box)
+    output_main_tablet_box = (2410, 650, 2410 + output_main_tablet_img.width, 650 + output_main_tablet_img.height)
+    output_main_img.paste(output_main_tablet_img, output_main_tablet_box)
 
-    output_main_smartphone_box = (2900, 980)
-    output_main_all_base.paste(output_main_smartphone, output_main_smartphone_box)
+    output_main_smartphone_box = (2900, 980, 2900 + output_main_smartphone_img.width, 980 + output_main_smartphone_img.height)
+    output_main_img.paste(output_main_smartphone_img, output_main_smartphone_box)
 
-    fname_out_main_final_temp = "output_main_final_temp.png"
-    output_main_all_base.save(f"{directory}/{fname_out_main_final_temp}")
+    with BytesIO() as output:
+        output_main_img.save(output, format='PNG')
+        output_main_temp = output.getvalue()
 
-    # Delete temp files
-    cleanup(directory, fname_out_main_desktop_final)
-    cleanup(directory, fname_out_main_laptop_final)
-    cleanup(directory, fname_out_main_tablet_final)
-    cleanup(directory, fname_out_main_smartphone_final)
 
     # ################################################## #
     # Handle OUTPUT_MAIN - final
     # ################################################## #
-    fname_out_main_final = "out_main_final.png"
-    get_final(directory,
-              fname_out_main_final_temp,
-              fname_out_main_final,
-              post)
+    output_main_final = get_final(output_main_temp,
+                                  post)
 
-    cleanup(directory, fname_out_main_final_temp)
 
-    return f"{directory}/{fname_out_main_final}"
+    return output_main_final

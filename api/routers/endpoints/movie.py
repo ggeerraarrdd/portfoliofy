@@ -36,6 +36,6 @@ def create_output_movie(post: PortfoliofyRequest):
         if result == 0:
             Response(status_code=status.HTTP_204_NO_CONTENT)
         else:
-            return FileResponse(f"{result}")
+            return FileResponse(f"{result}", media_type="video/mp4")
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)

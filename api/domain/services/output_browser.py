@@ -3,8 +3,6 @@ TD
 """
 
 # Python Standard Libraries
-from datetime import datetime
-import os
 from textwrap import dedent
 
 # Local
@@ -14,7 +12,6 @@ from api.core.utils import get_base
 from api.core.utils import get_overlay
 from api.core.utils import get_final_temp
 from api.core.utils import get_final
-from api.core.utils import cleanup
 
 
 
@@ -34,21 +31,14 @@ def process_request_browser(post):
     # ################################################## #
     desktop = settings_devices.get("desktop")
 
-    # ################################################## #
-    # Create directory
-    # ################################################## #
-    now = datetime.now()
-    directory = now.strftime('%y%m%d_%H%M%S_%f')[:-3]
-    directory = f"api/output/{directory}_browser"
-    os.makedirs(directory)
 
     # ################################################## #
     # Get screenshot
     # ################################################## #
-    get_screenshot(str(post["remote_url"]),
-                   post["wait"],
-                   directory,
-                   desktop)
+    screenshot_browser = get_screenshot(str(post["remote_url"]),
+                                        post["wait"],
+                                        desktop)
+
 
     # ################################################## #
     # Create base layer
@@ -74,58 +64,35 @@ def process_request_browser(post):
             </g>
         </svg>'''
     )))
+    base_browser = get_base(post, svg)
 
-    fname_out_browser_base_svg = "out_browser_base.svg"
-    fname_out_browser_base_png = "out_browser_base.png"
-    get_base(post,
-             directory,
-             svg,
-             fname_out_browser_base_svg,
-             fname_out_browser_base_png)
 
     # ################################################## #
     # Create overlay
     # ################################################## #
-    fname_input = desktop["filename_large"]
-    fname_output = fname_out_browser_overlay_png = "out_browser_overlay.png"
     new_width = desktop["width_medium"]
     height_crop = desktop["medium_height_crop"]
-    get_overlay(directory,
-                fname_input,
-                fname_output,
-                new_width,
-                height_crop)
+    overlay_browser = get_overlay(screenshot_browser,
+                                  new_width,
+                                  height_crop)
+
 
     # ################################################## #
-    # Create temp
+    # Create final (temp)
     # ################################################## #
-    base = f"{directory}/{fname_out_browser_base_png}"
-    overlay = f"{directory}/{fname_out_browser_overlay_png}"
     lat = 4
     lng = 64
-    fname_out_browser_final_temp = "out_browser_final_temp.png"
-    get_final_temp(base,
-                   overlay,
-                   lat,
-                   lng,
-                   directory,
-                   fname_out_browser_final_temp)
+    output_browser_temp = get_final_temp(base_browser,
+                                         overlay_browser,
+                                         lat,
+                                         lng)
+
 
     # ################################################## #
     # Create final
     # ################################################## #
-    fname_out_browser_final = "out_browser_final.png"
-    get_final(directory,
-              fname_out_browser_final_temp,
-              fname_out_browser_final,
-              post)
+    output_browser_final = get_final(output_browser_temp,
+                                     post)
 
-    # ################################################## #
-    # Delete temp files
-    # ################################################## #
-    cleanup(directory, desktop["filename_large"])
-    cleanup(directory, fname_out_browser_base_png)
-    cleanup(directory, fname_out_browser_overlay_png)
-    cleanup(directory, fname_out_browser_final_temp)
 
-    return f"{directory}/{fname_out_browser_final}"
+    return output_browser_final

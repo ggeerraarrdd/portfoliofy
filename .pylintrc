@@ -1,4 +1,5 @@
 [MESSAGES CONTROL]
 disable=line-too-long
-disable=protected-access
-disable=bare-except
+
+# protected-access
+# bare-except

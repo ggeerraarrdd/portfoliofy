@@ -17,7 +17,6 @@ class PortfoliofyRequest(BaseModel):
     """
     TD
     """
-    # pylint: disable-all
     request: bool = Field(False, description='Request flag')
     remote_url: HttpUrl = Field("https://ggeerraarrdd.github.io/", description="Valid and accessible URL")
     wait: conint(gt=0, lt=101) = Field(2, description="Wait time for screenshot") # type: ignore[reportInvalidTypeForm]

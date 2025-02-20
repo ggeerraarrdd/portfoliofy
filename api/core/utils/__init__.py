@@ -11,7 +11,8 @@ from .utils import get_final_temp
 from .utils import get_final
 from .utils import cleanup
 
-# Define what should be available when using "from .helpers import *"
+
+# Define what should be available when using "from .utils import *"
 __all__ = ['get_screenshot',
            'get_screenshot_full',
            'get_screenshot_full_chrome',

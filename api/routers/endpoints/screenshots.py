@@ -4,7 +4,6 @@ TD
 
 # Third-Party Libraries
 from fastapi import APIRouter, Response, status
-from fastapi.responses import FileResponse
 
 # Local
 from api.domain.schemas import PortfoliofyRequest
@@ -33,7 +32,7 @@ def create_output_screenshots_desktop(post: PortfoliofyRequest):
 
         result = process_request_screenshots(request_output_screenshots, "desktop")
 
-        return FileResponse(f"{result}")
+        return Response(content=result, media_type="image/png")
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -49,7 +48,7 @@ def create_output_screenshots_laptop(post: PortfoliofyRequest):
 
         result = process_request_screenshots(request_output_screenshots, "laptop")
 
-        return FileResponse(f"{result}")
+        return Response(content=result, media_type="image/png")
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -65,7 +64,7 @@ def create_output_screenshots_tablet(post: PortfoliofyRequest):
 
         result = process_request_screenshots(request_output_screenshots, "tablet")
 
-        return FileResponse(f"{result}")
+        return Response(content=result, media_type="image/png")
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -81,7 +80,7 @@ def create_output_screenshots_smarphone(post: PortfoliofyRequest):
 
         result = process_request_screenshots(request_output_screenshots, "smartphone")
 
-        return FileResponse(f"{result}")
+        return Response(content=result, media_type="image/png")
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -97,6 +96,6 @@ def create_output_screenshots_full(post: PortfoliofyRequest):
 
         result = process_request_screenshots(request_output_screenshots, "full")
 
-        return FileResponse(f"{result}")
+        return Response(content=result, media_type="image/png")
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
