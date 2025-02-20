@@ -24,8 +24,9 @@ router = APIRouter()
 @router.post('/browser', status_code=status.HTTP_201_CREATED)
 def handle_request_browser(post: PortfoliofyRequest) -> Response:
     """
-    Handles requests for OUTPUT_BROWSER. Delegates processing to 
-    process_request_browser().
+    Handle requests for OUTPUT_BROWSER. 
+    
+    Delegates processing to process_request_browser().
 
     Args:
         post (PortfoliofyRequest): Request containing URL and styling parameters

@@ -25,8 +25,9 @@ router = APIRouter()
 @router.post('/movie', status_code=status.HTTP_201_CREATED)
 def handle_request_movie(post: PortfoliofyRequest) -> Response:
     """
-    Handles requests for OUTPUT_MOVIE. Delegates processing to 
-    process_request_movie().
+    Handle requests for OUTPUT_MOVIE. 
+    
+    Delegates processing to process_request_movie().
 
     Args:
         post (PortfoliofyRequest): Request containing URL and styling parameters

@@ -1,5 +1,5 @@
 """
-TD
+Process requests for OUTPUT_BROWSER.
 """
 
 # Python Standard Libraries
@@ -12,6 +12,7 @@ from api.core.utils import get_base
 from api.core.utils import get_overlay
 from api.core.utils import get_final_temp
 from api.core.utils import get_final
+from api.domain.schemas import PortfoliofyRequest # Pydantic model for request validation
 
 
 
@@ -22,22 +23,31 @@ from api.core.utils import get_final
 
 
 
-def process_request_browser(post):
+def process_request_browser(post: PortfoliofyRequest) -> bytes:
     """
-    TD
+    Process requests for OUTPUT_BROWSER.
+
+    Captures webpage screenshot at desktop viewport dimensions, overlays it 
+    on a browser mockup diagram with custom styling, and returns the 
+    composite as a PNG image data.
+
+    Args:
+        post (PortfoliofyRequest): Request containing URL and styling parameters
+            Request data is pre-validated via Pydantic PortfoliofyRequest model.
+            
+    Returns:
+        bytes: Final processed PNG image data
     """
     # ################################################## #
     # Get system settings for desktop
     # ################################################## #
-    desktop = settings_devices.get("desktop")
+    desktop = settings_devices.get('desktop')
 
 
     # ################################################## #
     # Get screenshot
     # ################################################## #
-    screenshot_browser = get_screenshot(str(post["remote_url"]),
-                                        post["wait"],
-                                        desktop)
+    screenshot_browser = get_screenshot(str(post['remote_url']), post['wait'], desktop)
 
 
     # ################################################## #
@@ -70,11 +80,9 @@ def process_request_browser(post):
     # ################################################## #
     # Create overlay
     # ################################################## #
-    new_width = desktop["width_medium"]
-    height_crop = desktop["medium_height_crop"]
-    overlay_browser = get_overlay(screenshot_browser,
-                                  new_width,
-                                  height_crop)
+    new_width = desktop['width_medium']
+    height_crop = desktop['medium_height_crop']
+    overlay_browser = get_overlay(screenshot_browser, new_width, height_crop)
 
 
     # ################################################## #
@@ -82,17 +90,13 @@ def process_request_browser(post):
     # ################################################## #
     lat = 4
     lng = 64
-    output_browser_temp = get_final_temp(base_browser,
-                                         overlay_browser,
-                                         lat,
-                                         lng)
+    output_browser_temp = get_final_temp(base_browser, overlay_browser, lat, lng)
 
 
     # ################################################## #
     # Create final
     # ################################################## #
-    output_browser_final = get_final(output_browser_temp,
-                                     post)
+    output_browser_final = get_final(output_browser_temp, post)
 
 
     return output_browser_final

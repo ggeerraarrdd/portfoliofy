@@ -24,8 +24,9 @@ router = APIRouter()
 @router.post('/screenshots/desktop', status_code=status.HTTP_201_CREATED)
 def handle_request_screenshots_desktop(post: PortfoliofyRequest) -> Response:
     """
-    Handles requests for OUTPUT_SCREENSHOTS/desktop. Delegates processing 
-    to process_request_screenshots().
+    Handle requests for OUTPUT_SCREENSHOTS/desktop. 
+    
+    Delegates processing to process_request_screenshots().
 
     Args:
         post (PortfoliofyRequest): Request containing URL and styling parameters
@@ -49,8 +50,9 @@ def handle_request_screenshots_desktop(post: PortfoliofyRequest) -> Response:
 @router.post('/screenshots/laptop', status_code=status.HTTP_201_CREATED)
 def handle_request_screenshots_laptop(post: PortfoliofyRequest) -> Response:
     """
-    Handles requests for OUTPUT_SCREENSHOTS/laptop. Delegates processing 
-    to process_request_screenshots().
+    Handle requests for OUTPUT_SCREENSHOTS/laptop. 
+    
+    Delegates processing to process_request_screenshots().
 
     Args:
         post (PortfoliofyRequest): Request containing URL and styling parameters
@@ -74,8 +76,9 @@ def handle_request_screenshots_laptop(post: PortfoliofyRequest) -> Response:
 @router.post('/screenshots/tablet', status_code=status.HTTP_201_CREATED)
 def handle_request_screenshots_tablet(post: PortfoliofyRequest) -> Response:
     """
-    Handles requests for OUTPUT_SCREENSHOTS/tablet. Delegates processing 
-    to process_request_screenshots().
+    Handle requests for OUTPUT_SCREENSHOTS/tablet. 
+    
+    Delegates processing to process_request_screenshots().
 
     Args:
         post (PortfoliofyRequest): Request containing URL and styling parameters
@@ -99,8 +102,9 @@ def handle_request_screenshots_tablet(post: PortfoliofyRequest) -> Response:
 @router.post('/screenshots/smartphone', status_code=status.HTTP_201_CREATED)
 def handle_request_screenshots_smarphone(post: PortfoliofyRequest) -> Response:
     """
-    Handles requests for OUTPUT_SCREENSHOTS - smartphone. Delegates processing 
-    to process_request_screenshots().
+    Handle requests for OUTPUT_SCREENSHOTS/smartphone. 
+    
+    Delegates processing to process_request_screenshots().
 
     Args:
         post (PortfoliofyRequest): Request containing URL and styling parameters
@@ -124,8 +128,9 @@ def handle_request_screenshots_smarphone(post: PortfoliofyRequest) -> Response:
 @router.post('/screenshots/full', status_code=status.HTTP_201_CREATED)
 def handle_request_screenshots_full(post: PortfoliofyRequest) -> Response:
     """
-    Handles requests for OUTPUT_SCREENSHOTS - full. Delegates processing 
-    to process_request_screenshots().
+    Handle requests for OUTPUT_SCREENSHOTS/full. 
+    
+    Delegates processing to process_request_screenshots().
 
     Args:
         post (PortfoliofyRequest): Request containing URL and styling parameters

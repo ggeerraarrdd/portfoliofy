@@ -1,5 +1,5 @@
 """
-TD
+Process requests for OUTPUT_MOVIE.
 """
 
 # Python Standard Libraries
@@ -20,6 +20,7 @@ from api.core.utils import get_screenshot_full
 from api.core.utils import get_base
 from api.core.utils import get_final
 from api.core.utils import cleanup
+from api.domain.schemas import PortfoliofyRequest # Pydantic model for request validation
 
 
 
@@ -30,9 +31,23 @@ from api.core.utils import cleanup
 
 
 
-def process_request_movie(post):
+def process_request_movie(post: PortfoliofyRequest) -> str:
     """
-    TD
+    Process requests for OUTPUT_MOVIE.
+
+    Captures a full-page screenshot of the entire webpage content from top 
+    to bottom. Creates a smooth scrolling animation of this content within 
+    a stylized browser mockup frame. Saves the animation as an MP4 file.
+
+    Note: Future implementation will change file operations to use BytesIO
+    for consistency with other processing functions.
+
+    Args:
+        post (PortfoliofyRequest): Request containing URL and styling parameters
+            Request data is pre-validated via Pydantic PortfoliofyRequest model.
+            
+    Returns:
+        str: File path to the generated MP4 animation
     """
     # ################################################## #
     # Get system settings for full
@@ -42,8 +57,7 @@ def process_request_movie(post):
     # ################################################## #
     # Get screenshot
     # ################################################## #
-    screenshot_movie = get_screenshot_full(str(post["remote_url"]),
-                                           post["wait"])
+    screenshot_movie = get_screenshot_full(str(post["remote_url"]), post["wait"])
 
     # ################################################## #
     # Create movie - base
@@ -118,7 +132,7 @@ def process_request_movie(post):
         scroll_speed = 180
         total_duration = (clip.h - 720)/scroll_speed
 
-        fl = lambda gf,t : gf(t)[int(scroll_speed*t):int(scroll_speed*t)+720,:]
+        fl = lambda gf,t : gf(t)[int(scroll_speed*t):int(scroll_speed*t)+720,:] # pylint: disable=unnecessary-lambda-assignment
         clip = clip.fl(fl, apply_to=['mask'])
 
         video = CompositeVideoClip([bg_clip, clip.set_pos("center")])

@@ -1,5 +1,5 @@
 """
-TD
+Process requests for OUTPUT_FULL.
 """
 
 # Python Standard Libraries
@@ -14,6 +14,7 @@ from api.core.config import settings_devices
 from api.core.utils import get_screenshot_full
 from api.core.utils import get_base
 from api.core.utils import get_final
+from api.domain.schemas import PortfoliofyRequest # Pydantic model for request validation
 
 
 
@@ -25,21 +26,31 @@ from api.core.utils import get_final
 
 
 
-def process_request_full(post):
+def process_request_full(post: PortfoliofyRequest) -> bytes:
     """
-    TD
+    Process requests for OUTPUT_FULL.
+
+    Captures a full-page screenshot of the entire webpage content from top 
+    to bottom, overlays it on a browser mockup diagram with custom styling, 
+    and returns the composite as a PNG image data.
+
+    Args:
+        post (PortfoliofyRequest): Request containing URL and styling parameters
+            Request data is pre-validated via Pydantic PortfoliofyRequest model.
+            
+    Returns:
+        bytes: Final processed PNG image data
     """
     # ################################################## #
     # Get system settings for full
     # ################################################## #
-    full = settings_devices.get("full")
+    full = settings_devices.get('full')
 
 
     # ################################################## #
     # Get screenshot
     # ################################################## #
-    screenshot_full = get_screenshot_full(str(post["remote_url"]),
-                                          post["wait"])
+    screenshot_full = get_screenshot_full(str(post['remote_url']), post['wait'])
 
 
     # ################################################## #
@@ -64,15 +75,12 @@ def process_request_full(post):
     # ################################################## #
     # Create overlay
     # ################################################## #
-    overlay_full = get_overlay_full(screenshot_full,
-                                    full)
-
-    overlay_full = get_overlay_full_bordered(overlay_full,
-                                             post)
+    overlay_full = get_overlay_full(screenshot_full, full)
+    overlay_full = get_overlay_full_bordered(overlay_full, post)
 
 
     # ################################################## #
-    # Create final temp
+    # Create final (temp)
     # ################################################## #
     output_full_base_img = Image.open(BytesIO(base_full))
     output_full_overlay_img = Image.open(BytesIO(overlay_full))
@@ -80,7 +88,7 @@ def process_request_full(post):
     width = 776
     height = output_full_overlay_img.height + 60
 
-    output_full_img = Image.new("RGB", (width, height), (255, 255, 255))
+    output_full_img = Image.new('RGB', (width, height), (255, 255, 255))
 
     output_full_img.paste(output_full_base_img, (0,0))
     output_full_img.paste(output_full_overlay_img, (0,60))
@@ -93,8 +101,7 @@ def process_request_full(post):
     # ################################################## #
     # Create final
     # ################################################## #
-    output_full_final = get_final(output_full_temp,
-                                 post)
+    output_full_final = get_final(output_full_temp, post)
 
 
     return output_full_final

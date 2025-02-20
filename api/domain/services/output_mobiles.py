@@ -1,5 +1,5 @@
 """
-TD
+Process requests for OUTPUT_MOBILES.
 """
 
 # Python Standard Library
@@ -16,6 +16,7 @@ from api.core.utils import get_base
 from api.core.utils import get_overlay
 from api.core.utils import get_final_temp
 from api.core.utils import get_final
+from api.domain.schemas import PortfoliofyRequest # Pydantic model for request validation
 
 
 
@@ -24,26 +25,35 @@ from api.core.utils import get_final
 
 
 
-def process_request_mobiles(post):
+
+
+def process_request_mobiles(post: PortfoliofyRequest) -> bytes:
     """
-    TD
+    Process requests for OUTPUT_MOBILES.
+
+    Captures webpage screenshots at tablet and smarthphone viewport 
+    sizes and composites each on stylized device mockups. Arranges 
+    these mockups into a side-by-side layout and returns the final 
+    composition as PNG image data.
+
+    Args:
+        post (PortfoliofyRequest): Request containing URL and styling parameters
+            Request data is pre-validated via Pydantic PortfoliofyRequest model.
+            
+    Returns:
+        bytes: Final processed PNG image data
     """
     # ################################################## #
     # Get system settings for desktop
     # ################################################## #
-    tablet = settings_devices.get("tablet")
-    smartphone = settings_devices.get("smartphone")
+    tablet = settings_devices.get('tablet')
+    smartphone = settings_devices.get('smartphone')
 
     # ################################################## #
     # Get screenshot
     # ################################################## #
-    screenshot_tablet = get_screenshot(str(post["remote_url"]),
-                                       post["wait"],
-                                       tablet)
-
-    screenshot_smartphone = get_screenshot(str(post["remote_url"]),
-                                           post["wait"],
-                                           smartphone)
+    screenshot_tablet = get_screenshot(str(post['remote_url']), post['wait'], tablet)
+    screenshot_smartphone = get_screenshot(str(post['remote_url']), post['wait'], smartphone)
 
     # ################################################## #
     # Handle OUTPUT_MOBILES - tablet
@@ -67,19 +77,14 @@ def process_request_mobiles(post):
     base_tablet = get_base(post, svg)
 
     # Create overlay - tablet
-    new_width = tablet["width_medium"]
-    height_crop = tablet["medium_height_crop"]
-    overlay_tablet = get_overlay(screenshot_tablet,
-                                 new_width,
-                                 height_crop)
+    new_width = tablet['width_medium']
+    height_crop = tablet['medium_height_crop']
+    overlay_tablet = get_overlay(screenshot_tablet, new_width, height_crop)
 
     # Combine base and overlay - tablet
     lat = 34
     lng = 34
-    output_main_tablet = get_final_temp(base_tablet,
-                                        overlay_tablet,
-                                        lat,
-                                        lng)
+    output_main_tablet = get_final_temp(base_tablet, overlay_tablet, lat, lng)
 
 
     # ################################################## #
@@ -104,26 +109,14 @@ def process_request_mobiles(post):
     base_smartphone = get_base(post, svg)
 
     # Create overlay - smartphone
-    new_width = smartphone["width_medium"]
-    height_crop = smartphone["medium_height_crop"]
-    overlay_smartphone = get_overlay(screenshot_smartphone,
-                                     new_width,
-                                     height_crop)
-
-    # # Combine base and overlay - smartphone
-    # fname_input = fname_overlay_temp_smartphone
-    # fname_output = fname_overlay_final_smartphone = "out_mobiles_overlay_final_smartphone.png"
-    # get_overlay_final(directory,
-    #                   fname_input,
-    #                   fname_output)
+    new_width = smartphone['width_medium']
+    height_crop = smartphone['medium_height_crop']
+    overlay_smartphone = get_overlay(screenshot_smartphone, new_width, height_crop)
 
     # Combine base and overlay - smartphone
     lat = 24
     lng = 24
-    output_main_smartphone = get_final_temp(base_smartphone,
-                                            overlay_smartphone,
-                                            lat,
-                                            lng)
+    output_main_smartphone = get_final_temp(base_smartphone, overlay_smartphone, lat, lng)
 
     # ################################################## #
     # Handle OUTPUT_MOBILES - final temp
@@ -135,7 +128,7 @@ def process_request_mobiles(post):
     output_main_tablet_img = Image.open(BytesIO(output_main_tablet))
     output_main_smartphone_img = Image.open(BytesIO(output_main_smartphone))
 
-    output_mobiles_image = Image.new(mode="RGB", size=(width, height), color=f"{post['doc_fill_color']}")
+    output_mobiles_image = Image.new(mode='RGB', size=(width, height), color=f"{post['doc_fill_color']}")
 
     output_mobiles_tablet_box = (520, 0, 520 + output_main_tablet_img.width, output_main_tablet_img.height)
     output_mobiles_image.paste(output_main_tablet_img, output_mobiles_tablet_box)
@@ -150,8 +143,7 @@ def process_request_mobiles(post):
     # ################################################## #
     # Handle OUTPUT_MOBILES - final
     # ################################################## #
-    output_mobiles_final = get_final(output_mobiles_temp,
-                                  post)
+    output_mobiles_final = get_final(output_mobiles_temp, post)
 
 
     return output_mobiles_final

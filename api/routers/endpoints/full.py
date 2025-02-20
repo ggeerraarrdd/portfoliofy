@@ -24,8 +24,9 @@ router = APIRouter()
 @router.post('/full', status_code=status.HTTP_201_CREATED)
 def handle_request_full(post: PortfoliofyRequest) -> Response:
     """
-    Handles requests for OUTPUT_FULL. Delegates processing to 
-    process_request_full().
+    Handle requests for OUTPUT_FULL. 
+    
+    Delegates processing to process_request_full().
 
     Args:
         post (PortfoliofyRequest): Request containing URL and styling parameters

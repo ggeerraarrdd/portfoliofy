@@ -1,5 +1,5 @@
 """
-TD
+Process requests for OUTPUT_MAIN.
 """
 
 # Standard Python Libraries
@@ -16,6 +16,7 @@ from api.core.utils import get_base
 from api.core.utils import get_overlay
 from api.core.utils import get_final_temp
 from api.core.utils import get_final
+from api.domain.schemas import PortfoliofyRequest # Pydantic model for request validation
 
 
 
@@ -26,9 +27,21 @@ from api.core.utils import get_final
 
 
 
-def process_request_main(post):
+def process_request_main(post: PortfoliofyRequest) -> bytes:
     """
-    TD
+    Process requests for OUTPUT_MAIN.
+
+    Captures webpage screenshots at multiple viewport sizes (desktop, 
+    laptop, tablet, smartphone) and composites each on stylized device 
+    mockups. Arranges these mockups into a eye-catching layout and returns
+    the final composition as PNG image data.
+
+    Args:
+        post (PortfoliofyRequest): Request containing URL and styling parameters
+            Request data is pre-validated via Pydantic PortfoliofyRequest model.
+            
+    Returns:
+        bytes: Final processed PNG image data
     """
     # ################################################## #
     # Get system settings for desktop
@@ -41,17 +54,11 @@ def process_request_main(post):
     # ################################################## #
     # Get screenshot
     # ################################################## #
-    screenshot_desktop = get_screenshot(str(post["remote_url"]),
-                                        post["wait"],
-                                        desktop)
+    screenshot_desktop = get_screenshot(str(post["remote_url"]), post["wait"], desktop)
 
-    screenshot_laptop = get_screenshot(str(post["remote_url"]),
-                                       post["wait"],
-                                       laptop)
+    screenshot_laptop = get_screenshot(str(post["remote_url"]), post["wait"], laptop)
 
-    screenshot_tablet = get_screenshot(str(post["remote_url"]),
-                                       post["wait"],
-                                       tablet)
+    screenshot_tablet = get_screenshot(str(post["remote_url"]), post["wait"], tablet)
 
     screenshot_smartphone = get_screenshot(str(post["remote_url"]),
                                            post["wait"],

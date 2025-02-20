@@ -24,8 +24,9 @@ router = APIRouter()
 @router.post('/mobiles', status_code=status.HTTP_201_CREATED)
 def handle_request_mobiles(post: PortfoliofyRequest) -> Response:
     """
-    Handles requests for OUTPUT_MAIN. Delegates processing to 
-    process_request_main().
+    Handle requests for OUTPUT_MAIN.
+    
+    Delegates processing to process_request_main().
 
     Args:
         post (PortfoliofyRequest): Request containing URL and styling parameters
