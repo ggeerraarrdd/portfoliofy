@@ -1,5 +1,20 @@
 """
-TD
+Screenshot and image processing utility functions for webpage screenshots.
+
+This module provides functions for:
+1. Taking screenshots of web pages using Selenium
+2. Processing and combining images with various transformations
+3. Managing temporary files and cleanup operations
+
+Functions:
+    get_screenshot: Capture fixed-size screenshot of a webpage
+    get_screenshot_full: Capture full-page screenshot of a webpage
+    get_screenshot_full_chrome: Helper for full page screenshot
+    get_base: Create base PNG image from SVG
+    get_overlay: Process screenshot into overlay image
+    get_final_temp: Combine base and overlay images
+    get_final: Add padding to final image
+    cleanup: Remove temporary files
 """
 
 from .utils import get_screenshot

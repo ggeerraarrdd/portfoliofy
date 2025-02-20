@@ -1,5 +1,19 @@
 """
-TD
+Services module for processing different types of screenshot requests.
+
+This module provides functions for processing screenshot requests through different 
+output processors. Request validation is handled separately by Pydantic models at
+the router/endpoint level.
+
+Functions:
+    process_request_main: Process OUTPUT_MAIN request
+    process_request_browser: Process OUTPUT_BROWSER request  
+    process_request_mobiles: Process OUTPUT_MOBILES request
+    process_request_full: Process OUTPUT_FULL request
+    process_request_movie: Process OUTPUT_MOVIE request
+    process_request_screenshots: Process OUTPUT_SCREENSHOTS requests
+
+For information about each OUTPUT type, refer to the documentation in README.md.
 """
 
 from .output_main import process_request_main

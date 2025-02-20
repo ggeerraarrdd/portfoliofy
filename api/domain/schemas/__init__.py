@@ -1,5 +1,5 @@
 """
-TD
+Pydantic model for validating and processing Portfoliofy screenshot requests.
 """
 
 from .schemas import PortfoliofyRequest

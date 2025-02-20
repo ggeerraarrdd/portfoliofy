@@ -1,5 +1,20 @@
 """
-TD
+Screenshot and image processing utility functions for webpage screenshots.
+
+This module provides functions for:
+1. Taking screenshots of web pages using Selenium
+2. Processing and combining images with various transformations
+3. Managing temporary files and cleanup operations
+
+Functions:
+    get_screenshot: Capture fixed-size screenshot of a webpage
+    get_screenshot_full: Capture full-page screenshot of a webpage
+    get_screenshot_full_chrome: Helper for full page screenshot
+    get_base: Create base PNG image from SVG
+    get_overlay: Process screenshot into overlay image
+    get_final_temp: Combine base and overlay images
+    get_final: Add padding to final image
+    cleanup: Remove temporary files
 """
 
 # Python Standard Libraries
@@ -28,16 +43,24 @@ CHROME_PATH = os.environ.get('CHROME_INSTALL_DIR')
 
 
 
-def get_screenshot(url, wait, settings_devices):
+def get_screenshot(url: str, wait: int, settings_devices: dict) -> bytes:
     """
-    TD
+    Take a screenshot of a webpage at specified dimensions.
+
+    Args:
+        url (str): Website URL to capture
+        wait (int): Time to wait for page load in seconds
+        settings_devices (dict): Dictionary containing width_large and height_large values
+
+    Returns:
+        PNG screenshot as bytes
     """
     # Set options
     options = Options()
     options.add_argument(f"--window-size={settings_devices['width_large']},{settings_devices['height_large']}")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--headless")
-    options.add_argument("--hide-scrollbars")
+    options.add_argument('--no-sandbox')
+    options.add_argument('--headless')
+    options.add_argument('--hide-scrollbars')
 
     try:
         # Set Chromedriver path
@@ -46,7 +69,7 @@ def get_screenshot(url, wait, settings_devices):
         # Open Chrome webdriver
         driver = webdriver.Chrome(service=service, options=options)
 
-    except:
+    except: # pylint: disable=bare-except
         # Open Chrome webdriver
         driver = webdriver.Chrome(options=options)
 
@@ -66,14 +89,21 @@ def get_screenshot(url, wait, settings_devices):
         driver.quit()
 
 
-def get_screenshot_full(url, wait):
+def get_screenshot_full(url: str, wait: int) -> bytes:
     """
-    TD
+    Take a full page screenshot of a webpage.
+
+    Args:
+        url (str): Website URL to capture
+        wait (int): Time to wait for page load in seconds
+
+    Returns:
+        PNG screenshot as bytes
     """
     options = Options()
-    options.add_argument("--no-sandbox")
-    options.add_argument("--headless=new")
-    options.add_argument("--hide-scrollbars")
+    options.add_argument('--no-sandbox')
+    options.add_argument('--headless=new')
+    options.add_argument('--hide-scrollbars')
 
     try:
         # Set Chromedriver path
@@ -81,7 +111,8 @@ def get_screenshot_full(url, wait):
 
         # Open Chrome webdriver
         driver = webdriver.Chrome(service=service, options=options)
-    except:
+
+    except: # pylint: disable=bare-except
         # Open Chrome webdriver
         driver = webdriver.Chrome(options=options)
 
@@ -102,19 +133,25 @@ def get_screenshot_full(url, wait):
         driver.quit()
 
 
-def get_screenshot_full_chrome(driver) :
+def get_screenshot_full_chrome(driver: webdriver.Chrome) -> bytes:
     """
-    TD
+    Helper function to capture full page screenshot using Chrome DevTools Protocol.
+
+    Args:
+        driver (webdriver.Chrome): Chrome WebDriver instance
+
+    Returns:
+        PNG screenshot as bytes
     """
     # Function adapted from StackOverflow answer
     # https://stackoverflow.com/questions/45199076/take-full-page-screenshot-in-chrome-with-selenium/45201692#45201692
 
     def send(cmd, params):
         resource = "/session/%s/chromium/send_command_and_get_result" % \
-            driver.session_id
-        url = driver.command_executor._url + resource
+            driver.session_id # pylint: disable=consider-using-f-string
+        url = driver.command_executor._url + resource # pylint: disable=protected-access
         body = json.dumps({'cmd':cmd, 'params': params})
-        response = driver.command_executor._request('POST', url, body)
+        response = driver.command_executor._request('POST', url, body) # pylint: disable=protected-access
         return response.get('value')
 
     def evaluate(script):
@@ -143,25 +180,38 @@ def get_screenshot_full_chrome(driver) :
     return base64.b64decode(screenshot['data'])
 
 
-def get_base(post, svg):
+def get_base(post: dict, svg: str) -> bytes:
     """
-    Creates base image from SVG and returns PNG bytes
+    Creates base image from SVG and returns PNG bytes.
+
+    Args:
+        post (dict): Dictionary containing doc_fill_color
+        svg (str): SVG content as string
+
+    Returns:
+        PNG image as bytes
     """
     with BytesIO() as svg_io, BytesIO() as png_io:
 
         svg_io.write(svg.encode())
         svg_io.seek(0)
 
-        svg2png(file_obj=svg_io,
-                write_to=png_io,
-                background_color=post["doc_fill_color"])
+        svg2png(file_obj=svg_io, write_to=png_io, background_color=post['doc_fill_color'])
 
         return png_io.getvalue()
 
 
-def get_overlay(screenshot_bytes, new_width, height_crop):
+def get_overlay(screenshot_bytes: bytes, new_width: int, height_crop: int) -> bytes:
     """
-    Creates overlay image from screenshot and returns PNG bytes
+    Creates overlay image from screenshot and returns PNG bytes.
+
+    Args:
+        screenshot_bytes (bytes): Original screenshot as bytes
+        new_width (int): Target width for resize
+        height_crop (int): Height to crop from bottom
+
+    Returns:
+        PNG image as bytes
     """
     with BytesIO(screenshot_bytes) as img_io, BytesIO() as output:
         image = Image.open(img_io)
@@ -183,9 +233,18 @@ def get_overlay(screenshot_bytes, new_width, height_crop):
         return overlay
 
 
-def get_final_temp(base_bytes, overlay_bytes, lat, lng):
+def get_final_temp(base_bytes: bytes, overlay_bytes: bytes, lat: int, lng: int) -> bytes:
     """
-    Combines base and overlay images and returns PNG bytes
+    Combines base and overlay images and returns PNG bytes.
+
+    Args:
+        base_bytes (bytes): Base image as bytes
+        overlay_bytes (bytes): Overlay image as bytes
+        lat (int): X coordinate for overlay placement
+        lng (int): Y coordinate for overlay placement
+
+    Returns:
+        PNG image as bytes
     """
     with BytesIO(base_bytes) as base_io, \
          BytesIO(overlay_bytes) as overlay_io, \
@@ -202,22 +261,29 @@ def get_final_temp(base_bytes, overlay_bytes, lat, lng):
         return final_temp
 
 
-def get_final(image_bytes, post):
+def get_final(image_bytes: bytes, post: dict) -> bytes:
     """
-    Adds padding to image and returns final PNG bytes
+    Adds padding to image and returns final PNG bytes.
+
+    Args:
+        image_bytes (bytes): Input image as bytes
+        post (dict): Dictionary containing doc_pad_h, doc_pad_v, and doc_fill_color
+
+    Returns:
+        PNG image as bytes
     """
     with BytesIO(image_bytes) as img_io, BytesIO() as output:
 
         image = Image.open(img_io)
 
         width, height = image.size
-        right = left = post["doc_pad_h"]
-        top = bottom = post["doc_pad_v"]
+        right = left = post['doc_pad_h']
+        top = bottom = post['doc_pad_v']
 
         new_width = width + right + left
         new_height = height + top + bottom
 
-        result = Image.new(image.mode, (new_width, new_height), post["doc_fill_color"])
+        result = Image.new(image.mode, (new_width, new_height), post['doc_fill_color'])
         result.paste(image, (left, top))
 
         result.save(output, format='PNG')
@@ -225,12 +291,19 @@ def get_final(image_bytes, post):
         return output.getvalue()
 
 
-def cleanup(directory_path, file):
+def cleanup(directory_path: str, file: str) -> str:
     """
-    TD
+    Remove a file from the specified directory.
+
+    Args:
+        directory_path (str): Path to directory containing file
+        file (str): Name of file to remove
+
+    Returns:
+        Status message indicating success or failure
     """
     try:
-        os.remove(f"{directory_path}/{file}")
-        return f"{file} has been deleted"
+        os.remove(f'{directory_path}/{file}')
+        return f'{file} has been deleted'
     except FileNotFoundError:
-        return f"{file} not in directory"
+        return f'{file} not in directory'
