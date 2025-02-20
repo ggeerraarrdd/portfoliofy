@@ -40,37 +40,40 @@ _Portfoliofy_ v3.0.0-beta.2 offers the following `OUTPUT` types requested from e
 
 ### `OUTPUT_MAIN`
 
-* Creates a collage of screenshots from desktop, laptop, tablet, and smartphone views
-* Overlays them on a schematic diagram for professional presentation
+* Collage of screenshots taken from desktop, laptop, tablet, and smartphone views
+* Each screenshot overlaid on a device mockup diagram
+* PNG format
 
 ### `OUTPUT_BROWSER`
 
-* Generates a desktop screenshot overlaid on a schematic diagram
-* Perfect for showcasing desktop-focused web applications
+* Screenshot from desktop view overlaid on a browser mockup diagram
+* PNG format
 
 ### `OUTPUT_MOBILES`
 
-* Produces a paired view of desktop and laptop screenshots
-* Includes schematic diagram overlay for enhanced presentation
+* Collage of screenshots taken from tablet and smartphone views
+* Each screenshot overlaid on a device mockup diagram
+* PNG format
 
 ### `OUTPUT_FULL`
 
-* Captures a full-page screenshot with schematic diagram overlay
-* Ideal for showcasing long-form content or full website layouts
+* A full-page screenshot overlaid on a browser mockup diagram
+* PNG format
 
 ### `OUTPUT_MOVIE`
 
-* Creates a scroll animation video of your full webpage
-* Great for demonstrating interactive or lengthy content
+* A scroll animation video of the full webpage
+* MP4 format
 
 ### `OUTPUT_SCREENSHOTS`
 
-* Provides plain screenshots at various viewport sizes:
+* Plain screenshots (no mockup diagrams) at various viewport sizes:
   * Desktop (2160x1360)
   * Laptop (1440x900)
   * Tablet (768x1024)
   * Smartphone (230x490)
 * Includes separate full-page screenshot option
+* All in PNG format
 
 _More features coming soon!_
 
