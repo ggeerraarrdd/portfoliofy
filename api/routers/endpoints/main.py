@@ -1,12 +1,12 @@
 """
-TD
+FastAPI router for handling OUTPUT_MAIN requests.
 """
 
 # Third-Party Libraries
 from fastapi import APIRouter, Response, status
 
 # Local
-from api.domain.schemas import PortfoliofyRequest
+from api.domain.schemas import PortfoliofyRequest # Pydantic model for request validation
 from api.domain.services import process_request_main
 
 
@@ -21,10 +21,19 @@ from api.domain.services import process_request_main
 router = APIRouter()
 
 
-@router.post("/main", status_code=status.HTTP_201_CREATED)
-def create_output_main(post: PortfoliofyRequest):
+@router.post('/main', status_code=status.HTTP_201_CREATED)
+def handle_request_main(post: PortfoliofyRequest) -> Response:
     """
-    TD
+    Handles requests for OUTPUT_MAIN. Delegates processing to 
+    process_request_main().
+
+    Args:
+        post (PortfoliofyRequest): Request containing URL and styling parameters
+            Request data is pre-validated via Pydantic PortfoliofyRequest model.
+
+    Returns:
+        Response: PNG image response if request is valid, 
+            NO_CONTENT response otherwise
     """
     request_output_main = post.model_dump()
 
