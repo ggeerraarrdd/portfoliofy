@@ -30,10 +30,10 @@ def handle_request_full(post: PortfoliofyRequest) -> Response:
 
     Args:
         post (PortfoliofyRequest): Request containing URL and styling parameters
-            Request data is pre-validated via Pydantic PortfoliofyRequest model.
+            Request data is pre-pvalidated via Pydantic PortfoliofyRequest model.
 
     Returns:
-        Response: PNG image response if request is valid, 
+        Response: Image response in requested format if request is valid,
             NO_CONTENT response otherwise
     """
     request_output_full = post.model_dump()
@@ -42,6 +42,6 @@ def handle_request_full(post: PortfoliofyRequest) -> Response:
 
         result = process_request_full(request_output_full)
 
-        return Response(content=result, media_type='image/png')
+        return Response(content=result, media_type=f"image/{request_output_full['format']}")
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)

@@ -25,7 +25,7 @@ class PortfoliofyRequest(BaseModel):
             Default: "https://ggeerraarrdd.github.io/"
         wait (int): Seconds to wait for page load before capture. Range: 1-100.
             Default: 2
-        format (str): Output image format. Currently only supports "png".
+        format (str): Output image format. Supports png, jpeg, bmp, tiff, mp4.
             Default: "png"
         doc_pad_h (int): Horizontal padding in pixels. Range: 1-1000.
             Default: 300

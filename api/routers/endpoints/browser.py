@@ -33,15 +33,17 @@ def handle_request_browser(post: PortfoliofyRequest) -> Response:
             Request data is pre-validated via Pydantic PortfoliofyRequest model.
 
     Returns:
-        Response: PNG image response if request is valid, 
+        Response: Image response in requested format if request is valid,
             NO_CONTENT response otherwise
     """
     request_output_browser = post.model_dump()
+
+    print(type(post))
 
     if request_output_browser['request'] == 1:
 
         result = process_request_browser(request_output_browser)
 
-        return Response(content=result, media_type='image/png')
+        return Response(content=result, media_type=f"image/{request_output_browser['format']}")
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)

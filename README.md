@@ -42,23 +42,23 @@ _Portfoliofy_ v3.0.0-beta.2 offers the following `OUTPUT` types requested from e
 
 * Collage of screenshots taken from desktop, laptop, tablet, and smartphone views
 * Each screenshot overlaid on a device mockup diagram
-* PNG format
+* PNG, JPEG, BMP or TIFF format
 
 ### `OUTPUT_BROWSER`
 
 * Screenshot from desktop view overlaid on a browser mockup diagram
-* PNG format
+* PNG, JPEG, BMP or TIFF format
 
 ### `OUTPUT_MOBILES`
 
 * Collage of screenshots taken from tablet and smartphone views
 * Each screenshot overlaid on a device mockup diagram
-* PNG format
+* PNG, JPEG, BMP or TIFF format
 
 ### `OUTPUT_FULL`
 
 * A full-page screenshot overlaid on a browser mockup diagram
-* PNG format
+* PNG, JPEG, BMP or TIFF format
 
 ### `OUTPUT_MOVIE`
 
@@ -73,7 +73,7 @@ _Portfoliofy_ v3.0.0-beta.2 offers the following `OUTPUT` types requested from e
   * Tablet (768x1024)
   * Smartphone (230x490)
 * Includes separate full-page screenshot option
-* All in PNG format
+* PNG, JPEG, BMP or TIFF format
 
 _More features coming soon!_
 
@@ -91,7 +91,7 @@ portfoliofy/
 │   │       └── __init__.py
 │   │ 
 │   ├── domain/
-│   │   └── schemas/
+│   │   ├── schemas/
 │   │   │   └── __init__.py
 │   │   └── services/
 │   │       └── __init__.py
@@ -195,17 +195,17 @@ portfoliofy/
 
     This is the request body schema for all endpoints.
 
-    | Parameter         | Type   | Default value                        | Value range  | Description |
-    | ----------------- | ------ | ------------------------------------ | ------------ | ----------- |
-    | request           | bool   | False                                | True, False  | If TRUE, requested output is processed. |
-    | remote_url        | string | "<https://ggeerraarrdd.github.io/>"  | ...          | URL to portfoliofy. |
-    | wait              | int    | 2                                    | 1 - 100      | Time in seconds to allow URL to load before taking screenshot. |
-    | format            | string | "png"                                | "png"        | File format of the final output. |
-    | doc_pad_h         | int    | 300                                  | 1 - 1000     | Left and right padding in pixels of final output. |
-    | doc_pad_v         | int    | 200                                  | 1 - 1000     | Top and bottom padding in pixels of final output. |
-    | doc_fill_color    | string | "#FFFFFF"                            | ...          | Background color of final output in 6-digit hex. |
-    | base_stroke_color | string | "#23445D"                            | ...          | Stroke color of diagram in 6-digit hex. |
-    | base_fill_color   | string | "#BAC8D3"                            | ...          | Fill color of diagram in 6-digit hex. |
+    | Parameter           | Type     | Default value                         | Value range                           | Description                                                      |
+    | ------------------- | -------- | ------------------------------------- | ------------------------------------- | ---------------------------------------------------------------- |
+    | request             | bool     | False                                 | True, False                           | If TRUE, requested output is processed.                          |
+    | remote_url          | string   | "<https://ggeerraarrdd.github.io/>"   | ...                                   | URL to portfoliofy.                                              |
+    | wait                | int      | 2                                     | 1 - 100                               | Time in seconds to allow URL to load before taking screenshot.   |
+    | format              | string   | "png"                                 | "png", "jpeg", "bmp", "tiff", "mp4"   | File format of the final output.                                 |
+    | doc_pad_h           | int      | 300                                   | 1 - 1000                              | Left and right padding in pixels of final output.                |
+    | doc_pad_v           | int      | 200                                   | 1 - 1000                              | Top and bottom padding in pixels of final output.                |
+    | doc_fill_color      | string   | "#FFFFFF"                             | ...                                   | Background color of final output in 6-digit hex.                 |
+    | base_stroke_color   | string   | "#23445D"                             | ...                                   | Stroke color of diagram in 6-digit hex.                          |
+    | base_fill_color     | string   | "#BAC8D3"                             | ...                                   | Fill color of diagram in 6-digit hex.                            |
 
     **Example Request:**
 

@@ -47,7 +47,7 @@ def process_request_main(post: dict) -> bytes:
             base_fill_color (str): Base fill color as hex
             
     Returns:
-        bytes: Final processed PNG image data
+        bytes: Final processed image data
     """
     # ################################################## #
     # Get system settings for desktop

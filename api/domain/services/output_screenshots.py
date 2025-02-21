@@ -2,6 +2,12 @@
 Process request for OUTPUT_SCREENSHOTS.
 """
 
+# Python Standard Libraries
+from io import BytesIO
+
+# Third-Party Libraries
+from PIL import Image
+
 # Local
 from api.core.config import settings_devices
 from api.core.utils import get_screenshot
@@ -40,13 +46,20 @@ def process_request_screenshots(post: dict, request_type: str) -> bytes:
         bytes: PNG image data of captured screenshot
     """
     device = settings_devices.get(request_type)
+    output_format = post['format']
 
     if request_type == 'full':
 
         screenshot_full = get_screenshot_full(str(post['remote_url']), post['wait'])
 
-        return screenshot_full
+        with Image.open(BytesIO(screenshot_full)) as img:
+            output = BytesIO()
+            img.save(output, format=output_format.upper())
+            return output.getvalue()
 
     screenshot = get_screenshot(str(post['remote_url']), post['wait'], device)
 
-    return screenshot
+    with Image.open(BytesIO(screenshot)) as img:
+        output = BytesIO()
+        img.save(output, format=output_format.upper())
+        return output.getvalue()

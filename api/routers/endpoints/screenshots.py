@@ -33,7 +33,7 @@ def handle_request_screenshots_desktop(post: PortfoliofyRequest) -> Response:
             Request data is pre-validated via Pydantic PortfoliofyRequest model.
 
     Returns:
-        Response: PNG image response if request is valid, 
+        Response: Image response in requested format if request is valid,
             NO_CONTENT response otherwise
     """
     request_output_screenshots = post.model_dump()
@@ -42,7 +42,7 @@ def handle_request_screenshots_desktop(post: PortfoliofyRequest) -> Response:
 
         result = process_request_screenshots(request_output_screenshots, 'desktop')
 
-        return Response(content=result, media_type='image/png')
+        return Response(content=result, media_type=f"image/{request_output_screenshots['format']}")
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -59,7 +59,7 @@ def handle_request_screenshots_laptop(post: PortfoliofyRequest) -> Response:
             Request data is pre-validated via Pydantic PortfoliofyRequest model.
 
     Returns:
-        Response: PNG image response if request is valid, 
+        Response: Image response in requested format if request is valid,
             NO_CONTENT response otherwise
     """
     request_output_screenshots = post.model_dump()
@@ -68,7 +68,7 @@ def handle_request_screenshots_laptop(post: PortfoliofyRequest) -> Response:
 
         result = process_request_screenshots(request_output_screenshots, 'laptop')
 
-        return Response(content=result, media_type='image/png')
+        return Response(content=result, media_type=f"image/{request_output_screenshots['format']}")
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -85,7 +85,7 @@ def handle_request_screenshots_tablet(post: PortfoliofyRequest) -> Response:
             Request data is pre-validated via Pydantic PortfoliofyRequest model.
 
     Returns:
-        Response: PNG image response if request is valid, 
+        Response: Image response in requested format if request is valid,
             NO_CONTENT response otherwise
     """
     request_output_screenshots = post.model_dump()
@@ -94,7 +94,7 @@ def handle_request_screenshots_tablet(post: PortfoliofyRequest) -> Response:
 
         result = process_request_screenshots(request_output_screenshots, 'tablet')
 
-        return Response(content=result, media_type='image/png')
+        return Response(content=result, media_type=f"image/{request_output_screenshots['format']}")
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -111,7 +111,7 @@ def handle_request_screenshots_smarphone(post: PortfoliofyRequest) -> Response:
             Request data is pre-validated via Pydantic PortfoliofyRequest model.
 
     Returns:
-        Response: PNG image response if request is valid, 
+        Response: Image response in requested format if request is valid,
             NO_CONTENT response otherwise
     """
     request_output_screenshots = post.model_dump()
@@ -120,7 +120,7 @@ def handle_request_screenshots_smarphone(post: PortfoliofyRequest) -> Response:
 
         result = process_request_screenshots(request_output_screenshots, 'smartphone')
 
-        return Response(content=result, media_type='image/png')
+        return Response(content=result, media_type=f"image/{request_output_screenshots['format']}")
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -137,7 +137,7 @@ def handle_request_screenshots_full(post: PortfoliofyRequest) -> Response:
             Request data is pre-validated via Pydantic PortfoliofyRequest model.
 
     Returns:
-        Response: PNG image response if request is valid, 
+        Response: Image response in requested format if request is valid,
             NO_CONTENT response otherwise
     """
     request_output_screenshots = post.model_dump()
@@ -146,6 +146,6 @@ def handle_request_screenshots_full(post: PortfoliofyRequest) -> Response:
 
         result = process_request_screenshots(request_output_screenshots, 'full')
 
-        return Response(content=result, media_type='image/png')
+        return Response(content=result, media_type=f"image/{request_output_screenshots['format']}")
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
