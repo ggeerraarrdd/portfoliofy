@@ -50,17 +50,19 @@ def process_request_movie(post: PortfoliofyRequest) -> str:
         str: File path to the generated MP4 animation
     """
     # ################################################## #
-    # Get system settings for full
+    # GET CONFIG
     # ################################################## #
     movie = settings_devices.get("movie")
 
+
     # ################################################## #
-    # Get screenshot
+    # GET SCREENSHOT
     # ################################################## #
     screenshot_movie = get_screenshot_full(str(post["remote_url"]), post["wait"])
 
+
     # ################################################## #
-    # Create movie - base
+    # GET BASE LAYER (MOCKUP DIAGRAM)
     # ################################################## #
     svg = dedent(dedent(dedent(f'''\
         <?xml version="1.0" encoding="UTF-8"?>
@@ -83,6 +85,7 @@ def process_request_movie(post: PortfoliofyRequest) -> str:
         </svg>'''
     )))
     base_movie = get_base(post, svg)
+
 
     # ################################################## #
     # Create movie - overlay

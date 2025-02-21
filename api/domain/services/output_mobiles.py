@@ -44,22 +44,30 @@ def process_request_mobiles(post: PortfoliofyRequest) -> bytes:
         bytes: Final processed PNG image data
     """
     # ################################################## #
-    # Get system settings for desktop
+    # GET CONFIG
     # ################################################## #
-    tablet = settings_devices.get('tablet')
-    smartphone = settings_devices.get('smartphone')
+    mobiles_tablet_config = settings_devices.get('tablet')
+    mobiles_smartphone_config = settings_devices.get('smartphone')
+
 
     # ################################################## #
-    # Get screenshot
+    # GET SCREENSHOT
     # ################################################## #
-    screenshot_tablet = get_screenshot(str(post['remote_url']), post['wait'], tablet)
-    screenshot_smartphone = get_screenshot(str(post['remote_url']), post['wait'], smartphone)
+    mobiles_tablet_screenshot = get_screenshot(str(post['remote_url']),
+                                               post['wait'],
+                                               mobiles_tablet_config)
+
+    mobiles_smartphone_screenshot = get_screenshot(str(post['remote_url']),
+                                                   post['wait'],
+                                                   mobiles_smartphone_config)
+
 
     # ################################################## #
-    # Handle OUTPUT_MOBILES - tablet
+    # TABLET
     # ################################################## #
-
-    # Create base - tablet
+    # ################################################## #
+    # GET BASE LAYER (MOCKUP DIAGRAM) - tablet only
+    # ################################################## #
     svg = dedent(dedent(dedent(f'''\
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -74,24 +82,34 @@ def process_request_mobiles(post: PortfoliofyRequest) -> bytes:
             </g>
         </svg>'''
     )))
-    base_tablet = get_base(post, svg)
+    mobiles_tablet_base = get_base(post, svg)
 
-    # Create overlay - tablet
-    new_width = tablet['width_medium']
-    height_crop = tablet['medium_height_crop']
-    overlay_tablet = get_overlay(screenshot_tablet, new_width, height_crop)
+    # ################################################## #
+    # GET OVERLAY (SCREENSHOT) - tablet only
+    # ################################################## #
+    # mobiles_tablet_new_width = mobiles_tablet_config['width_medium']
+    # mobiles_tablet_height_crop = mobiles_tablet_config['medium_height_crop']
+    mobiles_tablet_overlay = get_overlay(mobiles_tablet_screenshot,
+                                         mobiles_tablet_config['width_medium'],
+                                         mobiles_tablet_config['medium_height_crop'])
 
-    # Combine base and overlay - tablet
-    lat = 34
-    lng = 34
-    output_main_tablet = get_final_temp(base_tablet, overlay_tablet, lat, lng)
+    # ################################################## #
+    # GET OUTPUT FINAL (temp) - tablet only
+    # ################################################## #
+    # mobiles_tablet_lat = 34
+    # mobiles_tablet_lng = 34
+    mobiles_tablet_output_temp = get_final_temp(mobiles_tablet_base,
+                                                mobiles_tablet_overlay,
+                                                34,
+                                                34)
 
 
     # ################################################## #
-    # Handle OUTPUT_MOBILES - smartphone
+    # SMARTPHONE
     # ################################################## #
-
-    # Create base - smartphone
+    # ################################################## #
+    # GET BASE LAYER (MOCKUP DIAGRAM) - smartphone only
+    # ################################################## #
     svg = dedent(dedent(dedent(f'''\
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -106,47 +124,63 @@ def process_request_mobiles(post: PortfoliofyRequest) -> bytes:
             </g>
         </svg>'''
     )))
-    base_smartphone = get_base(post, svg)
-
-    # Create overlay - smartphone
-    new_width = smartphone['width_medium']
-    height_crop = smartphone['medium_height_crop']
-    overlay_smartphone = get_overlay(screenshot_smartphone, new_width, height_crop)
-
-    # Combine base and overlay - smartphone
-    lat = 24
-    lng = 24
-    output_main_smartphone = get_final_temp(base_smartphone, overlay_smartphone, lat, lng)
+    mobiles_smartphone_base = get_base(post, svg)
 
     # ################################################## #
-    # Handle OUTPUT_MOBILES - final temp
+    # GET OVERLAY (SCREENSHOT) - smartphone only
+    # ################################################## #
+    # mobiles_smartphone_new_width = mobiles_smartphone_config['width_medium']
+    # mobiles_smartphone_height_crop = mobiles_smartphone_config['medium_height_crop']
+    mobiles_smartphone_overlay = get_overlay(mobiles_smartphone_screenshot,
+                                             mobiles_smartphone_config['width_medium'],
+                                             mobiles_smartphone_config['medium_height_crop'])
+
+
+    # ################################################## #
+    # GET OUTPUT FINAL (temp) - smartphone only
+    # ################################################## #
+    # mobiles_smartphone_lat = 24
+    # mobiles_smartphone_lng = 24
+    mobiles_smartphone_output_temp = get_final_temp(mobiles_smartphone_base,
+                                                    mobiles_smartphone_overlay,
+                                                    24,
+                                                    24)
+
+
+    # ################################################## #
+    # GET OUTPUT FINAL (temp) - mobiles
     # ################################################## #
     width = 1605
     height = 1406
 
     # Convert bytes to PIL Image objects
-    output_main_tablet_img = Image.open(BytesIO(output_main_tablet))
-    output_main_smartphone_img = Image.open(BytesIO(output_main_smartphone))
+    mobiles_tablet_output_temp_img = Image.open(BytesIO(mobiles_tablet_output_temp))
+    mobiles_smartphone_output_img = Image.open(BytesIO(mobiles_smartphone_output_temp))
 
-    output_mobiles_image = Image.new(mode='RGB', size=(width, height), color=f"{post['doc_fill_color']}")
+    # Create a new PIL Image object for mobiles_output
+    mobiles_output_temp_image = Image.new(mode='RGB', size=(width, height), color=f"{post['doc_fill_color']}")
 
-    output_mobiles_tablet_box = (520, 0, 520 + output_main_tablet_img.width, output_main_tablet_img.height)
-    output_mobiles_image.paste(output_main_tablet_img, output_mobiles_tablet_box)
+    # Paste tablet final to mobiles_output_temp
+    mobiles_tablet_box = (520, 0, 520 + mobiles_tablet_output_temp_img.width, mobiles_tablet_output_temp_img.height)
+    mobiles_output_temp_image.paste(mobiles_tablet_output_temp_img, mobiles_tablet_box)
 
-    output_mobiles_smartphone_box = (0, 600, output_main_smartphone_img.width, 600 + output_main_smartphone_img.height)
-    output_mobiles_image.paste(output_main_smartphone_img, output_mobiles_smartphone_box)
+    # Paste smartphone final to mobiles_output_temp
+    mobiles_smartphone_box = (0, 600, mobiles_smartphone_output_img.width, 600 + mobiles_smartphone_output_img.height)
+    mobiles_output_temp_image.paste(mobiles_smartphone_output_img, mobiles_smartphone_box)
 
+    # Convert mobile_output_temp PIL Image object to bytes
     with BytesIO() as output:
-        output_mobiles_image.save(output, format='PNG')
-        output_mobiles_temp = output.getvalue()
+        mobiles_output_temp_image.save(output, format='PNG')
+        mobiles_output_temp = output.getvalue()
+
 
     # ################################################## #
-    # Handle OUTPUT_MOBILES - final
+    # GET OUTPUT FINAL
     # ################################################## #
-    output_mobiles_final = get_final(output_mobiles_temp, post)
+    mobiles_output_final = get_final(mobiles_output_temp, post)
 
 
-    return output_mobiles_final
+    return mobiles_output_final
 
 
 def get_overlay_final(directory, fname_input, fname_output):

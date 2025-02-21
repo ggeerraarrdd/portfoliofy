@@ -39,19 +39,21 @@ def process_request_browser(post: PortfoliofyRequest) -> bytes:
         bytes: Final processed PNG image data
     """
     # ################################################## #
-    # Get system settings for desktop
+    # GET CONFIG
     # ################################################## #
-    desktop = settings_devices.get('desktop')
+    browser_config = settings_devices.get('desktop')
 
 
     # ################################################## #
-    # Get screenshot
+    # GET SCREENSHOT
     # ################################################## #
-    screenshot_browser = get_screenshot(str(post['remote_url']), post['wait'], desktop)
+    browser_screenshot = get_screenshot(str(post['remote_url']),
+                                        post['wait'],
+                                        browser_config)
 
 
     # ################################################## #
-    # Create base layer
+    # GET BASE LAYER (MOCKUP DIAGRAM)
     # ################################################## #
     svg = dedent(dedent(dedent(f'''\
         <?xml version="1.0" encoding="UTF-8"?>
@@ -74,29 +76,34 @@ def process_request_browser(post: PortfoliofyRequest) -> bytes:
             </g>
         </svg>'''
     )))
-    base_browser = get_base(post, svg)
+    browser_base = get_base(post, svg)
 
 
     # ################################################## #
-    # Create overlay
+    # GET OVERLAY (SCREENSHOT)
     # ################################################## #
-    new_width = desktop['width_medium']
-    height_crop = desktop['medium_height_crop']
-    overlay_browser = get_overlay(screenshot_browser, new_width, height_crop)
-
-
-    # ################################################## #
-    # Create final (temp)
-    # ################################################## #
-    lat = 4
-    lng = 64
-    output_browser_temp = get_final_temp(base_browser, overlay_browser, lat, lng)
+    # browser_new_width = browser_config['width_medium']
+    # browser_height_crop = browser_config['medium_height_crop']
+    browser_overlay = get_overlay(browser_screenshot,
+                                  browser_config['width_medium'],
+                                  browser_config['medium_height_crop'])
 
 
     # ################################################## #
-    # Create final
+    # GET OUTPUT FINAL (temp)
     # ################################################## #
-    output_browser_final = get_final(output_browser_temp, post)
+    # browser_lat = 4
+    # browser_lng = 64
+    browser_output_temp = get_final_temp(browser_base,
+                                         browser_overlay,
+                                         4,
+                                         64)
 
 
-    return output_browser_final
+    # ################################################## #
+    # GET OUTPUT FINAL
+    # ################################################## #
+    browser_output_final = get_final(browser_output_temp, post)
+
+
+    return browser_output_final

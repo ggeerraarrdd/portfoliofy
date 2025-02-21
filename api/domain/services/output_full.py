@@ -42,19 +42,20 @@ def process_request_full(post: PortfoliofyRequest) -> bytes:
         bytes: Final processed PNG image data
     """
     # ################################################## #
-    # Get system settings for full
+    # GET CONFIG
     # ################################################## #
-    full = settings_devices.get('full')
+    full_config = settings_devices.get('full')
 
 
     # ################################################## #
-    # Get screenshot
+    # GET SCREENSHOT
     # ################################################## #
-    screenshot_full = get_screenshot_full(str(post['remote_url']), post['wait'])
+    full_screenshot = get_screenshot_full(str(post['remote_url']),
+                                          post['wait'])
 
 
     # ################################################## #
-    # Create base layer
+    # GET BASE LAYER (MOCKUP DIAGRAM)
     # ################################################## #
     svg = dedent(dedent(dedent('''\
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="776px"
@@ -69,42 +70,42 @@ def process_request_full(post: PortfoliofyRequest) -> bytes:
             </g>
         </svg>'''
     )))
-    base_full = get_base(post, svg)
+    full_base = get_base(post, svg)
 
 
     # ################################################## #
-    # Create overlay
+    # GET OVERLAY (SCREENSHOT)
     # ################################################## #
-    overlay_full = get_overlay_full(screenshot_full, full)
-    overlay_full = get_overlay_full_bordered(overlay_full, post)
+    full_overlay = get_overlay_full(full_screenshot, full_config)
+    full_overlay = get_overlay_full_bordered(full_overlay, post)
 
 
     # ################################################## #
-    # Create final (temp)
+    # GET OUTPUT FINAL (temp)
     # ################################################## #
-    output_full_base_img = Image.open(BytesIO(base_full))
-    output_full_overlay_img = Image.open(BytesIO(overlay_full))
+    full_base_img = Image.open(BytesIO(full_base))
+    full_overlay_img = Image.open(BytesIO(full_overlay))
 
     width = 776
-    height = output_full_overlay_img.height + 60
+    height = full_overlay_img.height + 60
 
-    output_full_img = Image.new('RGB', (width, height), (255, 255, 255))
+    full_output_temp_img = Image.new('RGB', (width, height), (255, 255, 255))
 
-    output_full_img.paste(output_full_base_img, (0,0))
-    output_full_img.paste(output_full_overlay_img, (0,60))
+    full_output_temp_img.paste(full_base_img, (0,0))
+    full_output_temp_img.paste(full_overlay_img, (0,60))
 
     with BytesIO() as output:
-        output_full_img.save(output, format='PNG')
-        output_full_temp = output.getvalue()
+        full_output_temp_img.save(output, format='PNG')
+        full_output_temp = output.getvalue()
 
 
     # ################################################## #
-    # Create final
+    # GET OUTPUT FINAL
     # ################################################## #
-    output_full_final = get_final(output_full_temp, post)
+    full_output_final = get_final(full_output_temp, post)
 
 
-    return output_full_final
+    return full_output_final
 
 
 def get_overlay_full(screenshot_bytes, full):

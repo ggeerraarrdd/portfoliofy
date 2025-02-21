@@ -286,7 +286,7 @@ def get_final(image_bytes: bytes, post: dict) -> bytes:
         result = Image.new(image.mode, (new_width, new_height), post['doc_fill_color'])
         result.paste(image, (left, top))
 
-        result.save(output, format='PNG')
+        result.save(output, format=f'{post["format"]}')
 
         return output.getvalue()
 

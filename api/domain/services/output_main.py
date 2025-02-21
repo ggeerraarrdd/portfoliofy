@@ -55,14 +55,9 @@ def process_request_main(post: PortfoliofyRequest) -> bytes:
     # Get screenshot
     # ################################################## #
     screenshot_desktop = get_screenshot(str(post["remote_url"]), post["wait"], desktop)
-
     screenshot_laptop = get_screenshot(str(post["remote_url"]), post["wait"], laptop)
-
     screenshot_tablet = get_screenshot(str(post["remote_url"]), post["wait"], tablet)
-
-    screenshot_smartphone = get_screenshot(str(post["remote_url"]),
-                                           post["wait"],
-                                           smartphone)
+    screenshot_smartphone = get_screenshot(str(post["remote_url"]), post["wait"], smartphone)
 
     # ################################################## #
     # Handle OUTPUT_MAIN - desktop
@@ -93,17 +88,12 @@ def process_request_main(post: PortfoliofyRequest) -> bytes:
     # Create overlay - desktop
     new_width = desktop["width_small"]
     height_crop = desktop["small_height_crop"]
-    overlay_desktop = get_overlay(screenshot_desktop,
-                                  new_width,
-                                  height_crop)
+    overlay_desktop = get_overlay(screenshot_desktop, new_width, height_crop)
 
     # Combine base and overlay - desktop
     lat = 74
     lng = 74
-    output_main_desktop = get_final_temp(base_desktop,
-                                         overlay_desktop,
-                                         lat,
-                                         lng)
+    output_main_desktop = get_final_temp(base_desktop, overlay_desktop, lat, lng)
 
 
     # ################################################## #
@@ -133,17 +123,12 @@ def process_request_main(post: PortfoliofyRequest) -> bytes:
     # Create overlay - laptop
     new_width = laptop["width_small"]
     height_crop = laptop["small_height_crop"]
-    overlay_laptop = get_overlay(screenshot_laptop,
-                                 new_width,
-                                 height_crop)
+    overlay_laptop = get_overlay(screenshot_laptop, new_width, height_crop)
 
     # Combine base and overlay - laptop
     lat = 34
     lng = 34
-    output_main_laptop = get_final_temp(base_laptop,
-                                        overlay_laptop,
-                                        lat,
-                                        lng,)
+    output_main_laptop = get_final_temp(base_laptop, overlay_laptop, lat, lng)
 
     # ################################################## #
     # Handle OUTPUT_MAIN - tablet
@@ -167,19 +152,14 @@ def process_request_main(post: PortfoliofyRequest) -> bytes:
     base_tablet = get_base(post, svg)
 
     # Create overlay - tablet
-    new_width = tablet["width_small"]
-    height_crop = tablet["small_height_crop"]
-    overlay_tablet = get_overlay(screenshot_tablet,
-                                 new_width,
-                                 height_crop)
+    tablet_new_width = tablet["width_small"]
+    tablet_height_crop = tablet["small_height_crop"]
+    tablet_overlay = get_overlay(screenshot_tablet, tablet_new_width, tablet_height_crop)
 
     # Combine base and overlay - tablet
-    lat = 34
-    lng = 34
-    output_main_tablet = get_final_temp(base_tablet,
-                                        overlay_tablet,
-                                        lat,
-                                        lng)
+    tablet_lat = 34
+    tablet_lng = 34
+    output_main_tablet = get_final_temp(base_tablet, tablet_overlay, tablet_lat, tablet_lng)
 
     # ################################################## #
     # Handle OUTPUT_MAIN - smartphone
@@ -205,17 +185,12 @@ def process_request_main(post: PortfoliofyRequest) -> bytes:
     # Create overlay - smartphone
     new_width = smartphone["width_small"]
     height_crop = smartphone["small_height_crop"]
-    overlay_smartphone = get_overlay(screenshot_smartphone,
-                                     new_width,
-                                     height_crop)
+    overlay_smartphone = get_overlay(screenshot_smartphone, new_width, height_crop)
 
     # Combine base and overlay - smartphone
     lat = 24
     lng = 24
-    output_main_smartphone = get_final_temp(base_smartphone,
-                                            overlay_smartphone,
-                                            lat,
-                                            lng)
+    output_main_smartphone = get_final_temp(base_smartphone, overlay_smartphone, lat, lng)
 
     # ################################################## #
     # Handle OUTPUT_MAIN - final temp
@@ -252,8 +227,7 @@ def process_request_main(post: PortfoliofyRequest) -> bytes:
     # ################################################## #
     # Handle OUTPUT_MAIN - final
     # ################################################## #
-    output_main_final = get_final(output_main_temp,
-                                  post)
+    output_main_final = get_final(output_main_temp, post)
 
 
     return output_main_final
