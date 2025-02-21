@@ -25,6 +25,7 @@ from .utils import get_overlay
 from .utils import get_final_temp
 from .utils import get_final
 from .utils import cleanup
+from .utils import get_mime
 
 
 # Define what should be available when using "from .utils import *"
@@ -35,4 +36,5 @@ __all__ = ['get_screenshot',
            'get_overlay',
            'get_final_temp',
            'get_final',
-           'cleanup']
+           'cleanup',
+           'get_mime']

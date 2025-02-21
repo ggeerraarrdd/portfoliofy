@@ -42,18 +42,18 @@ _Portfoliofy_ v3.0.0-beta.2 offers the following `OUTPUT` types requested from e
 
 * Collage of screenshots taken from desktop, laptop, tablet, and smartphone views
 * Each screenshot overlaid on a device mockup diagram
-* PNG, JPEG, BMP or TIFF format
+* PNG, JPEG, BMP, TIFF or PDF format
 
 ### `OUTPUT_BROWSER`
 
 * Screenshot from desktop view overlaid on a browser mockup diagram
-* PNG, JPEG, BMP or TIFF format
+* PNG, JPEG, BMP, TIFF or PDF format
 
 ### `OUTPUT_MOBILES`
 
 * Collage of screenshots taken from tablet and smartphone views
 * Each screenshot overlaid on a device mockup diagram
-* PNG, JPEG, BMP or TIFF format
+* PNG, JPEG, BMP, TIFF or PDF format
 
 ### `OUTPUT_FULL`
 
@@ -63,7 +63,7 @@ _Portfoliofy_ v3.0.0-beta.2 offers the following `OUTPUT` types requested from e
 ### `OUTPUT_MOVIE`
 
 * A scroll animation video of the full webpage
-* MP4 format
+* MP4 format only
 
 ### `OUTPUT_SCREENSHOTS`
 

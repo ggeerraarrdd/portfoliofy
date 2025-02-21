@@ -6,6 +6,7 @@ FastAPI router for handling individual device OUTPUT_SCREENSHOTS requests.
 from fastapi import APIRouter, Response, status
 
 # Local
+from api.core.utils import get_mime
 from api.domain.schemas import PortfoliofyRequest # Pydantic model for request validation
 from api.domain.services import process_request_screenshots
 
@@ -142,10 +143,14 @@ def handle_request_screenshots_full(post: PortfoliofyRequest) -> Response:
     """
     request_output_screenshots = post.model_dump()
 
+    mime_type = get_mime(request_output_screenshots['format'])
+
     if request_output_screenshots['request'] == 1:
 
-        result = process_request_screenshots(request_output_screenshots, 'full')
+        if mime_type not in ['movie/mp4', 'application/pdf']:
 
-        return Response(content=result, media_type=f"image/{request_output_screenshots['format']}")
+            result = process_request_screenshots(request_output_screenshots, 'full')
+
+            return Response(content=result, media_type=mime_type)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)

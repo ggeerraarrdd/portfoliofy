@@ -6,6 +6,7 @@ FastAPI router for handling OUTPUT_BROWSER requests.
 from fastapi import APIRouter, Response, status
 
 # Local
+from api.core.utils import get_mime
 from api.domain.schemas import PortfoliofyRequest # Pydantic model for request validation
 from api.domain.services import process_request_browser
 
@@ -33,17 +34,19 @@ def handle_request_browser(post: PortfoliofyRequest) -> Response:
             Request data is pre-validated via Pydantic PortfoliofyRequest model.
 
     Returns:
-        Response: Image response in requested format if request is valid,
+        Response: Image data in requested format if request is valid,
             NO_CONTENT response otherwise
     """
     request_output_browser = post.model_dump()
 
-    print(type(post))
+    mime_type = get_mime(request_output_browser['format'])
 
     if request_output_browser['request'] == 1:
 
-        result = process_request_browser(request_output_browser)
+        if mime_type not in ['movie/mp4']:
 
-        return Response(content=result, media_type=f"image/{request_output_browser['format']}")
+            result = process_request_browser(request_output_browser)
+
+            return Response(content=result, media_type=mime_type)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)

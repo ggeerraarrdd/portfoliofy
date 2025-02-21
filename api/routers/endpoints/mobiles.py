@@ -6,6 +6,7 @@ FastAPI router for handling OUTPUT_MOBILES requests.
 from fastapi import APIRouter, Response, status
 
 # Local
+from api.core.utils import get_mime
 from api.domain.schemas import PortfoliofyRequest # Pydantic model for request validation
 from api.domain.services import process_request_mobiles
 
@@ -38,10 +39,14 @@ def handle_request_mobiles(post: PortfoliofyRequest) -> Response:
     """
     request_output_mobiles = post.model_dump()
 
+    mime_type = get_mime(request_output_mobiles['format'])
+
     if request_output_mobiles['request'] == 1:
 
-        result = process_request_mobiles(request_output_mobiles)
+        if mime_type not in ['movie/mp4']:
 
-        return Response(content=result, media_type=f"image/{request_output_mobiles['format']}")
+            result = process_request_mobiles(request_output_mobiles)
+
+            return Response(content=result, media_type=mime_type)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)

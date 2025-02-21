@@ -7,6 +7,7 @@ from fastapi import APIRouter, Response, status
 from fastapi.responses import FileResponse
 
 # Local
+from api.core.utils import get_mime
 from api.domain.schemas import PortfoliofyRequest # Pydantic model for request validation
 from api.domain.services import process_request_movie
 
@@ -39,13 +40,17 @@ def handle_request_movie(post: PortfoliofyRequest) -> Response:
     """
     request_output_movie = post.model_dump()
 
+    mime_type = get_mime(request_output_movie['format'])
+
     if request_output_movie['request'] == 1:
 
-        result = process_request_movie(request_output_movie)
+        if mime_type in ['movie/mp4']:
 
-        if result == 0:
-            Response(status_code=status.HTTP_204_NO_CONTENT)
-        else:
-            return FileResponse(f'{result}', media_type='video/mp4')
+            result = process_request_movie(request_output_movie)
+
+            if result == 0:
+                Response(status_code=status.HTTP_204_NO_CONTENT)
+            else:
+                return FileResponse(f'{result}', media_type=mime_type)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)

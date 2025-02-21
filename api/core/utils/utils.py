@@ -261,19 +261,84 @@ def get_final_temp(base_bytes: bytes, overlay_bytes: bytes, lat: int, lng: int) 
         return final_temp
 
 
+# def get_final(image_bytes: bytes, post: dict) -> bytes:
+#     """
+#     Adds padding to image and returns final PNG bytes.
+
+#     Args:
+#         image_bytes (bytes): Input image as bytes
+#         post (dict): Dictionary containing doc_pad_h, doc_pad_v, and doc_fill_color
+
+#     Returns:
+#         PNG image as bytes
+#     """
+#     with BytesIO(image_bytes) as img_io, BytesIO() as output:
+
+#         image = Image.open(img_io)
+
+#         width, height = image.size
+#         right = left = post['doc_pad_h']
+#         top = bottom = post['doc_pad_v']
+
+#         new_width = width + right + left
+#         new_height = height + top + bottom
+
+#         result = Image.new(image.mode, (new_width, new_height), post['doc_fill_color'])
+#         result.paste(image, (left, top))
+
+#         result.save(output, format=f'{post["format"]}')
+
+#         return output.getvalue()
+
+
 def get_final(image_bytes: bytes, post: dict) -> bytes:
     """
-    Adds padding to image and returns final PNG bytes.
+    Adds padding to image and returns bytes in specified format.
 
     Args:
         image_bytes (bytes): Input image as bytes
-        post (dict): Dictionary containing doc_pad_h, doc_pad_v, and doc_fill_color
+        post (dict): Dictionary containing doc_pad_h, doc_pad_v, doc_fill_color, and format
 
     Returns:
-        PNG image as bytes
+        Image bytes in requested format
+    """
+    request_format = post.get("format", "PNG").upper()
+
+    if request_format == "PDF":
+        return _get_final_pdf(image_bytes, post)
+
+    return _get_final_standard(image_bytes, post, request_format)
+
+
+def _get_final_pdf(image_bytes: bytes, post: dict) -> bytes:
+    """
+    TD
     """
     with BytesIO(image_bytes) as img_io, BytesIO() as output:
+        image = Image.open(img_io)
 
+        # Add padding
+        width, height = image.size
+        right = left = post['doc_pad_h']
+        top = bottom = post['doc_pad_v']
+
+        new_width = width + right + left
+        new_height = height + top + bottom
+
+        result = Image.new(image.mode, (new_width, new_height), post['doc_fill_color'])
+        result.paste(image, (left, top))
+
+        # Convert to RGB for PDF
+        rgb_result = result.convert('RGB')
+        rgb_result.save(output, format="PDF", resolution=100.0)
+        return output.getvalue()
+
+
+def _get_final_standard(image_bytes: bytes, post: dict, request_format: str) -> bytes:
+    """
+    TD
+    """
+    with BytesIO(image_bytes) as img_io, BytesIO() as output:
         image = Image.open(img_io)
 
         width, height = image.size
@@ -286,7 +351,10 @@ def get_final(image_bytes: bytes, post: dict) -> bytes:
         result = Image.new(image.mode, (new_width, new_height), post['doc_fill_color'])
         result.paste(image, (left, top))
 
-        result.save(output, format=f'{post["format"]}')
+        if request_format in ["PNG", "JPEG", "BMP", "TIFF"]:
+            result.save(output, format=request_format)
+        else:
+            raise ValueError(f"Unsupported format: {request_format}")
 
         return output.getvalue()
 
@@ -307,3 +375,20 @@ def cleanup(directory_path: str, file: str) -> str:
         return f'{file} has been deleted'
     except FileNotFoundError:
         return f'{file} not in directory'
+
+
+def get_mime(request_format: str) -> str:
+    """
+    TD
+    """
+    if request_format.upper() == 'PDF':
+        return 'application/pdf'
+
+    if request_format.upper() == 'MP4':
+        return 'video/mp4'
+
+    if request_format.upper() == 'SVG':
+        return 'image/svg+xml'
+
+
+    return f"image/{request_format}"
