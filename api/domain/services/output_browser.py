@@ -12,7 +12,6 @@ from api.core.utils import get_base
 from api.core.utils import get_overlay
 from api.core.utils import get_final_temp
 from api.core.utils import get_final
-from api.domain.schemas import PortfoliofyRequest # Pydantic model for request validation
 
 
 
@@ -23,7 +22,7 @@ from api.domain.schemas import PortfoliofyRequest # Pydantic model for request v
 
 
 
-def process_request_browser(post: PortfoliofyRequest) -> bytes:
+def process_request_browser(post: dict) -> bytes:
     """
     Process requests for OUTPUT_BROWSER.
 
@@ -32,8 +31,15 @@ def process_request_browser(post: PortfoliofyRequest) -> bytes:
     composite as a PNG image data.
 
     Args:
-        post (PortfoliofyRequest): Request containing URL and styling parameters
-            Request data is pre-validated via Pydantic PortfoliofyRequest model.
+        post (dict): Request parameters including (pre-validated with Pydantic):
+            remote_url (str): URL to capture screenshot from
+            wait (int): Wait time in seconds before capture
+            format (str): Output image format
+            doc_pad_h (int): Horizontal padding in pixels
+            doc_pad_v (int): Vertical padding in pixels 
+            doc_fill_color (str): Background color as hex
+            base_stroke_color (str): Border color as hex
+            base_fill_color (str): Base fill color as hex
             
     Returns:
         bytes: Final processed PNG image data
