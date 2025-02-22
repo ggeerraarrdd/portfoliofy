@@ -14,7 +14,6 @@ from api.core.config import settings_devices
 from api.core.utils import get_screenshot
 from api.core.utils import get_base
 from api.core.utils import get_overlay
-from api.core.utils import get_final_temp
 from api.core.utils import get_final
 
 
@@ -99,15 +98,18 @@ def process_request_mobiles(post: dict) -> bytes:
                                          mobiles_tablet_config['width_medium'],
                                          mobiles_tablet_config['medium_height_crop'])
 
+    mobiles_tablet_overlay = get_overlay_mobiles(mobiles_tablet_overlay)
+
+
     # ################################################## #
     # GET OUTPUT FINAL (temp) - tablet only
     # ################################################## #
-    # mobiles_tablet_lat = 34
-    # mobiles_tablet_lng = 34
-    mobiles_tablet_output_temp = get_final_temp(mobiles_tablet_base,
-                                                mobiles_tablet_overlay,
-                                                34,
-                                                34)
+    # mobiles_tablet_lat = 34 # horizontal
+    # mobiles_tablet_lng = 34 # vertical
+    mobiles_tablet_output_temp = get_final_temp_mobiles(mobiles_tablet_base,
+                                                        mobiles_tablet_overlay,
+                                                        34,
+                                                        36)
 
 
     # ################################################## #
@@ -141,16 +143,18 @@ def process_request_mobiles(post: dict) -> bytes:
                                              mobiles_smartphone_config['width_medium'],
                                              mobiles_smartphone_config['medium_height_crop'])
 
+    mobiles_smartphone_overlay = get_overlay_mobiles(mobiles_smartphone_overlay)
+
 
     # ################################################## #
     # GET OUTPUT FINAL (temp) - smartphone only
     # ################################################## #
-    # mobiles_smartphone_lat = 24
-    # mobiles_smartphone_lng = 24
-    mobiles_smartphone_output_temp = get_final_temp(mobiles_smartphone_base,
-                                                    mobiles_smartphone_overlay,
-                                                    24,
-                                                    24)
+    # mobiles_smartphone_lat = 24 # horizontal
+    # mobiles_smartphone_lng = 24 # vertical
+    mobiles_smartphone_output_temp = get_final_temp_mobiles(mobiles_smartphone_base,
+                                                            mobiles_smartphone_overlay,
+                                                            22,
+                                                            22)
 
 
     # ################################################## #
@@ -189,53 +193,58 @@ def process_request_mobiles(post: dict) -> bytes:
     return mobiles_output_final
 
 
-def get_overlay_final(directory, fname_input, fname_output):
+def get_overlay_mobiles(overlay):
     """
     TD
     """
-    # Open the image
-    image = Image.open(f"{directory}/{fname_input}")
+    with BytesIO(overlay) as img_io, BytesIO() as output:
+        # Open the image
+        image = Image.open(img_io)
 
-    # Create a border with rounded corners
-    border_radius = 20.32
-    border_width = 0
-    border_color = (255, 0, 0)  # Red color
+        # Create a border with rounded corners
+        border_radius = 20.32
+        border_width = 0
+        border_color = (255, 0, 0)  # Red color
 
-    # Create a mask with rounded corners
-    mask = Image.new("L", image.size, 0)
-    mask_draw = ImageDraw.Draw(mask)
-    mask_draw.rounded_rectangle((0, 0, image.width, image.height), border_radius, fill=255)
+        # Create a mask with rounded corners
+        mask = Image.new("L", image.size, 0)
+        mask_draw = ImageDraw.Draw(mask)
+        mask_draw.rounded_rectangle((0, 0, image.width, image.height), border_radius, fill=255)
 
-    # Apply the mask to the image
-    image_with_border = ImageOps.fit(image, mask.size)
-    image_with_border.putalpha(mask)
+        # Apply the mask to the image
+        image_with_border = ImageOps.fit(image, mask.size)
+        image_with_border.putalpha(mask)
 
-    # Draw the border
-    border_draw = ImageDraw.Draw(image_with_border)
-    border_draw.rounded_rectangle((0, 0, image.width, image.height), border_radius, outline=border_color, width=border_width)
+        # Draw the border
+        border_draw = ImageDraw.Draw(image_with_border)
+        border_draw.rounded_rectangle((0, 0, image.width, image.height), border_radius, outline=border_color, width=border_width)
 
-    image_with_border.save(f"{directory}/{fname_output}")
+        # Save to bytes
+        image_with_border.save(output, format='PNG')
 
-    return 1
+        overlay = output.getvalue()
+
+        return overlay
 
 
-def get_subfinal_mobiles(base, overlay, lat, lng, directory_main, filename_output):
+def get_final_temp_mobiles(base, overlay, lat, lng):
     """
     TD
     """
-    # Open the base image
-    base_image = Image.open(base)
+    with BytesIO(base) as base_io, BytesIO(overlay) as overlay_io, BytesIO() as output:
+        # Open the images
+        base_image = Image.open(base_io)
+        overlay_image = Image.open(overlay_io)
 
-    # Open the overlay image
-    overlay_image = Image.open(overlay)
+        # Set coordinates of top-left corner
+        box = (lat, lng)
 
-    # Set coordinates of top-left corner
-    box = (lat, lng)
+        # Overlay the images
+        base_image.paste(overlay_image, box, mask=overlay_image)
 
-    # Overlay the images
-    base_image.paste(overlay_image, box, mask=overlay_image)
+        # Save to bytes
+        base_image.save(output, format='PNG')
 
-    # Save the final image
-    base_image.save(f"{directory_main}/{filename_output}")
+        final_temp = output.getvalue()
 
-    return 1
+        return final_temp
