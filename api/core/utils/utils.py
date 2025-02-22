@@ -55,9 +55,12 @@ def get_screenshot(url: str, wait: int, settings_devices: dict) -> bytes:
     Returns:
         PNG screenshot as bytes
     """
+    width = settings_devices['width_large']
+    height = settings_devices['height_large']
+
     # Set options
     options = Options()
-    options.add_argument(f"--window-size={settings_devices['width_large']},{settings_devices['height_large']}")
+    options.add_argument(f'--window-size={width},{height}')
     options.add_argument('--no-sandbox')
     options.add_argument('--headless')
     options.add_argument('--hide-scrollbars')
@@ -73,8 +76,19 @@ def get_screenshot(url: str, wait: int, settings_devices: dict) -> bytes:
         # Open Chrome webdriver
         driver = webdriver.Chrome(options=options)
 
-    # Open Chrome webdriver
-    driver = webdriver.Chrome(options=options)
+    # Verify viewport size
+    viewport_width = driver.execute_script('return window.innerWidth;')
+    viewport_height = driver.execute_script('return window.innerHeight;')
+
+    if viewport_width != settings_devices['width_large'] or viewport_height != settings_devices['height_large']:
+
+        # Ensure viewport set to specified dimensions
+        driver.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {
+            'width': width,
+            'height': height,
+            'deviceScaleFactor': 1,
+            'mobile': False
+        })
 
     try:
         driver.get(url)
