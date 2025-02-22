@@ -36,7 +36,7 @@ More screenshots below.
 
 ## Features
 
-_Portfoliofy_ v3.0.0-beta.2 offers the following `OUTPUT` types with configurable visual parameters, document layouts and output formats.
+_Portfoliofy_ v3.0.0-beta.3 offers the following `OUTPUT` types with configurable visual parameters, document layouts and output formats.
 
 ### `OUTPUT_MAIN`
 
@@ -114,7 +114,14 @@ portfoliofy/
 
 ## Prerequisites
 
-* Python 3.12 (not tested on other versions)
+* Python 3.12
+  * _Portfoliofy_ not fully tested on other versions
+* Google Chrome
+  Latest stable version recommended
+* ChromeDriver
+  * Must match your Chrome browser version
+  * Download from the [official ChromeDriver website](https://developer.chrome.com/docs/chromedriver/downloads)
+  * Ensure it's placed in your system PATH or configured via .env file (see [Configuration](#configuration))
 
 ## Getting Started
 
@@ -147,14 +154,23 @@ portfoliofy/
 
 ### Configuration
 
-* TBD
+1. **Configure the chromedriver path**
+  
+    * Create a `.env` file in the root directory of the project
+    * Add the following line to specify your chromedriver path:
+
+    ```python
+    CHROMEDRIVER_PATH='/path/to/your/chromedriver'
+    ```
+
+    * Replace `/path/to/your/chromedriver` with the actual path where chromedriver is installed on your system
 
 ### Usage
 
 1. **Start the live server**
 
     ```bash
-    uvicorn api.portfoliofy:app --reload
+    uvicorn api.portfoliofy:app
     ```
 
 2. **Access the documentation user interfaces**
