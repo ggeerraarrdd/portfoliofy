@@ -258,6 +258,8 @@ The [initial realease](https://github.com/ggeerraarrdd/portfoliofy/releases/tag/
 
 ## Screenshots
 
+_(From top to bottom: OUTPUT_BROWSER, OUTPUT_MOBILES, OUTPUT_FULL, OUTPUT_MOVIE for the US General Services Administration Fine Arts Collection website @ [https://art.gsa.gov/](https://art.gsa.gov/))_
+
 ![Portfoliofy](/docs/portfoliofy2.png)
 
 ![Portfoliofy](/docs/portfoliofy3.png)
@@ -268,4 +270,4 @@ The [initial realease](https://github.com/ggeerraarrdd/portfoliofy/releases/tag/
 
 ## Frontispiece
 
-* TBD
+Portfoliofy API. (2023). [Multi-device viewport composite of art.gsa.gov: Desktop, laptop, tablet, and smartphone views with stylized device mockups] [Digital output]. Author's collection. In the public domain.
