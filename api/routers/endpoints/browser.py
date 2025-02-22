@@ -25,17 +25,23 @@ router = APIRouter()
 @router.post('/browser', status_code=status.HTTP_201_CREATED)
 def handle_request_browser(post: PortfoliofyRequest) -> Response:
     """
-    Handle requests for OUTPUT_BROWSER. 
-    
-    Delegates processing to process_request_browser().
+    Handle OUTPUT_BROWSER requests.
 
-    Args:
-        post (PortfoliofyRequest): Request containing URL and styling parameters
-            Request data is pre-validated via Pydantic PortfoliofyRequest model.
+    Request Body:
+        post (PortfoliofyRequest): Request containing URL and output parameters
+            - Validated via Pydantic PortfoliofyRequest model
+            - See schemas.py for detailed field specifications
 
     Returns:
-        Response: Image data in requested format if request is valid,
-            NO_CONTENT response otherwise
+        Response (201):
+            - content: Image data in requested format
+            - media_type: Corresponding MIME type
+        Response (204):
+            - Empty response if request is invalid or format is movie/mp4
+
+    Notes:
+        - Delegates processing to process_request_browser()
+        - Only processes requests where request is True and format not movie/mp4
     """
     request_output_browser = post.model_dump()
 

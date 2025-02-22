@@ -1,5 +1,5 @@
 """
-Endpoints module for FastAPI routers handling image processing requests.
+Endpoints module for FastAPI routers handling OUTPUT requests.
 
 This module provides FastAPI routers for different types of OUTPUT requests. 
 Each router validates incoming requests through Pydantic models and directs 
@@ -12,9 +12,6 @@ Routers:
     router_full: Handle requests for OUTPUT_FULL
     router_movie: Handle requests for OUTPUT_MOVIE
     router_screenshots: Handle requests for OUTPUT_SCREENSHOTS
-
-The endpoints validate and process incoming requests to generate composite 
-images based on the specified OUTPUT type.
 
 For information about each OUTPUT type, refer to the documentation in README.md.
 """

@@ -25,17 +25,23 @@ router = APIRouter()
 @router.post('/full', status_code=status.HTTP_201_CREATED)
 def handle_request_full(post: PortfoliofyRequest) -> Response:
     """
-    Handle requests for OUTPUT_FULL. 
-    
-    Delegates processing to process_request_full().
+    Handle requests for OUTPUT_FULL.
 
-    Args:
-        post (PortfoliofyRequest): Request containing URL and styling parameters
-            Request data is pre-pvalidated via Pydantic PortfoliofyRequest model.
+    Request Body:
+        post (PortfoliofyRequest): Request containing URL and output parameters
+            - Validated via Pydantic PortfoliofyRequest model
+            - See schemas.py for detailed field specifications
 
     Returns:
-        Response: Image data in requested format if request is valid,
-            NO_CONTENT response otherwise
+        Response (201):
+            - content: Image data in requested format
+            - media_type: Corresponding MIME type
+        Response (204):
+            - Empty response if request is invalid or format is movie/mp4 or application/pdf
+
+    Notes:
+        - Delegates processing to process_request_full()
+        - Only processes requests where request is True and format not movie/mp4 or application/pdf
     """
     request_output_full = post.model_dump()
 

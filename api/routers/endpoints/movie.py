@@ -26,17 +26,23 @@ router = APIRouter()
 @router.post('/movie', status_code=status.HTTP_201_CREATED)
 def handle_request_movie(post: PortfoliofyRequest) -> Response:
     """
-    Handle requests for OUTPUT_MOVIE. 
-    
-    Delegates processing to process_request_movie().
+    Handle requests for OUTPUT_MOVIE.
 
-    Args:
-        post (PortfoliofyRequest): Request containing URL and styling parameters
-            Request data is pre-validated via Pydantic PortfoliofyRequest model.
+    Request Body:
+        post (PortfoliofyRequest): Request containing URL and output parameters
+            - Validated via Pydantic PortfoliofyRequest model
+            - See schemas.py for detailed field specifications
 
     Returns:
-        Response: MP4 video response if request is valid, 
-            NO_CONTENT response otherwise
+        Response (201):
+            - content: Video data in requested format
+            - media_type: Corresponding MIME type
+        Response (204):
+            - Empty response if request is invalid or format is not movie/mp4
+
+    Notes:
+        - Delegates processing to process_request_movie()
+        - Only processes requests where request is True and format is movie/mp4
     """
     request_output_movie = post.model_dump()
 

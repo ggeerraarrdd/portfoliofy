@@ -25,25 +25,35 @@ router = APIRouter()
 @router.post('/screenshots/desktop', status_code=status.HTTP_201_CREATED)
 def handle_request_screenshots_desktop(post: PortfoliofyRequest) -> Response:
     """
-    Handle requests for OUTPUT_SCREENSHOTS/desktop. 
-    
-    Delegates processing to process_request_screenshots().
+    Handle requests for plain, viewport-specific screenshots at desktop resolution (2160x1360)
 
-    Args:
-        post (PortfoliofyRequest): Request containing URL and styling parameters
-            Request data is pre-validated via Pydantic PortfoliofyRequest model.
+    Request Body:
+        post (PortfoliofyRequest): Request containing URL and output parameters
+            - Validated via Pydantic PortfoliofyRequest model
+            - See schemas.py for detailed field specifications
 
     Returns:
-        Response: Image response in requested format if request is valid,
-            NO_CONTENT response otherwise
+        Response (201):
+            - content: Image data in requested format
+            - media_type: Corresponding MIME type
+        Response (204):
+            - Empty response if request is invalid or format is movie/mp4
+
+    Notes:
+        - Delegates processing to process_request_screenshots()
+        - Only processes requests where request is True and format not movie/mp4
     """
     request_output_screenshots = post.model_dump()
 
+    mime_type = get_mime(request_output_screenshots['format'])
+
     if request_output_screenshots['request'] == 1:
 
-        result = process_request_screenshots(request_output_screenshots, 'desktop')
+        if mime_type not in ['movie/mp4']:
 
-        return Response(content=result, media_type=f"image/{request_output_screenshots['format']}")
+            result = process_request_screenshots(request_output_screenshots, 'desktop')
+
+            return Response(content=result, media_type=mime_type)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -51,25 +61,35 @@ def handle_request_screenshots_desktop(post: PortfoliofyRequest) -> Response:
 @router.post('/screenshots/laptop', status_code=status.HTTP_201_CREATED)
 def handle_request_screenshots_laptop(post: PortfoliofyRequest) -> Response:
     """
-    Handle requests for OUTPUT_SCREENSHOTS/laptop. 
-    
-    Delegates processing to process_request_screenshots().
+    Handle requests for plain, viewport-specific screenshots at laptop resolution (1440x900)
 
-    Args:
-        post (PortfoliofyRequest): Request containing URL and styling parameters
-            Request data is pre-validated via Pydantic PortfoliofyRequest model.
+    Request Body:
+        post (PortfoliofyRequest): Request containing URL and output parameters
+            - Validated via Pydantic PortfoliofyRequest model
+            - See schemas.py for detailed field specifications
 
     Returns:
-        Response: Image response in requested format if request is valid,
-            NO_CONTENT response otherwise
+        Response (201):
+            - content: Image data in requested format
+            - media_type: Corresponding MIME type
+        Response (204):
+            - Empty response if request is invalid or format is movie/mp4
+
+    Notes:
+        - Delegates processing to process_request_screenshots()
+        - Only processes requests where request is True and format not movie/mp4
     """
     request_output_screenshots = post.model_dump()
 
+    mime_type = get_mime(request_output_screenshots['format'])
+
     if request_output_screenshots['request'] == 1:
 
-        result = process_request_screenshots(request_output_screenshots, 'laptop')
+        if mime_type not in ['movie/mp4']:
 
-        return Response(content=result, media_type=f"image/{request_output_screenshots['format']}")
+            result = process_request_screenshots(request_output_screenshots, 'laptop')
+
+            return Response(content=result, media_type=mime_type)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -77,25 +97,35 @@ def handle_request_screenshots_laptop(post: PortfoliofyRequest) -> Response:
 @router.post('/screenshots/tablet', status_code=status.HTTP_201_CREATED)
 def handle_request_screenshots_tablet(post: PortfoliofyRequest) -> Response:
     """
-    Handle requests for OUTPUT_SCREENSHOTS/tablet. 
-    
-    Delegates processing to process_request_screenshots().
+    Handle requests for plain, viewport-specific screenshots at tablet resolution (768x1024)
 
-    Args:
-        post (PortfoliofyRequest): Request containing URL and styling parameters
-            Request data is pre-validated via Pydantic PortfoliofyRequest model.
+    Request Body:
+        post (PortfoliofyRequest): Request containing URL and output parameters
+            - Validated via Pydantic PortfoliofyRequest model
+            - See schemas.py for detailed field specifications
 
     Returns:
-        Response: Image response in requested format if request is valid,
-            NO_CONTENT response otherwise
+        Response (201):
+            - content: Image data in requested format
+            - media_type: Corresponding MIME type
+        Response (204):
+            - Empty response if request is invalid or format is movie/mp4
+
+    Notes:
+        - Delegates processing to process_request_screenshots()
+        - Only processes requests where request is True and format not movie/mp4
     """
     request_output_screenshots = post.model_dump()
 
+    mime_type = get_mime(request_output_screenshots['format'])
+
     if request_output_screenshots['request'] == 1:
 
-        result = process_request_screenshots(request_output_screenshots, 'tablet')
+        if mime_type not in ['movie/mp4']:
 
-        return Response(content=result, media_type=f"image/{request_output_screenshots['format']}")
+            result = process_request_screenshots(request_output_screenshots, 'tablet')
+
+            return Response(content=result, media_type=mime_type)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -103,25 +133,35 @@ def handle_request_screenshots_tablet(post: PortfoliofyRequest) -> Response:
 @router.post('/screenshots/smartphone', status_code=status.HTTP_201_CREATED)
 def handle_request_screenshots_smarphone(post: PortfoliofyRequest) -> Response:
     """
-    Handle requests for OUTPUT_SCREENSHOTS/smartphone. 
-    
-    Delegates processing to process_request_screenshots().
+    Handle requests for plain, viewport-specific screenshots at smartphone resolution (230x490)
 
-    Args:
-        post (PortfoliofyRequest): Request containing URL and styling parameters
-            Request data is pre-validated via Pydantic PortfoliofyRequest model.
+    Request Body:
+        post (PortfoliofyRequest): Request containing URL and output parameters
+            - Validated via Pydantic PortfoliofyRequest model
+            - See schemas.py for detailed field specifications
 
     Returns:
-        Response: Image response in requested format if request is valid,
-            NO_CONTENT response otherwise
+        Response (201):
+            - content: Image data in requested format
+            - media_type: Corresponding MIME type
+        Response (204):
+            - Empty response if request is invalid or format is movie/mp4
+
+    Notes:
+        - Delegates processing to process_request_screenshots()
+        - Only processes requests where request is True and format not movie/mp4
     """
     request_output_screenshots = post.model_dump()
 
+    mime_type = get_mime(request_output_screenshots['format'])
+
     if request_output_screenshots['request'] == 1:
 
-        result = process_request_screenshots(request_output_screenshots, 'smartphone')
+        if mime_type not in ['movie/mp4']:
 
-        return Response(content=result, media_type=f"image/{request_output_screenshots['format']}")
+            result = process_request_screenshots(request_output_screenshots, 'smartphone')
+
+            return Response(content=result, media_type=mime_type)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -129,17 +169,23 @@ def handle_request_screenshots_smarphone(post: PortfoliofyRequest) -> Response:
 @router.post('/screenshots/full', status_code=status.HTTP_201_CREATED)
 def handle_request_screenshots_full(post: PortfoliofyRequest) -> Response:
     """
-    Handle requests for OUTPUT_SCREENSHOTS/full. 
-    
-    Delegates processing to process_request_screenshots().
+    Handle requests for plain, full-page screenshot.
 
-    Args:
-        post (PortfoliofyRequest): Request containing URL and styling parameters
-            Request data is pre-validated via Pydantic PortfoliofyRequest model.
+    Request Body:
+        post (PortfoliofyRequest): Request containing URL and output parameters
+            - Validated via Pydantic PortfoliofyRequest model
+            - See schemas.py for detailed field specifications
 
     Returns:
-        Response: Image response in requested format if request is valid,
-            NO_CONTENT response otherwise
+        Response (201):
+            - content: Image data in requested format
+            - media_type: Corresponding MIME type
+        Response (204):
+            - Empty response if request is invalid or format is movie/mp4 or application/pdf
+
+    Notes:
+        - Delegates processing to process_request_screenshots()
+        - Only processes requests where request is True and format not movie/mp4 or application/pdf
     """
     request_output_screenshots = post.model_dump()
 
