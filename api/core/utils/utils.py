@@ -106,97 +106,6 @@ def get_screenshot(url: str, wait: int, settings_devices: dict) -> bytes:
         driver.quit()
 
 
-# def get_screenshot_full(url: str, wait: int) -> bytes:
-#     """
-#     Take a full page screenshot of a webpage.
-
-#     Args:
-#         url (str): Website URL to capture
-#         wait (int): Time to wait for page load in seconds
-
-#     Returns:
-#         PNG screenshot as bytes
-#     """
-#     options = Options()
-#     options.add_argument('--no-sandbox')
-#     options.add_argument('--headless=new')
-#     options.add_argument('--hide-scrollbars')
-
-#     try:
-#         # Set Chromedriver path
-#         service = Service(executable_path=CHROME_PATH)
-
-#         # Open Chrome webdriver
-#         driver = webdriver.Chrome(service=service, options=options)
-
-#     except: # pylint: disable=bare-except
-#         # Open Chrome webdriver
-#         driver = webdriver.Chrome(options=options)
-
-#     # Open Chrome webdriver
-#     driver = webdriver.Chrome(options=options)
-
-#     try:
-#         driver.get(url)
-#         sleep(wait)
-
-#         # Take screenshot
-#         screenshot = get_screenshot_full_chrome(driver)
-
-#         return screenshot
-
-#     finally:
-
-#         driver.quit()
-
-
-# def get_screenshot_full_chrome(driver: webdriver.Chrome) -> bytes:
-#     """
-#     Helper function to capture full page screenshot using Chrome DevTools Protocol.
-
-#     Args:
-#         driver (webdriver.Chrome): Chrome WebDriver instance
-
-#     Returns:
-#         PNG screenshot as bytes
-#     """
-#     # Function adapted from StackOverflow answer
-#     # https://stackoverflow.com/questions/45199076/take-full-page-screenshot-in-chrome-with-selenium/45201692#45201692
-
-#     def send(cmd, params):
-#         resource = "/session/%s/chromium/send_command_and_get_result" % \
-#             driver.session_id # pylint: disable=consider-using-f-string
-#         url = driver.command_executor._url + resource # pylint: disable=protected-access
-#         body = json.dumps({'cmd':cmd, 'params': params})
-#         response = driver.command_executor._request('POST', url, body) # pylint: disable=protected-access
-#         return response.get('value')
-
-#     def evaluate(script):
-#         response = send('Runtime.evaluate', {
-#             'returnByValue': True,
-#             'expression': script
-#         })
-#         return response['result']['value']
-
-#     metrics = evaluate( \
-#         "({" + \
-#             "width: Math.max(window.innerWidth, document.body.scrollWidth, " + \
-#                 "document.documentElement.scrollWidth)|0," + \
-#             "height: Math.max(innerHeight, document.body.scrollHeight, " + \
-#                 "document.documentElement.scrollHeight)|0," + \
-#             "deviceScaleFactor: window.devicePixelRatio || 1," + \
-#             "mobile: typeof window.orientation !== 'undefined'" + \
-#         "})")
-#     send('Emulation.setDeviceMetricsOverride', metrics)
-#     screenshot = send('Page.captureScreenshot', {
-#         'format': 'png',
-#         'fromSurface': True
-#     })
-#     send('Emulation.clearDeviceMetricsOverride', {})
-
-#     return base64.b64decode(screenshot['data'])
-
-
 def get_screenshot_full(url: str, wait: int) -> bytes:
     """
     Take a full page screenshot of a webpage.
@@ -228,12 +137,12 @@ def get_screenshot_full(url: str, wait: int) -> bytes:
         WebDriverWait(driver, wait).until(
             lambda d: d.execute_script('return document.readyState') == 'complete'
         )
-        return get_screenshot_full_chrome(driver)
+        return _get_screenshot_full_chrome(driver)
     finally:
         driver.quit()
 
 
-def get_screenshot_full_chrome(driver: webdriver.Chrome) -> bytes:
+def _get_screenshot_full_chrome(driver: webdriver.Chrome) -> bytes:
     """
     Helper function to capture full page screenshot using Chrome DevTools Protocol.
     
@@ -363,36 +272,6 @@ def get_final_temp(base_bytes: bytes, overlay_bytes: bytes, lat: int, lng: int) 
         final_temp = output.getvalue()
 
         return final_temp
-
-
-# def get_final(image_bytes: bytes, post: dict) -> bytes:
-#     """
-#     Adds padding to image and returns final PNG bytes.
-
-#     Args:
-#         image_bytes (bytes): Input image as bytes
-#         post (dict): Dictionary containing doc_pad_h, doc_pad_v, and doc_fill_color
-
-#     Returns:
-#         PNG image as bytes
-#     """
-#     with BytesIO(image_bytes) as img_io, BytesIO() as output:
-
-#         image = Image.open(img_io)
-
-#         width, height = image.size
-#         right = left = post['doc_pad_h']
-#         top = bottom = post['doc_pad_v']
-
-#         new_width = width + right + left
-#         new_height = height + top + bottom
-
-#         result = Image.new(image.mode, (new_width, new_height), post['doc_fill_color'])
-#         result.paste(image, (left, top))
-
-#         result.save(output, format=f'{post["format"]}')
-
-#         return output.getvalue()
 
 
 def get_final(image_bytes: bytes, post: dict) -> bytes:
