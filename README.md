@@ -36,44 +36,44 @@ More screenshots below.
 
 ## Features
 
-_Portfoliofy_ v3.0.0-beta.2 offers the following `OUTPUT` types requested from exposed endpoints (see [Usage](#usage)):
+_Portfoliofy_ v3.0.0-beta.2 offers the following `OUTPUT` types with configurable visual parameters, document layouts and output formats.
 
 ### `OUTPUT_MAIN`
 
-* Collage of screenshots taken from desktop, laptop, tablet, and smartphone views
-* Each screenshot overlaid on a device mockup diagram
+* Eye-catching composite of viewport-specific screenshots at multiple device resolutions (desktop, laptop, tablet, smartphone)
+* Each screenshot overlaid on a stylized device mockup
 * PNG, JPEG, BMP, TIFF or PDF format
 
 ### `OUTPUT_BROWSER`
 
-* Screenshot from desktop view overlaid on a browser mockup diagram
+* Viewport-specific screenshot at desktop resolution, overlaid on a stylized browser mockup
 * PNG, JPEG, BMP, TIFF or PDF format
 
 ### `OUTPUT_MOBILES`
 
-* Collage of screenshots taken from tablet and smartphone views
-* Each screenshot overlaid on a device mockup diagram
+* Side-by-side composite of viewport-specific screenshots at tablet and smartphone resolutions
+* Each screenshot overlaid on a stylized device mockup
 * PNG, JPEG, BMP, TIFF or PDF format
 
 ### `OUTPUT_FULL`
 
-* A full-page screenshot overlaid on a browser mockup diagram
+* Full-page screenshot of the entire webpage content from top to bottom, overlaid on a stylized browser mockup
 * PNG, JPEG, BMP or TIFF format
 
 ### `OUTPUT_MOVIE`
 
-* A scroll animation video of the full webpage
+* A scroll animation video of a full-page screenshot, framed by a stylized browser mockup
 * MP4 format only
 
 ### `OUTPUT_SCREENSHOTS`
 
-* Plain screenshots (no mockup diagrams) at various viewport sizes:
+* Plain, viewport-specific screenshots at the following resolutions:
   * Desktop (2160x1360)
   * Laptop (1440x900)
   * Tablet (768x1024)
   * Smartphone (230x490)
-* Includes separate full-page screenshot option
-* PNG, JPEG, BMP or TIFF format
+* Plain, full-page screenshot of the entire webpage content from top to bottom
+* PNG, JPEG, BMP, TIFF and PDF (except for full-page) formats
 
 _More features coming soon!_
 
@@ -96,6 +96,8 @@ portfoliofy/
 │   │   └── services/
 │   │       └── __init__.py
 │   │
+│   ├── output/
+│   │
 │   ├── routers/
 │   │   ├── __init__.py
 │   │   └── endpoints/
@@ -112,13 +114,15 @@ portfoliofy/
 
 ## Prerequisites
 
-* TBD
+* Python 3.12 (not tested on other versions)
 
 ## Getting Started
 
 ### Dependencies
 
 * See `requirements.txt`
+
+**Note:** CairoSVG and its dependencies may require additional tools during the installation. See their [documentation](https://cairosvg.org/documentation/).
 
 ### Installation
 
@@ -128,20 +132,14 @@ portfoliofy/
     git clone https://github.com/ggeerraarrdd/portfoliofy.git
     ```
 
-2. **Navigate into the project directory**
-
-    ```bash
-    cd portfoliofy # For example
-    ```
-
-3. **Create and activate a virtual environment**
+2. **Create and activate a virtual environment**
 
     ```bash
     python -m venv venv
     source venv/bin/activate  # On Windows use `venv\Scripts\activate`
     ```
 
-4. **Install the dependencies**
+3. **Install the dependencies**
 
     ```bash
     pip install -r requirements.txt
@@ -171,41 +169,41 @@ portfoliofy/
 
 3. **Choose an endpoint for your needs**
 
-    `POST /main` - handles requests for `OUTPUT_MAIN`.
+    `POST /main` - `OUTPUT_MAIN`
 
-    `POST /browser` - handles requests for `OUTPUT_BROWSER`.
+    `POST /browser` - `OUTPUT_BROWSER`
 
-    `POST /mobiles` - handles requests for `OUTPUT_MOBILES`.
+    `POST /mobiles` - `OUTPUT_MOBILES`
 
-    `POST /full` - handles requests for `OUTPUT_FULL`.
+    `POST /full` - `OUTPUT_FULL`
 
-    `POST /movie` - handles requests for `OUTPUT_MOVIE`.
+    `POST /movie` - `OUTPUT_MOVIE`
 
-    `POST /screenshots/desktop` - handles requests for screenshots from a desktop viewport (2160x1360).
+    `POST /screenshots/desktop` - plain, viewport-specific screenshots at desktop resolution (2160x1360)
 
-    `POST /screenshots/laptop` - handles requests for screenshots from a laptop viewport (1440x900).
+    `POST /screenshots/laptop` - plain, viewport-specific screenshots at laptop resolution (1440x900)
 
-    `POST /screenshots/tablet` - handles requests for screenshots from a tablet viewport (768x1024).
+    `POST /screenshots/tablet` - plain, viewport-specific screenshots at tablet resolution (768x1024)
 
-    `POST /screenshots/smartphone` - handles requests for screenshots from a smartphone viewport (230x490).
+    `POST /screenshots/smartphone` - plain, viewport-specific screenshots at smartphone resolution (230x490)
 
-    `POST /screenshots/full` - handles requests for a full-page screenshot.
+    `POST /screenshots/full` - plain, full-page screenshot
 
 4. **Configure your request parameters**
 
     This is the request body schema for all endpoints.
 
-    | Parameter           | Type     | Default value                         | Value range                           | Description                                                      |
-    | ------------------- | -------- | ------------------------------------- | ------------------------------------- | ---------------------------------------------------------------- |
-    | request             | bool     | False                                 | True, False                           | If TRUE, requested output is processed.                          |
-    | remote_url          | string   | "<https://ggeerraarrdd.github.io/>"   | ...                                   | URL to portfoliofy.                                              |
-    | wait                | int      | 2                                     | 1 - 100                               | Time in seconds to allow URL to load before taking screenshot.   |
-    | format              | string   | "png"                                 | "png", "jpeg", "bmp", "tiff", "mp4"   | File format of the final output.                                 |
-    | doc_pad_h           | int      | 300                                   | 1 - 1000                              | Left and right padding in pixels of final output.                |
-    | doc_pad_v           | int      | 200                                   | 1 - 1000                              | Top and bottom padding in pixels of final output.                |
-    | doc_fill_color      | string   | "#FFFFFF"                             | ...                                   | Background color of final output in 6-digit hex.                 |
-    | base_stroke_color   | string   | "#23445D"                             | ...                                   | Stroke color of diagram in 6-digit hex.                          |
-    | base_fill_color     | string   | "#BAC8D3"                             | ...                                   | Fill color of diagram in 6-digit hex.                            |
+    | Parameter           | Type     | Default value                         | Value range                                  | Description                                                      |
+    | ------------------- | -------- | ------------------------------------- | -------------------------------------------- | ---------------------------------------------------------------- |
+    | request             | bool     | False                                 | True, False                                  | If TRUE, requested output is processed.                          |
+    | remote_url          | string   | "<https://ggeerraarrdd.github.io/>"   | ...                                          | URL to portfoliofy.                                              |
+    | wait                | int      | 2                                     | 1 - 100                                      | Time in seconds to allow URL to load before taking screenshot.   |
+    | format              | string   | "png"                                 | "bmp", "jpeg", "mp4", "pdf", "png", "tiff"   | File format of the final output.                                 |
+    | doc_pad_h           | int      | 300                                   | 1 - 1000                                     | Left and right padding in pixels of final output.                |
+    | doc_pad_v           | int      | 200                                   | 1 - 1000                                     | Top and bottom padding in pixels of final output.                |
+    | doc_fill_color      | string   | "#FFFFFF"                             | ...                                          | Background color of final output in 6-digit hex.                 |
+    | base_stroke_color   | string   | "#23445D"                             | ...                                          | Stroke color of diagram in 6-digit hex.                          |
+    | base_fill_color     | string   | "#BAC8D3"                             | ...                                          | Fill color of diagram in 6-digit hex.                            |
 
     **Example Request:**
 
@@ -226,7 +224,7 @@ portfoliofy/
     **Additional Notes**
 
     * `POST /movie` will return `204 NO CONTENT` if the height of the full-page screenshot is >= 20,000px after it is resized to a width of 1280px.
-    * `POST /movie` currently only accepts the default `png` file format but will return an `mp4` file.
+    * `POST /movie` currently accepts any file format but will return an `mp4` file.
 
 ## Author(s)
 
@@ -244,12 +242,7 @@ The [initial realease](https://github.com/ggeerraarrdd/portfoliofy/releases/tag/
 
 ## Future Work
 
-Improvements and new features development are ongoing.
-
-* Develop a user-friendly web interface powered by the REST API
-* More `OUTPUT` types
-* More customizations
-* Support for `jpg` and `pdf` file format requests
+* Improvements and new features development are ongoing.
 
 ## License
 
