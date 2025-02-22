@@ -20,7 +20,8 @@ Functions:
 # Python Standard Libraries
 import base64
 from io import BytesIO
-import json
+# import json
+import math
 import os
 from time import sleep
 
@@ -28,8 +29,10 @@ from time import sleep
 from cairosvg import svg2png
 from PIL import Image
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 CHROME_PATH = os.environ.get('CHROME_INSTALL_DIR')
@@ -103,14 +106,105 @@ def get_screenshot(url: str, wait: int, settings_devices: dict) -> bytes:
         driver.quit()
 
 
+# def get_screenshot_full(url: str, wait: int) -> bytes:
+#     """
+#     Take a full page screenshot of a webpage.
+
+#     Args:
+#         url (str): Website URL to capture
+#         wait (int): Time to wait for page load in seconds
+
+#     Returns:
+#         PNG screenshot as bytes
+#     """
+#     options = Options()
+#     options.add_argument('--no-sandbox')
+#     options.add_argument('--headless=new')
+#     options.add_argument('--hide-scrollbars')
+
+#     try:
+#         # Set Chromedriver path
+#         service = Service(executable_path=CHROME_PATH)
+
+#         # Open Chrome webdriver
+#         driver = webdriver.Chrome(service=service, options=options)
+
+#     except: # pylint: disable=bare-except
+#         # Open Chrome webdriver
+#         driver = webdriver.Chrome(options=options)
+
+#     # Open Chrome webdriver
+#     driver = webdriver.Chrome(options=options)
+
+#     try:
+#         driver.get(url)
+#         sleep(wait)
+
+#         # Take screenshot
+#         screenshot = get_screenshot_full_chrome(driver)
+
+#         return screenshot
+
+#     finally:
+
+#         driver.quit()
+
+
+# def get_screenshot_full_chrome(driver: webdriver.Chrome) -> bytes:
+#     """
+#     Helper function to capture full page screenshot using Chrome DevTools Protocol.
+
+#     Args:
+#         driver (webdriver.Chrome): Chrome WebDriver instance
+
+#     Returns:
+#         PNG screenshot as bytes
+#     """
+#     # Function adapted from StackOverflow answer
+#     # https://stackoverflow.com/questions/45199076/take-full-page-screenshot-in-chrome-with-selenium/45201692#45201692
+
+#     def send(cmd, params):
+#         resource = "/session/%s/chromium/send_command_and_get_result" % \
+#             driver.session_id # pylint: disable=consider-using-f-string
+#         url = driver.command_executor._url + resource # pylint: disable=protected-access
+#         body = json.dumps({'cmd':cmd, 'params': params})
+#         response = driver.command_executor._request('POST', url, body) # pylint: disable=protected-access
+#         return response.get('value')
+
+#     def evaluate(script):
+#         response = send('Runtime.evaluate', {
+#             'returnByValue': True,
+#             'expression': script
+#         })
+#         return response['result']['value']
+
+#     metrics = evaluate( \
+#         "({" + \
+#             "width: Math.max(window.innerWidth, document.body.scrollWidth, " + \
+#                 "document.documentElement.scrollWidth)|0," + \
+#             "height: Math.max(innerHeight, document.body.scrollHeight, " + \
+#                 "document.documentElement.scrollHeight)|0," + \
+#             "deviceScaleFactor: window.devicePixelRatio || 1," + \
+#             "mobile: typeof window.orientation !== 'undefined'" + \
+#         "})")
+#     send('Emulation.setDeviceMetricsOverride', metrics)
+#     screenshot = send('Page.captureScreenshot', {
+#         'format': 'png',
+#         'fromSurface': True
+#     })
+#     send('Emulation.clearDeviceMetricsOverride', {})
+
+#     return base64.b64decode(screenshot['data'])
+
+
 def get_screenshot_full(url: str, wait: int) -> bytes:
     """
     Take a full page screenshot of a webpage.
-
+    
     Args:
         url (str): Website URL to capture
         wait (int): Time to wait for page load in seconds
-
+    
     Returns:
         PNG screenshot as bytes
     """
@@ -118,78 +212,74 @@ def get_screenshot_full(url: str, wait: int) -> bytes:
     options.add_argument('--no-sandbox')
     options.add_argument('--headless=new')
     options.add_argument('--hide-scrollbars')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--disable-software-rasterizer')
 
     try:
-        # Set Chromedriver path
         service = Service(executable_path=CHROME_PATH)
-
-        # Open Chrome webdriver
         driver = webdriver.Chrome(service=service, options=options)
-
-    except: # pylint: disable=bare-except
-        # Open Chrome webdriver
+    except WebDriverException as e:
+        print(f"Failed to use custom path: {e}")
         driver = webdriver.Chrome(options=options)
-
-    # Open Chrome webdriver
-    driver = webdriver.Chrome(options=options)
 
     try:
         driver.get(url)
-        sleep(wait)
-
-        # Take screenshot
-        screenshot = get_screenshot_full_chrome(driver)
-
-        return screenshot
-
+        # Wait for page load
+        WebDriverWait(driver, wait).until(
+            lambda d: d.execute_script('return document.readyState') == 'complete'
+        )
+        return get_screenshot_full_chrome(driver)
     finally:
-
         driver.quit()
 
 
 def get_screenshot_full_chrome(driver: webdriver.Chrome) -> bytes:
     """
     Helper function to capture full page screenshot using Chrome DevTools Protocol.
-
+    
     Args:
         driver (webdriver.Chrome): Chrome WebDriver instance
-
+    
     Returns:
-        PNG screenshot as bytes
+        PNG screenshot as bytes 
     """
-    # Function adapted from StackOverflow answer
-    # https://stackoverflow.com/questions/45199076/take-full-page-screenshot-in-chrome-with-selenium/45201692#45201692
+    # Get page metrics
+    metrics = driver.execute_cdp_cmd('Page.getLayoutMetrics', {})
 
-    def send(cmd, params):
-        resource = "/session/%s/chromium/send_command_and_get_result" % \
-            driver.session_id # pylint: disable=consider-using-f-string
-        url = driver.command_executor._url + resource # pylint: disable=protected-access
-        body = json.dumps({'cmd':cmd, 'params': params})
-        response = driver.command_executor._request('POST', url, body) # pylint: disable=protected-access
-        return response.get('value')
+    # Configure viewport
+    width = math.ceil(metrics['contentSize']['width'] * 0.6)
+    height = math.ceil(metrics['contentSize']['height'])
 
-    def evaluate(script):
-        response = send('Runtime.evaluate', {
-            'returnByValue': True,
-            'expression': script
-        })
-        return response['result']['value']
+    # Add the height calculation here
+    height = driver.execute_script("""
+        return Math.max(
+            document.body.scrollHeight,
+            document.body.offsetHeight,
+            document.documentElement.clientHeight,
+            document.documentElement.scrollHeight,
+            document.documentElement.offsetHeight
+        );
+    """)
 
-    metrics = evaluate( \
-        "({" + \
-            "width: Math.max(window.innerWidth, document.body.scrollWidth, " + \
-                "document.documentElement.scrollWidth)|0," + \
-            "height: Math.max(innerHeight, document.body.scrollHeight, " + \
-                "document.documentElement.scrollHeight)|0," + \
-            "deviceScaleFactor: window.devicePixelRatio || 1," + \
-            "mobile: typeof window.orientation !== 'undefined'" + \
-        "})")
-    send('Emulation.setDeviceMetricsOverride', metrics)
-    screenshot = send('Page.captureScreenshot', {
-        'format': 'png',
-        'fromSurface': True
+    driver.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {
+        'width': width,
+        'height': height,
+        'deviceScaleFactor': 1,
+        'mobile': False
     })
-    send('Emulation.clearDeviceMetricsOverride', {})
+
+    # Force document height
+    driver.execute_script("document.body.style.height = '100%';")
+
+    # Take screenshot
+    screenshot = driver.execute_cdp_cmd('Page.captureScreenshot', {
+        'format': 'png',
+        'fromSurface': True,
+        'captureBeyondViewport': True
+    })
+
+    # Reset viewport
+    driver.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})
 
     return base64.b64decode(screenshot['data'])
 
