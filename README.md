@@ -117,7 +117,7 @@ portfoliofy/
 * Python 3.12
   * _Portfoliofy_ not fully tested on other versions
 * Google Chrome
-  Latest stable version recommended
+  * Latest stable version recommended
 * ChromeDriver
   * Must match your Chrome browser version
   * Download from the [official ChromeDriver website](https://developer.chrome.com/docs/chromedriver/downloads)
