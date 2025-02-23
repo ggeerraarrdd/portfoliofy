@@ -7,7 +7,7 @@ A RESTful API to generate portfolio-ready screenshots of your awesome web projec
 > [!NOTE]
 > ALL CONTENTS IN THIS REPO ARE FOR EDUCATIONAL PURPOSES ONLY.
 
-Once a web project is done, it's time to document your hard work and show it off. _Portfoliofy_ makes this process easier by doing all the screenshots for you and assembling them together into configurable, portfolio-ready files through a RESTful API interface.
+Once a web project is done, it's time to document your hard work and show it off. _Portfoliofy_ makes that process easier by doing all the screenshots for you and assembling them together into configurable, portfolio-ready files through a RESTful API interface.
 
 ![Portfoliofy](/docs/portfoliofy1.png)
 
@@ -119,7 +119,7 @@ portfoliofy/
 * ChromeDriver
   * Must match your Chrome browser version
   * Download from the [official ChromeDriver website](https://developer.chrome.com/docs/chromedriver/downloads)
-  * Ensure it's placed in your system PATH or configured via .env file (see [Configuration](#configuration))
+  * Must be in system PATH or configured via `.env` (see [Configuration](#configuration))
 
 ## Getting Started
 
@@ -127,7 +127,7 @@ portfoliofy/
 
 * See `requirements.txt`
 
-**Note:** CairoSVG may require additional tools systems libraries. Refer to their [official documentation](https://cairosvg.org/documentation/).
+**Note:** CairoSVG may require additional systems libraries. Refer to their [official documentation](https://cairosvg.org/documentation/).
 
 ### Installation
 
@@ -165,7 +165,7 @@ portfoliofy/
 
 ### Usage
 
-1. **Start the live server**
+1. **Start development server**
 
     ```bash
     uvicorn api.portfoliofy:app
