@@ -1,13 +1,13 @@
 # Portfoliofy
 
-A REST API to generate portfolio-ready screenshots of your awesome web projects
+A RESTful API to generate portfolio-ready screenshots of your awesome web projects
 
 ## Description
 
 > [!NOTE]
 > ALL CONTENTS IN THIS REPO ARE FOR EDUCATIONAL PURPOSES ONLY.
 
-Once a web project is done, it's time to document your hard work and show it off. _Portfoliofy_ makes that process easier by doing all the screenshots for you and assembling them together into portfolio-ready files.
+Once a web project is done, it's time to document your hard work and show it off. _Portfoliofy_ makes this process easier by doing all the screenshots for you and assembling them together into configurable, portfolio-ready files through a RESTful API interface.
 
 ![Portfoliofy](/docs/portfoliofy1.png)
 
@@ -36,34 +36,34 @@ More screenshots below.
 
 ## Features
 
-_Portfoliofy_ v3.0.0-beta.3 offers the following `OUTPUT` types with configurable visual parameters, document layouts and output formats.
+_Portfoliofy_ v3.0.0-beta.3 exposes RESTful API endpoints that process HTTP requests for the following `OUTPUT` types, each offering configurable visual stylings, document layouts and output formats.
 
 ### `OUTPUT_MAIN`
 
 * Eye-catching composite of viewport-specific screenshots at multiple device resolutions (desktop, laptop, tablet, smartphone)
 * Each screenshot overlaid on a stylized device mockup
-* PNG, JPEG, BMP, TIFF or PDF format
+* Supported formats: PNG, JPEG, BMP, TIFF, PDF
 
 ### `OUTPUT_BROWSER`
 
 * Viewport-specific screenshot at desktop resolution, overlaid on a stylized browser mockup
-* PNG, JPEG, BMP, TIFF or PDF format
+* Supported formats: PNG, JPEG, BMP, TIFF, PDF
 
 ### `OUTPUT_MOBILES`
 
 * Side-by-side composite of viewport-specific screenshots at tablet and smartphone resolutions
 * Each screenshot overlaid on a stylized device mockup
-* PNG, JPEG, BMP, TIFF or PDF format
+* Supported formats: PNG, JPEG, BMP, TIFF, PDF
 
 ### `OUTPUT_FULL`
 
 * Full-page screenshot of the entire webpage content from top to bottom, overlaid on a stylized browser mockup
-* PNG, JPEG, BMP or TIFF format
+* Supported formats: PNG, JPEG, BMP, TIFF
 
 ### `OUTPUT_MOVIE`
 
 * A scroll animation video of a full-page screenshot, framed by a stylized browser mockup
-* MP4 format only
+* Supported format: MP4
 
 ### `OUTPUT_SCREENSHOTS`
 
@@ -73,9 +73,7 @@ _Portfoliofy_ v3.0.0-beta.3 offers the following `OUTPUT` types with configurabl
   * Tablet (768x1024)
   * Smartphone (230x490)
 * Plain, full-page screenshot of the entire webpage content from top to bottom
-* PNG, JPEG, BMP, TIFF and PDF (except for full-page) formats
-
-_More features coming soon!_
+* Supported formats: PNG, JPEG, BMP, TIFF, PDF (except for full-page)
 
 ## Project Structure
 
@@ -129,7 +127,7 @@ portfoliofy/
 
 * See `requirements.txt`
 
-**Note:** CairoSVG and its dependencies may require additional tools during the installation. See their [documentation](https://cairosvg.org/documentation/).
+**Note:** CairoSVG may require additional tools systems libraries. Refer to their [official documentation](https://cairosvg.org/documentation/).
 
 ### Installation
 
@@ -157,13 +155,13 @@ portfoliofy/
 1. **Configure the chromedriver path**
   
     * Create a `.env` file in the root directory of the project
-    * Add the following line to specify your chromedriver path:
+    * Specify your ChromeDriver path:
 
     ```python
     CHROMEDRIVER_PATH='/path/to/your/chromedriver'
     ```
 
-    * Replace `/path/to/your/chromedriver` with the actual path where chromedriver is installed on your system
+    * Update path to match local ChromeDriver installation
 
 ### Usage
 
@@ -209,17 +207,17 @@ portfoliofy/
 
     This is the request body schema for all endpoints.
 
-    | Parameter           | Type     | Default value                         | Value range                                  | Description                                                      |
-    | ------------------- | -------- | ------------------------------------- | -------------------------------------------- | ---------------------------------------------------------------- |
-    | request             | bool     | False                                 | True, False                                  | If TRUE, requested output is processed.                          |
-    | remote_url          | string   | "<https://ggeerraarrdd.github.io/>"   | ...                                          | URL to portfoliofy.                                              |
-    | wait                | int      | 2                                     | 1 - 100                                      | Time in seconds to allow URL to load before taking screenshot.   |
-    | format              | string   | "png"                                 | "bmp", "jpeg", "mp4", "pdf", "png", "tiff"   | File format of the final output.                                 |
-    | doc_pad_h           | int      | 300                                   | 1 - 1000                                     | Left and right padding in pixels of final output.                |
-    | doc_pad_v           | int      | 200                                   | 1 - 1000                                     | Top and bottom padding in pixels of final output.                |
-    | doc_fill_color      | string   | "#FFFFFF"                             | ...                                          | Background color of final output in 6-digit hex.                 |
-    | base_stroke_color   | string   | "#23445D"                             | ...                                          | Stroke color of diagram in 6-digit hex.                          |
-    | base_fill_color     | string   | "#BAC8D3"                             | ...                                          | Fill color of diagram in 6-digit hex.                            |
+    | Parameter           | Type     | Default value                         | Value range                                  | Description                                                                           |
+    | ------------------- | -------- | ------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------- |
+    | request             | bool     | False                                 | True, False                                  | If TRUE, requested OUTPUT type is processed                                           |
+    | remote_url          | string   | "<https://ggeerraarrdd.github.io/>"   | ...                                          | URL to portfoliofy                                                                    |
+    | wait                | int      | 2                                     | 1 - 100                                      | Delay in seconds before capturing screenshot                                          |
+    | format              | string   | "png"                                 | "bmp", "jpeg", "mp4", "pdf", "png", "tiff"   | File format for API response document                                                 |
+    | doc_pad_h           | int      | 300                                   | 1 - 1000                                     | Horizontal padding in pixels between OUTPUT content and API response document edges   |
+    | doc_pad_v           | int      | 200                                   | 1 - 1000                                     | Vertical padding in pixels between OUTPUT content and API response document edges     |
+    | doc_fill_color      | string   | "#FFFFFF"                             | ...                                          | Background color of API response document in 6-digit hex                              |
+    | base_stroke_color   | string   | "#23445D"                             | ...                                          | Outline color of device mockup frame in 6-digit hex                                   |
+    | base_fill_color     | string   | "#BAC8D3"                             | ...                                          | Background color of device mockup frame in 6-digit hex                                |
 
     **Example Request:**
 
@@ -239,8 +237,8 @@ portfoliofy/
 
     **Additional Notes**
 
-    * `POST /movie` will return `204 NO CONTENT` if the height of the full-page screenshot is >= 20,000px after it is resized to a width of 1280px.
-    * `POST /movie` currently accepts any file format but will return an `mp4` file.
+    * `POST /movie` returns `204 NO CONTENT` for full-page heights ≥ 20,000px at 1280px width.
+    * `POST /movie` enforces MP4 output regardless of format parameter.
 
 ## Author(s)
 
