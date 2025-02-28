@@ -2,20 +2,13 @@
 
 A RESTful API to generate portfolio-ready screenshots of your awesome web projects
 
-## Description
+## Table of Contents
 
 > [!NOTE]
 > ALL CONTENTS IN THIS REPO ARE FOR EDUCATIONAL PURPOSES ONLY.
 
-Once a web project is done, it's time to document your hard work and show it off. _Portfoliofy_ makes that process easier by doing all the screenshots for you and assembling them together into configurable, portfolio-ready files through a RESTful API interface.
-
-![Portfoliofy](/docs/portfoliofy1.png)
-
-More screenshots below.
-
-## Table of Contents
-
 * [Description](#description)
+* [Target Users](#target-users)
 * [Features](#features)
 * [Project Structure](#project-structure)
 * [Prerequisites](#prerequisites)
@@ -23,7 +16,8 @@ More screenshots below.
   * [Dependencies](#dependencies)
   * [Installation](#installation)
   * [Configuration](#configuration)
-  * [Usage](#usage)
+* [Usage](#usage)
+* [System Administration](#system-administration)
 * [Author(s)](#authors)
 * [Version History](#version-history)
   * [Release Notes](#release-notes)
@@ -33,6 +27,20 @@ More screenshots below.
 * [Contributing](#contributing)
 * [Acknowledgments](#acknowledgments)
 * [Screenshots](#screenshots)
+
+## Description
+
+Once a web project is done, it's time to document your hard work and show it off. _Portfoliofy_ makes that process easier by doing all the screenshots for you and assembling them together into configurable, portfolio-ready files through a RESTful API interface.
+
+![Portfoliofy](/docs/portfoliofy1.png)
+_(Sample of `OUTPUT_MAIN` - a multi-device viewport composite of [art.gsa.gov](https://art.gsa.gov/) showing desktop, laptop, tablet and smartphone views with stylized device mockups. More screenshots below.)_
+
+## Target Users
+
+_Portfoliofy_ is intended for:
+
+* **Student and professional web developers** building portfolios to showcase their web development projects
+* **Self-directed learners** looking to learn Python, in general, and RESTful API development using FastAPI, specifically, within the context of building a web screenshot generator and image manipulation application.
 
 ## Features
 
@@ -163,7 +171,7 @@ portfoliofy/
 
     * Update path to match local ChromeDriver installation
 
-### Usage
+## Usage
 
 1. **Start development server**
 
@@ -240,6 +248,10 @@ portfoliofy/
     * `POST /movie` returns `204 NO CONTENT` for full-page heights ≥ 20,000px at 1280px width.
     * `POST /movie` enforces MP4 output regardless of format parameter.
 
+## System Administration
+
+TBD
+
 ## Author(s)
 
 * [@ggeerraarrdd](https://github.com/ggeerraarrdd/)
@@ -252,7 +264,7 @@ portfoliofy/
 
 ### Initial Release
 
-The [initial realease](https://github.com/ggeerraarrdd/portfoliofy/releases/tag/v1.0.0) of _Portfoliofy_ was submitted as a final project for [CS50P: Introduction to Programming with Python](https://cs50.harvard.edu/python/2022/) (HarvardX, 2023). Read the [project brief](https://cs50.harvard.edu/python/2022/project/) as of November 2023.
+The [initial release](https://github.com/ggeerraarrdd/portfoliofy/releases/tag/v1.0.0) of _Portfoliofy_ was submitted as a final project for [CS50P: Introduction to Programming with Python](https://cs50.harvard.edu/python/2022/) (HarvardX, 2023). Read the [project brief](https://cs50.harvard.edu/python/2022/project/) as of November 2023.
 
 ## Future Work
 
