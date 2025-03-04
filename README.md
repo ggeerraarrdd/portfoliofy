@@ -11,12 +11,14 @@ A RESTful API to generate portfolio-ready screenshots of your awesome web projec
 * [Target Users](#target-users)
 * [Features](#features)
 * [Project Structure](#project-structure)
-* [Prerequisites](#prerequisites)
-* [Getting Started](#getting-started)
+* [Quick Start](#quick-start)
+* [Local Setup](#local-setup)
+  * [Prerequisites](#prerequisites)
   * [Dependencies](#dependencies)
   * [Installation](#installation)
   * [Configuration](#configuration)
 * [Usage](#usage)
+* [Production Setup](#production-setup)
 * [System Administration](#system-administration)
 * [Author(s)](#authors)
 * [Version History](#version-history)
@@ -118,7 +120,32 @@ portfoliofy/
 └── README.md
 ```
 
-## Prerequisites
+## Quick Start
+
+For developers familiar with Python environments who want to quickly get _Portfoliofy_ running, this one-command setup will launch the development server with default settings:
+
+```bash
+# Clone repository
+git clone https://github.com/ggeerraarrdd/portfoliofy.git
+
+# Setup environment and install dependencies
+cd portfoliofy
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+pip install -r requirements.txt
+
+# Configure ChromeDriver path in .env file
+echo "CHROMEDRIVER_PATH='/path/to/your/chromedriver'" > .env
+
+# Start the server
+uvicorn api.portfoliofy:app
+
+# Access API documentation at http://127.0.0.1:8000/docs
+```
+
+## Local Setup
+
+### Prerequisites
 
 * Python 3.12
   * _Portfoliofy_ not fully tested on other versions
@@ -128,8 +155,6 @@ portfoliofy/
   * Must match your Chrome browser version
   * Download from the [official ChromeDriver website](https://developer.chrome.com/docs/chromedriver/downloads)
   * Must be in system PATH or configured via `.env` (see [Configuration](#configuration))
-
-## Getting Started
 
 ### Dependencies
 
@@ -248,9 +273,13 @@ portfoliofy/
     * `POST /movie` returns `204 NO CONTENT` for full-page heights ≥ 20,000px at 1280px width.
     * `POST /movie` enforces MP4 output regardless of format parameter.
 
+## Production Setup
+
+* TBD
+
 ## System Administration
 
-TBD
+* TBD
 
 ## Author(s)
 
