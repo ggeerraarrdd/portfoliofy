@@ -34,7 +34,7 @@ A RESTful API to generate portfolio-ready screenshots of your awesome web projec
 
 Once a web project is done, it's time to document your hard work and show it off. _Portfoliofy_ makes that process easier by doing all the screenshots for you and assembling them together into configurable, portfolio-ready files through a RESTful API interface.
 
-![Portfoliofy](/docs/portfoliofy1.png)
+![Portfoliofy](/assets/portfoliofy1.png)
 _(Sample of `OUTPUT_MAIN` - a multi-device viewport composite of [art.gsa.gov](https://art.gsa.gov/) showing desktop, laptop, tablet and smartphone views with stylized device mockups. More screenshots below.)_
 
 ## Target Users
@@ -113,23 +113,23 @@ portfoliofy/
 │   │
 │   └── portfoliofy.py
 │  
-├── docs/
-├── requirements.txt
+├── assets/
 ├── .gitignore
 ├── .pylintrc
-└── README.md
+├── README.md
+└── requirements.txt
 ```
 
 ## Quick Start
 
-For developers familiar with Python environments who want to quickly get _Portfoliofy_ running, this one-command setup will launch the development server with default settings:
+For those who want to get up and running quickly with default settings:
 
 ```bash
 # Clone repository
 git clone https://github.com/ggeerraarrdd/portfoliofy.git
-
-# Setup environment and install dependencies
 cd portfoliofy
+
+# Set up environment
 python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 pip install -r requirements.txt
@@ -315,11 +315,11 @@ The [initial release](https://github.com/ggeerraarrdd/portfoliofy/releases/tag/v
 
 _(From top to bottom: OUTPUT_BROWSER, OUTPUT_MOBILES, OUTPUT_FULL, OUTPUT_MOVIE for the US General Services Administration Fine Arts Collection website @ [https://art.gsa.gov/](https://art.gsa.gov/))_
 
-![Portfoliofy](/docs/portfoliofy2.png)
+![Portfoliofy](/assets/portfoliofy2.png)
 
-![Portfoliofy](/docs/portfoliofy3.png)
+![Portfoliofy](/assets/portfoliofy3.png)
 
-![Portfoliofy](/docs/portfoliofy4.png)
+![Portfoliofy](/assets/portfoliofy4.png)
 
 <https://github.com/ggeerraarrdd/portfoliofy/assets/50889794/c93ae299-1e76-42c1-b297-713a923eab79>
 
