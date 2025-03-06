@@ -211,7 +211,7 @@ uvicorn api.portfoliofy:app
     * [Swagger UI](https://swagger.io/tools/swagger-ui/): served at `/docs`.
     * [ReDoc](https://redocly.github.io/redoc/): served at `/redoc`.
 
-    ![Portfoliofy](/docs/portfoliofy6.png)
+    ![Portfoliofy](/assets/portfoliofy6.png)
     _The Swagger UI for Portfoliofy served at `/docs`_
 
 3. **Choose an endpoint for your needs**
@@ -305,7 +305,7 @@ The [initial release](https://github.com/ggeerraarrdd/portfoliofy/releases/tag/v
 
 ## Contributing
 
-* TBD
+This project is not accepting contributions at this time. It is intended solely for personal learning and exploration. However, feel free to clone the repository and use it as a learning resource.
 
 ## Acknowledgments
 
