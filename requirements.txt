@@ -19,7 +19,7 @@ defusedxml==0.7.1
 dnspython==2.6.1
 docopt==0.6.2
 email_validator==2.2.0
-exceptiongroup==1.2.1
+exceptiongroup==1.2.2
 executing==2.2.0
 fastapi==0.115.6
 fastapi-cli==0.0.4
