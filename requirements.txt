@@ -39,7 +39,7 @@ starlette==0.46.1
 tinycss2==1.4.0
 tqdm==4.66.4
 trio==0.25.1
-trio-websocket==0.11.1
+trio-websocket==0.12.2
 typing_extensions==4.12.2
 urllib3==2.2.2
 uvicorn==0.34.0
