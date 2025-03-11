@@ -3,4 +3,4 @@
 
 # Exclude assert checks within tests
 assert_used:
-  - skips: ['test_.py', '*_test.py']
+  skips: ['*_test.py', 'test_*.py', '**/*_test.py', '**/test_*.py', '*/test_*.py']
