@@ -1,0 +1,6 @@
+# Codacy config file
+# https://docs.codacy.com/repositories-configure/codacy-configuration-file/
+
+# Exclude assert checks within tests
+assert_used:
+  - skips: ['test_.py', '*_test.py']
