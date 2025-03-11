@@ -210,7 +210,7 @@ uvicorn api.portfoliofy:app
 1. **Start development server**
 
     ```bash
-    uvicorn api.portfoliofy:app
+    python3 -m api.portfoliofy:app --reload
     ```
 
 2. **Access the documentation user interfaces**
