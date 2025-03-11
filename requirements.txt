@@ -41,7 +41,7 @@ tqdm==4.66.4
 trio==0.25.1
 trio-websocket==0.11.1
 typing_extensions==4.12.2
-urllib3==2.2.2
+urllib3==2.3.0
 uvicorn==0.34.0
 webencodings==0.5.1
 websocket-client==1.8.0
