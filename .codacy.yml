@@ -1,4 +1,8 @@
 ---
+exclude_paths:
+  - "/tests/**"
+  - "tests/**"
+  - "**/tests/**"
 assert_used:
   skips:
     - "/tests/**"
