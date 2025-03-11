@@ -139,7 +139,7 @@ git clone https://github.com/ggeerraarrdd/portfoliofy.git
 cd portfoliofy
 
 # Set up environment
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 pip install -r requirements.txt
 
@@ -147,7 +147,7 @@ pip install -r requirements.txt
 echo "CHROMEDRIVER_PATH='/path/to/your/chromedriver'" > .env
 
 # Start the server
-uvicorn api.portfoliofy:app
+python3 -m uvicorn api.portfoliofy:app --reload
 
 # Access API documentation at http://127.0.0.1:8000/docs
 ```
@@ -182,7 +182,7 @@ uvicorn api.portfoliofy:app
 2. **Create and activate a virtual environment**
 
     ```bash
-    python -m venv venv
+    python3 -m venv venv
     source venv/bin/activate  # On Windows use `venv\Scripts\activate`
     ```
 
@@ -210,7 +210,7 @@ uvicorn api.portfoliofy:app
 1. **Start development server**
 
     ```bash
-    python3 -m api.portfoliofy:app --reload
+    python3 -m uvicorn api.portfoliofy:app --reload
     ```
 
 2. **Access the documentation user interfaces**
