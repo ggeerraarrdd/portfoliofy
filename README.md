@@ -1,7 +1,7 @@
 <!-- markdownlint-disable MD041 -->
 [![GitHub release](https://img.shields.io/github/v/release/ggeerraarrdd/portfoliofy)](https://github.com/ggeerraarrdd/portfoliofy/releases)
 [![Maintenance](https://img.shields.io/badge/maintained-yes-green.svg)](https://github.com/ggeerraarrdd/portfoliofy/graphs/commit-activity)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/1efb93fd6a00425a9753ac43e73067a6)](https://app.codacy.com/gh/ggeerraarrdd/portfoliofy/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/4f79ef9284bc4b6287ac2e003708e3d4)](https://app.codacy.com/gh/ggeerraarrdd/portfoliofy/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![codecov](https://codecov.io/gh/ggeerraarrdd/portfoliofy/graph/badge.svg?token=LU62T9HB4E)](https://codecov.io/gh/ggeerraarrdd/portfoliofy)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ggeerraarrdd_portfoliofy&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ggeerraarrdd_portfoliofy)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
