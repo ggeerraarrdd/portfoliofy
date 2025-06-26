@@ -11,7 +11,7 @@ coverage==7.6.12
 cssselect2==0.8.0
 decorator==4.4.2
 defusedxml==0.7.1
-fastapi==0.115.11
+fastapi==0.115.14
 h11==0.16.0
 idna==3.10
 imageio==2.37.0
